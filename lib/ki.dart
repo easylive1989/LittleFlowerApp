@@ -1,0 +1,4 @@
+enum Ki {
+  black,
+  white,
+}
