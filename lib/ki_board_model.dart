@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki.dart';
 
 class KiBoardModel extends ChangeNotifier {
+  static int row = 15;
+  static int column = 15;
+
   List<Point<int>> _blackKiList = [];
   List<Point<int>> _whiteKiList = [];
   bool _isGameOver = false;
 
+  Ki _winner = Ki.black;
+
   List<Point<int>> get blackKiList => List.from(_blackKiList);
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
   bool get isGameOver => _isGameOver;
+
+  String get winnerKi => _winner.toString().split(".").last.toUpperCase();
 
   void addKi(Point<int> point) {
     if (_blackKiList.contains(point) ||
@@ -27,6 +34,9 @@ class KiBoardModel extends ChangeNotifier {
     }
 
     _isGameOver = _checkGameOver(ki, point);
+    if (_isGameOver) {
+      _winner = ki;
+    }
     notifyListeners();
   }
 
@@ -84,13 +94,12 @@ class KiBoardModel extends ChangeNotifier {
 
   int _verify(Ki ki, Point point, Point Function(Point) nextPositiveFn,
       Point Function(Point) nextNegativeFn) {
-    if (point.x < 0 || point.y < 0 || point.x > 15 || point.y > 15) {
+    if (point.x < 0 || point.y < 0 || point.x > row || point.y > column) {
       return 0;
     }
 
     var kiList = ki == Ki.black ? blackKiList : whiteKiList;
     if (kiList.contains(point)) {
-      print("check ${point.x}, ${point.y}");
       return 1 +
           (nextPositiveFn == null
               ? 0

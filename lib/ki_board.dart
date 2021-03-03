@@ -22,8 +22,8 @@ class KiBoard extends StatelessWidget {
               child: CustomPaint(
                 size: Size(300, 300),
                 painter: KiBoardPainter(
-                  row: 15,
-                  column: 15,
+                  row: KiBoardModel.row,
+                  column: KiBoardModel.column,
                   blackKiList: model.blackKiList,
                   whiteKiList: model.whiteKiList,
                   onTap: (x, y) {
@@ -41,7 +41,7 @@ class KiBoard extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "White Wins",
+                        "${model.winnerKi} Wins",
                         style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(
