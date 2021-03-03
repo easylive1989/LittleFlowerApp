@@ -8,7 +8,12 @@ class KiBoardPainter extends CustomPainter {
   final List<Point<int>> blackKiList;
   final List<Point<int>> whiteKiList;
 
+  final int row;
+  final int column;
+
   KiBoardPainter({
+    @required this.row,
+    @required this.column,
     @required this.blackKiList,
     @required this.whiteKiList,
     this.onTap,
@@ -16,31 +21,14 @@ class KiBoardPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double eWidth = size.width / 15;
-    double eHeight = size.height / 15;
+    double eWidth = size.width / column;
+    double eHeight = size.height / row;
 
-    //画棋盘背景
-    var paint = Paint()
-      ..isAntiAlias = true
-      ..style = PaintingStyle.fill //填充
-      ..color = Color(0x77cdb175); //背景为纸黄色
-    canvas.drawRect(Offset.zero & size, paint);
+    var paint = Paint();
 
-    //画棋盘网格
-    paint
-      ..style = PaintingStyle.stroke //线
-      ..color = Colors.black87
-      ..strokeWidth = 1.0;
+    _drawBackground(paint, canvas, size);
 
-    for (int i = 0; i <= 15; ++i) {
-      double dy = eHeight * i;
-      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
-    }
-
-    for (int i = 0; i <= 15; ++i) {
-      double dx = eWidth * i;
-      canvas.drawLine(Offset(dx, 0), Offset(dx, size.height), paint);
-    }
+    _drawGrids(paint, eHeight, canvas, size, eWidth);
 
     blackKiList.forEach((element) {
       _drawBlackKi(element, paint, canvas, size, eWidth, eHeight);
@@ -49,6 +37,41 @@ class KiBoardPainter extends CustomPainter {
     whiteKiList.forEach((element) {
       _drawWhiteKi(element, paint, canvas, size, eWidth, eHeight);
     });
+  }
+
+  void _drawGrids(
+      Paint paint, double eHeight, Canvas canvas, Size size, double eWidth) {
+    paint
+      ..style = PaintingStyle.stroke
+      ..color = Colors.black87
+      ..strokeWidth = 1.0;
+
+    for (int i = 0; i <= row; i++) {
+      _drawRow(eHeight, i, canvas, size, paint);
+    }
+
+    for (int i = 0; i <= column; i++) {
+      _drawColumn(eWidth, i, canvas, size, paint);
+    }
+  }
+
+  void _drawBackground(Paint paint, Canvas canvas, Size size) {
+    paint
+      ..isAntiAlias = true
+      ..style = PaintingStyle.fill
+      ..color = Color(0x77cdb175);
+    canvas.drawRect(Offset.zero & size, paint);
+  }
+
+  void _drawColumn(
+      double eWidth, int i, Canvas canvas, Size size, Paint paint) {
+    double dx = eWidth * i;
+    canvas.drawLine(Offset(dx, 0), Offset(dx, size.height), paint);
+  }
+
+  void _drawRow(double eHeight, int i, Canvas canvas, Size size, Paint paint) {
+    double dy = eHeight * i;
+    canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
   }
 
   void _drawWhiteKi(Point<int> point, Paint paint, Canvas canvas, Size size,
@@ -90,7 +113,9 @@ class KiBoardPainter extends CustomPainter {
     int finalY = position.dy % 20 == 0
         ? position.dy.toInt() ~/ 20
         : (position.dy + 10) ~/ 20;
-    onTap(finalX, finalY);
+    if (onTap != null) {
+      onTap(finalX, finalY);
+    }
     return true;
   }
 }

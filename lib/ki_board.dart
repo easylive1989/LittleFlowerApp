@@ -14,23 +14,63 @@ class KiBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => KiBoardModel(),
-      child: Center(
-        child: Consumer<KiBoardModel>(
-          builder: (context, model, child) {
-            return CustomPaint(
-              size: Size(300, 300),
-              painter: KiBoardPainter(
-                blackKiList: model.blackKiList,
-                whiteKiList: model.whiteKiList,
-                onTap: (x, y) {
-                  Provider.of<KiBoardModel>(context, listen: false)
-                      .addKi(Point(x, y));
-                },
+      child: Consumer<KiBoardModel>(builder: (context, model, child) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            Center(
+              child: CustomPaint(
+                size: Size(300, 300),
+                painter: KiBoardPainter(
+                  row: 15,
+                  column: 15,
+                  blackKiList: model.blackKiList,
+                  whiteKiList: model.whiteKiList,
+                  onTap: (x, y) {
+                    Provider.of<KiBoardModel>(context, listen: false)
+                        .addKi(Point(x, y));
+                  },
+                ),
               ),
-            );
-          },
-        ),
-      ),
+            ),
+            Positioned(
+              bottom: 100,
+              child: Container(
+                child: Visibility(
+                  visible: model.isGameOver,
+                  child: Column(
+                    children: [
+                      Text(
+                        "White Wins",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      FlatButton(
+                        onPressed: () =>
+                            Provider.of<KiBoardModel>(context, listen: false)
+                                .cleanUp(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5.0,
+                            horizontal: 10.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text("Play Again"),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 }
