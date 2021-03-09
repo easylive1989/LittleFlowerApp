@@ -7,8 +7,8 @@ import 'package:test/test.dart';
 
 void main() {
   group('KiBoardModel', () {
-    var firebaseDatabaseApi;
-    var kiBoardModel;
+    MockFirebaseDatabaseApi firebaseDatabaseApi;
+    KiBoardModel kiBoardModel;
 
     setUp(() {
       firebaseDatabaseApi = MockFirebaseDatabaseApi();
@@ -22,6 +22,20 @@ void main() {
 
       verify(firebaseDatabaseApi.update('boardId',
           '{"blackKiList":[{"x":1,"y":1}],"whiteKiList":[],"isGameOver":false,"winner":0}'));
+    });
+
+    test('connect five same ki should be game over', () {
+      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(2, 1));
+      kiBoardModel.addKi(Point(1, 2));
+      kiBoardModel.addKi(Point(2, 2));
+      kiBoardModel.addKi(Point(1, 3));
+      kiBoardModel.addKi(Point(2, 3));
+      kiBoardModel.addKi(Point(1, 4));
+      kiBoardModel.addKi(Point(2, 4));
+      kiBoardModel.addKi(Point(1, 5));
+
+      expect(kiBoardModel.isGameOver, true);
     });
   });
 }
