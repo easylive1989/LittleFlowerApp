@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki.dart';
+import 'package:little_flower_app/ki_boards_database_api.dart';
+import 'package:uuid/uuid.dart';
 
 class KiBoardModel extends ChangeNotifier {
   static int row = 15;
   static int column = 15;
+
+  String _boardId;
 
   List<Point<int>> _blackKiList = [];
   List<Point<int>> _whiteKiList = [];
@@ -13,11 +18,19 @@ class KiBoardModel extends ChangeNotifier {
 
   Ki _winner = Ki.black;
 
+  KiBoardsDatabaseApi _firebaseDatabaseApi;
+
   List<Point<int>> get blackKiList => List.from(_blackKiList);
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
   bool get isGameOver => _isGameOver;
 
   String get winnerKi => _winner.toString().split(".").last.toUpperCase();
+
+  KiBoardModel(this._firebaseDatabaseApi) {
+    _boardId = getBoardId();
+  }
+
+  String getBoardId() => Uuid().v1();
 
   void addKi(Point<int> point) {
     if (_blackKiList.contains(point) ||
@@ -37,6 +50,8 @@ class KiBoardModel extends ChangeNotifier {
     if (_isGameOver) {
       _winner = ki;
     }
+
+    _firebaseDatabaseApi.update(_boardId, jsonEncode(toJson()));
     notifyListeners();
   }
 
@@ -110,5 +125,15 @@ class KiBoardModel extends ChangeNotifier {
     } else {
       return 0;
     }
+  }
+
+  Map<String, dynamic> toJson() {
+    var pointToJson = (point) => {"x": point.x, "y": point.y};
+    return {
+      'blackKiList': _blackKiList.map((point) => pointToJson(point)).toList(),
+      'whiteKiList': _whiteKiList.map((point) => pointToJson(point)).toList(),
+      'isGameOver': _isGameOver,
+      'winner': _winner.index
+    };
   }
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki_board_model.dart';
 import 'package:little_flower_app/ki_board_painter.dart';
+import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:provider/provider.dart';
 
 class KiBoard extends StatelessWidget {
@@ -13,7 +14,7 @@ class KiBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => KiBoardModel(),
+      create: (context) => KiBoardModel(KiBoardsDatabaseApi()),
       child: Consumer<KiBoardModel>(builder: (context, model, child) {
         return Stack(
           alignment: Alignment.center,

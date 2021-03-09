@@ -1,4 +1,4 @@
-package com.example.little_flower_app
+package com.paulwu.little_flower_app
 
 import io.flutter.embedding.android.FlutterActivity
 
