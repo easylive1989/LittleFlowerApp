@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/ki_board_model.dart';
+import 'package:little_flower_app/ki_boards_database_api.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +20,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
-        body: KiBoard(),
+        body: ChangeNotifierProvider(
+          create: (context) => KiBoardModel(KiBoardsDatabaseApi()),
+          child: KiBoard(),
+        ),
       ),
     );
   }
