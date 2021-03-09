@@ -14,19 +14,21 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('show game Id in ki board', (WidgetTester tester) async {
-    var kiBoardModel = KiBoardModel(MockFirebaseDatabaseApi());
-    kiBoardModel.boardId = "uuid";
-    await tester.pumpWidget(
-      MaterialApp(
-        home: ChangeNotifierProvider(
-          create: (context) => kiBoardModel,
-          child: KiBoard(),
+  group('ki board', () {
+    testWidgets('show game Id in ki board', (WidgetTester tester) async {
+      var kiBoardModel = KiBoardModel(MockFirebaseDatabaseApi());
+      kiBoardModel.boardId = "uuid";
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ChangeNotifierProvider(
+            create: (context) => kiBoardModel,
+            child: KiBoard(),
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(find.text("uuid"), findsOneWidget);
+      expect(find.text("uuid"), findsOneWidget);
+    });
   });
 }
 
