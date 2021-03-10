@@ -8,10 +8,9 @@ import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:provider/provider.dart';
 
 class KiBoard extends StatelessWidget {
-  final Function(int x, int y) onTap;
   final KiBoardsDatabaseApi kiBoardsDatabaseApi;
 
-  KiBoard({this.onTap, this.kiBoardsDatabaseApi});
+  KiBoard({this.kiBoardsDatabaseApi});
 
   @override
   Widget build(BuildContext context) {
