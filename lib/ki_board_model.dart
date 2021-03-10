@@ -40,13 +40,9 @@ class KiBoardModel extends ChangeNotifier {
         _isGameOver) {
       return;
     }
+
     var ki = _getKi();
-    if (ki == Ki.black) {
-      _blackKiList.add(point);
-    }
-    if (ki == Ki.white) {
-      _whiteKiList.add(point);
-    }
+    _getKiList(ki).add(point);
 
     _isGameOver = _checkGameOver(ki, point);
     if (_isGameOver) {
@@ -115,7 +111,7 @@ class KiBoardModel extends ChangeNotifier {
       return 0;
     }
 
-    var kiList = ki == Ki.black ? blackKiList : whiteKiList;
+    var kiList = _getKiList(ki);
     if (kiList.contains(point)) {
       return 1 +
           (nextPositiveFn == null
@@ -128,6 +124,9 @@ class KiBoardModel extends ChangeNotifier {
       return 0;
     }
   }
+
+  List<Point<int>> _getKiList(Ki ki) =>
+      ki == Ki.black ? _blackKiList : _whiteKiList;
 
   Map<String, dynamic> toJson() {
     var pointToJson = (point) => {"x": point.x, "y": point.y};

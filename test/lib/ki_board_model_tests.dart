@@ -18,10 +18,23 @@ void main() {
     test('add ki should update firebase database', () {
       kiBoardModel.boardId = 'boardId';
 
-      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(1, 3));
 
       verify(firebaseDatabaseApi.update('boardId',
-          '{"blackKiList":[{"x":1,"y":1}],"whiteKiList":[],"isGameOver":false,"winner":0}'));
+          '{"blackKiList":[{"x":1,"y":3}],"whiteKiList":[],"isGameOver":false,"winner":0}'));
+    });
+
+    test('add ki when ki board is empty should add black ki', () {
+      kiBoardModel.addKi(Point(1, 1));
+
+      expect(kiBoardModel.blackKiList.contains(Point(1, 1)), true);
+    });
+
+    test('add ki when last ki is black should add white ki', () {
+      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(1, 2));
+
+      expect(kiBoardModel.whiteKiList.contains(Point(1, 2)), true);
     });
 
     test('connect five same ki should be game over', () {
