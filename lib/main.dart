@@ -24,9 +24,10 @@ class MyApp extends StatelessWidget {
         body: ChangeNotifierProvider(
           create: (context) => KiBoardModel(
             randomAlpha(5),
-            KiBoardsDatabaseApi(),
           ),
-          child: KiBoard(),
+          child: KiBoard(
+            kiBoardsDatabaseApi: KiBoardsDatabaseApi(),
+          ),
         ),
       ),
     );

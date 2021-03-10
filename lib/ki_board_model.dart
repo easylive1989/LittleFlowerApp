@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki.dart';
-import 'package:little_flower_app/ki_boards_database_api.dart';
 
 class KiBoardModel extends ChangeNotifier {
   static int row = 15;
@@ -17,9 +15,7 @@ class KiBoardModel extends ChangeNotifier {
 
   Ki _winner = Ki.black;
 
-  KiBoardsDatabaseApi _firebaseDatabaseApi;
-
-  KiBoardModel(this.boardId, this._firebaseDatabaseApi);
+  KiBoardModel(this.boardId);
 
   List<Point<int>> get blackKiList => List.from(_blackKiList);
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
@@ -42,7 +38,6 @@ class KiBoardModel extends ChangeNotifier {
       _winner = ki;
     }
 
-    _firebaseDatabaseApi.update(boardId, jsonEncode(toJson()));
     notifyListeners();
   }
 

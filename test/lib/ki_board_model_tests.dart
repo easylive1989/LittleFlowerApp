@@ -8,19 +8,10 @@ import 'package:test/test.dart';
 void main() {
   group('KiBoardModel', () {
     final String boardId = 'boardId';
-    MockFirebaseDatabaseApi firebaseDatabaseApi;
     KiBoardModel kiBoardModel;
 
     setUp(() {
-      firebaseDatabaseApi = MockFirebaseDatabaseApi();
-      kiBoardModel = KiBoardModel(boardId, firebaseDatabaseApi);
-    });
-
-    test('add ki should update firebase database', () {
-      kiBoardModel.addKi(Point(1, 3));
-
-      verify(firebaseDatabaseApi.update(boardId,
-          '{"blackKiList":[{"x":1,"y":3}],"whiteKiList":[],"isGameOver":false,"winner":0}'));
+      kiBoardModel = KiBoardModel(boardId);
     });
 
     test('add ki when ki board is empty should add black ki', () {
@@ -49,6 +40,8 @@ void main() {
 
       expect(kiBoardModel.isGameOver, true);
     });
+
+    test('update ki list when firebase database change', () {});
   });
 }
 

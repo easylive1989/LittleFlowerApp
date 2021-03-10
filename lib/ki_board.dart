@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki_board_model.dart';
 import 'package:little_flower_app/ki_board_painter.dart';
+import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:provider/provider.dart';
 
 class KiBoard extends StatelessWidget {
   final Function(int x, int y) onTap;
+  final KiBoardsDatabaseApi kiBoardsDatabaseApi;
 
-  KiBoard({this.onTap});
+  KiBoard({this.onTap, this.kiBoardsDatabaseApi});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,8 @@ class KiBoard extends StatelessWidget {
                 onTap: (x, y) {
                   Provider.of<KiBoardModel>(context, listen: false)
                       .addKi(Point(x, y));
+                  kiBoardsDatabaseApi?.update(
+                      model.boardId, jsonEncode(model.toJson()));
                 },
               ),
             ),
