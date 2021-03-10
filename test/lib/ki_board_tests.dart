@@ -16,18 +16,22 @@ import 'package:provider/provider.dart';
 void main() {
   group('ki board', () {
     testWidgets('show game Id in ki board', (WidgetTester tester) async {
-      var kiBoardModel = KiBoardModel(MockFirebaseDatabaseApi());
-      kiBoardModel.boardId = "uuid";
+      String boardId = 'boardId';
+      var kiBoardModel = KiBoardModel(boardId, MockFirebaseDatabaseApi());
       await tester.pumpWidget(
         MaterialApp(
-          home: ChangeNotifierProvider(
-            create: (context) => kiBoardModel,
-            child: KiBoard(),
+          home: Scaffold(
+            body: ChangeNotifierProvider(
+              create: (context) => kiBoardModel,
+              child: KiBoard(),
+            ),
           ),
         ),
       );
 
-      expect(find.text("uuid"), findsOneWidget);
+      var formField = tester.widget<EditableText>(find.text(boardId));
+
+      expect(find.byWidget(formField), findsOneWidget);
     });
   });
 }

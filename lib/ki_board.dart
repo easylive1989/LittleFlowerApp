@@ -18,8 +18,12 @@ class KiBoard extends StatelessWidget {
         children: [
           Positioned(
             top: 100,
-            child: Text(
-              model.getBoardId(),
+            child: Container(
+              width: 100,
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                initialValue: model.boardId,
+              ),
             ),
           ),
           Center(

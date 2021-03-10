@@ -4,13 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
-import 'package:random_string/random_string.dart';
 
 class KiBoardModel extends ChangeNotifier {
   static int row = 15;
   static int column = 15;
 
-  String boardId;
+  final String boardId;
 
   List<Point<int>> _blackKiList = [];
   List<Point<int>> _whiteKiList = [];
@@ -20,19 +19,13 @@ class KiBoardModel extends ChangeNotifier {
 
   KiBoardsDatabaseApi _firebaseDatabaseApi;
 
-  KiBoardModel(this._firebaseDatabaseApi) {
-    boardId = getBoardId();
-  }
+  KiBoardModel(this.boardId, this._firebaseDatabaseApi);
 
   List<Point<int>> get blackKiList => List.from(_blackKiList);
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
   bool get isGameOver => _isGameOver;
 
   String get winnerKi => _winner.toString().split(".").last.toUpperCase();
-
-  String getBoardId() {
-    return boardId == null ? randomAlpha(5) : boardId;
-  }
 
   void addKi(Point<int> point) {
     if (_blackKiList.contains(point) ||
