@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/ki_board.dart';
@@ -60,8 +62,9 @@ void main() {
               widget is CustomPaint && widget.painter is KiBoardPainter));
       (painter.painter as KiBoardPainter).onTap(1, 2);
 
-      verify(mockFirebaseDatabaseApi.update(boardId,
-          '{"blackKiList":[{"x":1,"y":2}],"whiteKiList":[],"isGameOver":false,"winner":0}'));
+      var expectedKiBoard = KiBoard(boardId);
+      expectedKiBoard.addKi(Point(1, 2));
+      verify(mockFirebaseDatabaseApi.update(expectedKiBoard));
     });
   });
 }

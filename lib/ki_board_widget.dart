@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -39,8 +38,7 @@ class KiBoardWidget extends StatelessWidget {
                 onTap: (x, y) {
                   Provider.of<KiBoard>(context, listen: false)
                       .addKi(Point(x, y));
-                  kiBoardsDatabaseApi?.update(
-                      model.boardId, jsonEncode(model.toJson()));
+                  kiBoardsDatabaseApi?.update(model);
                 },
               ),
             ),
