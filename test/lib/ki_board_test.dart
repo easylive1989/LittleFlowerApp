@@ -15,15 +15,20 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  group('ki board', () {
+  group('ki board widget', () {
+    String boardId = 'boardId';
+    KiBoard kiBoard;
+
+    setUp(() {
+      kiBoard = KiBoard(boardId);
+    });
+
     testWidgets('show game Id in ki board', (WidgetTester tester) async {
-      String boardId = 'boardId';
-      var kiBoardModel = KiBoard(boardId);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
-              create: (context) => kiBoardModel,
+              create: (context) => kiBoard,
               child: KiBoardWidget(),
             ),
           ),
@@ -37,14 +42,12 @@ void main() {
 
     testWidgets('add ki should update firebase database',
         (WidgetTester tester) async {
-      String boardId = 'boardId';
       var mockFirebaseDatabaseApi = MockFirebaseDatabaseApi();
-      var kiBoardModel = KiBoard(boardId);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
-              create: (context) => kiBoardModel,
+              create: (context) => kiBoard,
               child:
                   KiBoardWidget(kiBoardsDatabaseApi: mockFirebaseDatabaseApi),
             ),
