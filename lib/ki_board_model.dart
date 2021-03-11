@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki.dart';
 
@@ -124,5 +125,20 @@ class KiBoardModel extends ChangeNotifier {
       'isGameOver': _isGameOver,
       'winner': _winner.index
     };
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is KiBoardModel &&
+        boardId == other.boardId &&
+        listEquals(blackKiList, other.blackKiList) &&
+        listEquals(whiteKiList, other.whiteKiList) &&
+        isGameOver == other.isGameOver &&
+        winnerKi == other.winnerKi;
+  }
+
+  @override
+  int get hashCode {
+    return 0;
   }
 }
