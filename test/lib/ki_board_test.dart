@@ -1,68 +1,47 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/ki_board.dart';
-import 'package:little_flower_app/ki_board_painter.dart';
-import 'package:little_flower_app/ki_board_widget.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:test/test.dart';
 
 void main() {
-  group('ki board widget', () {
-    String boardId = 'boardId';
-    KiBoard kiBoard;
+  group('KiBoardModel', () {
+    final String boardId = 'boardId';
+    KiBoard kiBoardModel;
 
     setUp(() {
-      kiBoard = KiBoard(boardId);
+      kiBoardModel = KiBoard(boardId);
     });
 
-    testWidgets('show game Id in ki board', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ChangeNotifierProvider(
-              create: (context) => kiBoard,
-              child: KiBoardWidget(),
-            ),
-          ),
-        ),
-      );
+    test('add ki when ki board is empty should add black ki', () {
+      kiBoardModel.addKi(Point(1, 1));
 
-      var formField = tester.widget<EditableText>(find.text(boardId));
-
-      expect(find.byWidget(formField), findsOneWidget);
+      expect(kiBoardModel.blackKiList.contains(Point(1, 1)), true);
     });
 
-    testWidgets('add ki should update firebase database',
-        (WidgetTester tester) async {
-      var mockFirebaseDatabaseApi = MockFirebaseDatabaseApi();
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ChangeNotifierProvider(
-              create: (context) => kiBoard,
-              child:
-                  KiBoardWidget(kiBoardsDatabaseApi: mockFirebaseDatabaseApi),
-            ),
-          ),
-        ),
-      );
+    test('add ki when last ki is black should add white ki', () {
+      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(1, 2));
 
-      CustomPaint painter = tester.widget<CustomPaint>(find.byWidgetPredicate(
-          (widget) =>
-              widget is CustomPaint && widget.painter is KiBoardPainter));
-      (painter.painter as KiBoardPainter).onTap(1, 2);
-
-      verify(mockFirebaseDatabaseApi.update(boardId,
-          '{"blackKiList":[{"x":1,"y":2}],"whiteKiList":[],"isGameOver":false,"winner":0}'));
+      expect(kiBoardModel.whiteKiList.contains(Point(1, 2)), true);
     });
+
+    test('connect five same ki should be game over', () {
+      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(2, 1));
+      kiBoardModel.addKi(Point(1, 2));
+      kiBoardModel.addKi(Point(2, 2));
+      kiBoardModel.addKi(Point(1, 3));
+      kiBoardModel.addKi(Point(2, 3));
+      kiBoardModel.addKi(Point(1, 4));
+      kiBoardModel.addKi(Point(2, 4));
+      kiBoardModel.addKi(Point(1, 5));
+
+      expect(kiBoardModel.isGameOver, true);
+    });
+
+    test('update ki list when firebase database change', () {});
   });
 }
 
