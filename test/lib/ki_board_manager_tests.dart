@@ -1,5 +1,5 @@
+import 'package:little_flower_app/ki_board.dart';
 import 'package:little_flower_app/ki_board_manager.dart';
-import 'package:little_flower_app/ki_board_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -14,7 +14,7 @@ void main() {
     test('ki board manager can get current key board', () {
       kiBoardManager.boardId = boardId;
 
-      expect(kiBoardManager.current, KiBoardModel(boardId));
+      expect(kiBoardManager.current, KiBoard(boardId));
     });
   });
 }

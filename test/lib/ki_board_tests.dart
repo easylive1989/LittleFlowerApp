@@ -8,8 +8,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/ki_board.dart';
-import 'package:little_flower_app/ki_board_model.dart';
 import 'package:little_flower_app/ki_board_painter.dart';
+import 'package:little_flower_app/ki_board_widget.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +18,13 @@ void main() {
   group('ki board', () {
     testWidgets('show game Id in ki board', (WidgetTester tester) async {
       String boardId = 'boardId';
-      var kiBoardModel = KiBoardModel(boardId);
+      var kiBoardModel = KiBoard(boardId);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardModel,
-              child: KiBoard(),
+              child: KiBoardWidget(),
             ),
           ),
         ),
@@ -39,13 +39,14 @@ void main() {
         (WidgetTester tester) async {
       String boardId = 'boardId';
       var mockFirebaseDatabaseApi = MockFirebaseDatabaseApi();
-      var kiBoardModel = KiBoardModel(boardId);
+      var kiBoardModel = KiBoard(boardId);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardModel,
-              child: KiBoard(kiBoardsDatabaseApi: mockFirebaseDatabaseApi),
+              child:
+                  KiBoardWidget(kiBoardsDatabaseApi: mockFirebaseDatabaseApi),
             ),
           ),
         ),

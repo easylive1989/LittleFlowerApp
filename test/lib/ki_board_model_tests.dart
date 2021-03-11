@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:little_flower_app/ki_board_model.dart';
+import 'package:little_flower_app/ki_board.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -8,10 +8,10 @@ import 'package:test/test.dart';
 void main() {
   group('KiBoardModel', () {
     final String boardId = 'boardId';
-    KiBoardModel kiBoardModel;
+    KiBoard kiBoardModel;
 
     setUp(() {
-      kiBoardModel = KiBoardModel(boardId);
+      kiBoardModel = KiBoard(boardId);
     });
 
     test('add ki when ki board is empty should add black ki', () {
