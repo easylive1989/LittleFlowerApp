@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:little_flower_app/game_over_checker.dart';
 import 'package:little_flower_app/ki.dart';
 
 class KiBoard extends ChangeNotifier {
@@ -19,7 +20,9 @@ class KiBoard extends ChangeNotifier {
   KiBoard(this.boardId);
 
   List<Point<int>> get blackKiList => List.from(_blackKiList);
+
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
+
   bool get isGameOver => _isGameOver;
 
   String get winnerKi => _winner.toString().split(".").last.toUpperCase();
@@ -34,7 +37,8 @@ class KiBoard extends ChangeNotifier {
     var ki = _getKi();
     _getKiList(ki).add(point);
 
-    _isGameOver = _checkGameOver(ki, point);
+    _isGameOver =
+        GameOverChecker(_getKiList(ki), row, column).isGameOver(point);
     if (_isGameOver) {
       _winner = ki;
     }
@@ -53,65 +57,6 @@ class KiBoard extends ChangeNotifier {
     return (_blackKiList.length + _whiteKiList.length) % 2 == 0
         ? Ki.black
         : Ki.white;
-  }
-
-  bool _checkGameOver(Ki ki, Point lastMove) {
-    var verticalCount = _verify(
-        ki,
-        lastMove,
-        (point) => Point(point.x + 1, point.y),
-        (point) => Point(point.x - 1, point.y));
-    if (verticalCount >= 5) {
-      return true;
-    }
-
-    var horizontalCount = _verify(
-        ki,
-        lastMove,
-        (point) => Point(point.x, point.y + 1),
-        (point) => Point(point.x, point.y - 1));
-    if (horizontalCount >= 5) {
-      return true;
-    }
-
-    var slopeCount = _verify(
-        ki,
-        lastMove,
-        (point) => Point(point.x + 1, point.y + 1),
-        (point) => Point(point.x - 1, point.y - 1));
-    if (slopeCount >= 5) {
-      return true;
-    }
-
-    var antiSlopeCount = _verify(
-        ki,
-        lastMove,
-        (point) => Point(point.x + 1, point.y - 1),
-        (point) => Point(point.x - 1, point.y + 1));
-    if (antiSlopeCount >= 5) {
-      return true;
-    }
-    return false;
-  }
-
-  int _verify(Ki ki, Point point, Point Function(Point) nextPositiveFn,
-      Point Function(Point) nextNegativeFn) {
-    if (point.x < 0 || point.y < 0 || point.x > row || point.y > column) {
-      return 0;
-    }
-
-    var kiList = _getKiList(ki);
-    if (kiList.contains(point)) {
-      return 1 +
-          (nextPositiveFn == null
-              ? 0
-              : _verify(ki, nextPositiveFn(point), nextPositiveFn, null)) +
-          (nextNegativeFn == null
-              ? 0
-              : _verify(ki, nextNegativeFn(point), null, nextNegativeFn));
-    } else {
-      return 0;
-    }
   }
 
   List<Point<int>> _getKiList(Ki ki) =>
