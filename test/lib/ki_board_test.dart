@@ -39,6 +39,7 @@ void main() {
       kiBoardModel.addKi(Point(1, 5));
 
       expect(kiBoardModel.isGameOver, true);
+      expect(kiBoardModel.winner, "BLACK");
     });
 
     test('update ki list when firebase database change', () {});

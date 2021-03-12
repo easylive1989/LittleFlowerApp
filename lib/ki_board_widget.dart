@@ -51,7 +51,7 @@ class KiBoardWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "${model.winnerKi} Wins",
+                      "${model.winner} Wins",
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(

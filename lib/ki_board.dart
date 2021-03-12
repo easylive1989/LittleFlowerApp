@@ -15,8 +15,6 @@ class KiBoard extends ChangeNotifier {
   List<Point<int>> _whiteKiList = [];
   bool _isGameOver = false;
 
-  Ki _winner = Ki.black;
-
   KiBoard(this.boardId);
 
   List<Point<int>> get blackKiList => List.from(_blackKiList);
@@ -25,7 +23,12 @@ class KiBoard extends ChangeNotifier {
 
   bool get isGameOver => _isGameOver;
 
-  String get winnerKi => _winner.toString().split(".").last.toUpperCase();
+  String get winner =>
+      (_blackKiList.length > _whiteKiList.length ? Ki.black : Ki.white)
+          .toString()
+          .split(".")
+          .last
+          .toUpperCase();
 
   void addKi(Point<int> point) {
     if (_blackKiList.contains(point) ||
@@ -37,9 +40,6 @@ class KiBoard extends ChangeNotifier {
     var kiList = _getKiList(_getKi())..add(point);
 
     _isGameOver = GameOverChecker(kiList, row, column).isGameOver(point);
-    if (_isGameOver) {
-      _winner = _getKi();
-    }
 
     notifyListeners();
   }
@@ -66,7 +66,6 @@ class KiBoard extends ChangeNotifier {
       'blackKiList': _blackKiList.map((point) => pointToJson(point)).toList(),
       'whiteKiList': _whiteKiList.map((point) => pointToJson(point)).toList(),
       'isGameOver': _isGameOver,
-      'winner': _winner.index
     };
   }
 
@@ -77,7 +76,7 @@ class KiBoard extends ChangeNotifier {
         listEquals(blackKiList, other.blackKiList) &&
         listEquals(whiteKiList, other.whiteKiList) &&
         isGameOver == other.isGameOver &&
-        winnerKi == other.winnerKi;
+        winner == other.winner;
   }
 
   @override
