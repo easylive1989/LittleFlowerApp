@@ -34,13 +34,11 @@ class KiBoard extends ChangeNotifier {
       return;
     }
 
-    var ki = _getKi();
-    _getKiList(ki).add(point);
+    var kiList = _getKiList(_getKi())..add(point);
 
-    _isGameOver =
-        GameOverChecker(_getKiList(ki), row, column).isGameOver(point);
+    _isGameOver = GameOverChecker(kiList, row, column).isGameOver(point);
     if (_isGameOver) {
-      _winner = ki;
+      _winner = _getKi();
     }
 
     notifyListeners();
