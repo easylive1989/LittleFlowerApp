@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/ki_board_manager.dart';
 import 'package:little_flower_app/ki_board_painter.dart';
 import 'package:little_flower_app/ki_board_widget.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
@@ -19,10 +20,11 @@ import 'package:provider/provider.dart';
 void main() {
   group('ki board widget', () {
     String boardId = 'boardId';
-    KiBoard kiBoard;
+    KiBoardManager kiBoardManager;
 
     setUp(() {
-      kiBoard = KiBoard(boardId);
+      kiBoardManager = KiBoardManager();
+      kiBoardManager.updateKiBoard(KiBoard(boardId));
     });
 
     testWidgets('show game Id in ki board', (WidgetTester tester) async {
@@ -30,7 +32,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
-              create: (context) => kiBoard,
+              create: (context) => kiBoardManager,
               child: KiBoardWidget(),
             ),
           ),
@@ -49,7 +51,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
-              create: (context) => kiBoard,
+              create: (context) => kiBoardManager,
               child:
                   KiBoardWidget(kiBoardsDatabaseApi: mockFirebaseDatabaseApi),
             ),

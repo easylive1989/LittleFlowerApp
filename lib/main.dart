@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/ki_board_manager.dart';
 import 'package:little_flower_app/ki_board_widget.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:provider/provider.dart';
-import 'package:random_string/random_string.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,9 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: ChangeNotifierProvider(
-          create: (context) => KiBoard(
-            randomAlpha(5),
-          ),
+          create: (context) => KiBoardManager(),
           child: KiBoardWidget(
             kiBoardsDatabaseApi: KiBoardsDatabaseApi(),
           ),

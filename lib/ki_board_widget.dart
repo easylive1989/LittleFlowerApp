@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/ki_board_manager.dart';
 import 'package:little_flower_app/ki_board_painter.dart';
 import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class KiBoardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<KiBoard>(builder: (context, model, child) {
+    return Consumer<KiBoardManager>(builder: (context, model, child) {
       return Stack(
         alignment: Alignment.center,
         children: [
@@ -23,7 +24,7 @@ class KiBoardWidget extends StatelessWidget {
               width: 100,
               child: TextFormField(
                 textAlign: TextAlign.center,
-                initialValue: model.boardId,
+                initialValue: model.current.boardId,
               ),
             ),
           ),
@@ -33,12 +34,13 @@ class KiBoardWidget extends StatelessWidget {
               painter: KiBoardPainter(
                 row: KiBoard.row,
                 column: KiBoard.column,
-                blackKiList: model.blackKiList,
-                whiteKiList: model.whiteKiList,
+                blackKiList: model.current.blackKiList,
+                whiteKiList: model.current.whiteKiList,
                 onTap: (x, y) {
-                  Provider.of<KiBoard>(context, listen: false)
+                  Provider.of<KiBoardManager>(context, listen: false)
+                      .current
                       .addKi(Point(x, y));
-                  kiBoardsDatabaseApi?.update(model);
+                  kiBoardsDatabaseApi?.update(model.current);
                 },
               ),
             ),
@@ -47,11 +49,11 @@ class KiBoardWidget extends StatelessWidget {
             bottom: 100,
             child: Container(
               child: Visibility(
-                visible: model.isGameOver,
+                visible: model.current.isGameOver,
                 child: Column(
                   children: [
                     Text(
-                      "${model.winner} Wins",
+                      "${model.current.winner} Wins",
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(
@@ -59,7 +61,8 @@ class KiBoardWidget extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () =>
-                          Provider.of<KiBoard>(context, listen: false)
+                          Provider.of<KiBoardManager>(context, listen: false)
+                              .current
                               .cleanUp(),
                       child: Container(
                         padding: EdgeInsets.symmetric(
