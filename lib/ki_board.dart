@@ -11,15 +11,13 @@ class KiBoard extends ChangeNotifier {
 
   List<Point<int>> _blackKiList = [];
   List<Point<int>> _whiteKiList = [];
-  bool _isGameOver = false;
-
-  KiBoard();
-
   List<Point<int>> get blackKiList => List.from(_blackKiList);
-
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
 
+  bool _isGameOver = false;
   bool get isGameOver => _isGameOver;
+
+  KiBoard();
 
   String get winner =>
       (_blackKiList.length > _whiteKiList.length ? Ki.black : Ki.white)
