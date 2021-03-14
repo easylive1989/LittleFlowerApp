@@ -8,7 +8,7 @@ void main() {
     String boardId = "boardId";
 
     setUp(() {
-      kiBoardManager = StubKiBoardManager();
+      kiBoardManager = StubKiBoardManager(boardId);
     });
 
     test('ki board manager can get current key board', () {
@@ -21,6 +21,8 @@ void main() {
 
 class StubKiBoardManager extends KiBoardManager {
   String boardId;
+
+  StubKiBoardManager(this.boardId);
 
   @override
   String getBoardId() {
