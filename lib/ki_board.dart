@@ -9,13 +9,11 @@ class KiBoard extends ChangeNotifier {
   static int row = 15;
   static int column = 15;
 
-  final String boardId;
-
   List<Point<int>> _blackKiList = [];
   List<Point<int>> _whiteKiList = [];
   bool _isGameOver = false;
 
-  KiBoard(this.boardId);
+  KiBoard();
 
   List<Point<int>> get blackKiList => List.from(_blackKiList);
 
@@ -72,7 +70,6 @@ class KiBoard extends ChangeNotifier {
   @override
   bool operator ==(Object other) {
     return other is KiBoard &&
-        boardId == other.boardId &&
         listEquals(blackKiList, other.blackKiList) &&
         listEquals(whiteKiList, other.whiteKiList) &&
         isGameOver == other.isGameOver &&

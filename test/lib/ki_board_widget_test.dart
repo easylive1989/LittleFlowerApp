@@ -24,7 +24,7 @@ void main() {
 
     setUp(() {
       kiBoardManager = KiBoardManager();
-      kiBoardManager.updateKiBoard(KiBoard(boardId));
+      kiBoardManager.updateKiBoard(boardId, KiBoard());
     });
 
     testWidgets('show game Id in ki board', (WidgetTester tester) async {
@@ -64,9 +64,9 @@ void main() {
               widget is CustomPaint && widget.painter is KiBoardPainter));
       (painter.painter as KiBoardPainter).onTap(1, 2);
 
-      var expectedKiBoard = KiBoard(boardId);
+      var expectedKiBoard = KiBoard();
       expectedKiBoard.addKi(Point(1, 2));
-      verify(mockFirebaseDatabaseApi.update(expectedKiBoard));
+      verify(mockFirebaseDatabaseApi.update(boardId, expectedKiBoard));
     });
   });
 }

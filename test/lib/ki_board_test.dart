@@ -7,11 +7,10 @@ import 'package:test/test.dart';
 
 void main() {
   group('KiBoardModel', () {
-    final String boardId = 'boardId';
     KiBoard kiBoardModel;
 
     setUp(() {
-      kiBoardModel = KiBoard(boardId);
+      kiBoardModel = KiBoard();
     });
 
     test('add ki when ki board is empty should add black ki', () {

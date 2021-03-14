@@ -24,7 +24,7 @@ class KiBoardWidget extends StatelessWidget {
               width: 100,
               child: TextFormField(
                 textAlign: TextAlign.center,
-                initialValue: model.current.boardId,
+                initialValue: model.boardId,
               ),
             ),
           ),
@@ -40,7 +40,7 @@ class KiBoardWidget extends StatelessWidget {
                   Provider.of<KiBoardManager>(context, listen: false)
                       .current
                       .addKi(Point(x, y));
-                  kiBoardsDatabaseApi?.update(model.current);
+                  kiBoardsDatabaseApi?.update(model.boardId, model.current);
                 },
               ),
             ),

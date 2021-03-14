@@ -14,7 +14,7 @@ void main() {
     test('ki board manager can get current key board', () {
       kiBoardManager.boardId = boardId;
 
-      expect(kiBoardManager.current, KiBoard(boardId));
+      expect(kiBoardManager.current, KiBoard());
     });
   });
 }

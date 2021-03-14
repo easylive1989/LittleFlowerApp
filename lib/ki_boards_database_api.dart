@@ -10,7 +10,7 @@ class KiBoardsDatabaseApi {
     _kiBoardRef = FirebaseDatabase.instance.reference().child('kiBoards');
   }
 
-  update(KiBoard kiBoard) {
-    _kiBoardRef.child(kiBoard.boardId).set(jsonEncode(kiBoard.toJson()));
+  update(String boardId, KiBoard kiBoard) {
+    _kiBoardRef.child(boardId).set(jsonEncode(kiBoard.toJson()));
   }
 }
