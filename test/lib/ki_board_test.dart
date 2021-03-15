@@ -41,7 +41,15 @@ void main() {
       expect(kiBoardModel.winner, "BLACK");
     });
 
-    test('update ki list when firebase database change', () {});
+    test('convert json to ki board', () {
+      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(1, 2));
+      var json = kiBoardModel.toJson();
+
+      KiBoard actualKiBoard = KiBoard.fromJson(json);
+
+      expect(actualKiBoard, kiBoardModel);
+    });
   });
 }
 

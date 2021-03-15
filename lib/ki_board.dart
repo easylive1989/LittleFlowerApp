@@ -19,6 +19,16 @@ class KiBoard extends ChangeNotifier {
 
   KiBoard();
 
+  KiBoard._(
+    List<Point<int>> blackKiList,
+    List<Point<int>> whiteKiList,
+    bool isGameOver,
+  ) {
+    _blackKiList.addAll(blackKiList);
+    _whiteKiList.addAll(whiteKiList);
+    _isGameOver = isGameOver;
+  }
+
   String get winner =>
       (_blackKiList.length > _whiteKiList.length ? Ki.black : Ki.white)
           .toString()
@@ -59,9 +69,9 @@ class KiBoard extends ChangeNotifier {
   Map<String, dynamic> toJson() {
     var pointToJson = (point) => {"x": point.x, "y": point.y};
     return {
-      'blackKiList': _blackKiList.map((point) => pointToJson(point)).toList(),
-      'whiteKiList': _whiteKiList.map((point) => pointToJson(point)).toList(),
-      'isGameOver': _isGameOver,
+      "blackKiList": _blackKiList.map((point) => pointToJson(point)).toList(),
+      "whiteKiList": _whiteKiList.map((point) => pointToJson(point)).toList(),
+      "isGameOver": _isGameOver,
     };
   }
 
@@ -77,5 +87,16 @@ class KiBoard extends ChangeNotifier {
   @override
   int get hashCode {
     return 0;
+  }
+
+  factory KiBoard.fromJson(Map<String, dynamic> json) {
+    var toPointList = (json) => List<Point<int>>.from(json.map((e) =>
+        Point<int>(
+            int.parse(e["x"].toString()), int.parse(e["y"].toString()))));
+    return KiBoard._(
+      toPointList(json["blackKiList"]),
+      toPointList(json["whiteKiList"]),
+      json["isGameOver"],
+    );
   }
 }
