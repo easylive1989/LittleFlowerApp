@@ -53,4 +53,4 @@ void main() {
   });
 }
 
-class MockFirebaseDatabaseApi extends Mock implements KiBoardsDatabaseApi {}
+class MockFirebaseDatabaseApi extends Mock implements FirebaseDatabaseApi {}

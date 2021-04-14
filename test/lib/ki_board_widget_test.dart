@@ -9,11 +9,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:little_flower_app/IKiBoardRepository.dart';
 import 'package:little_flower_app/ki_board.dart';
 import 'package:little_flower_app/ki_board_manager.dart';
 import 'package:little_flower_app/ki_board_painter.dart';
 import 'package:little_flower_app/ki_board_widget.dart';
-import 'package:little_flower_app/ki_boards_database_api.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
@@ -21,13 +21,14 @@ void main() {
   group('ki board widget', () {
     String boardId = 'boardId';
     KiBoardManager kiBoardManager;
+    MockKiBoardRepository mockKiBoardRepository;
 
-    setUp(() {
-      kiBoardManager = KiBoardManager();
-      kiBoardManager.updateKiBoard(boardId, KiBoard());
+    setUp(() async {
+      mockKiBoardRepository = MockKiBoardRepository();
+      kiBoardManager = KiBoardManager(mockKiBoardRepository);
     });
 
-    testWidgets('show game Id in ki board', (WidgetTester tester) async {
+    testWidgets('show game id in ki board', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -39,21 +40,19 @@ void main() {
         ),
       );
 
-      var formField = tester.widget<EditableText>(find.text(boardId));
+      var formField =
+          tester.widget<TextFormField>(find.byKey(ValueKey("boardIdText")));
 
       expect(find.byWidget(formField), findsOneWidget);
     });
 
-    testWidgets('add ki should update firebase database',
-        (WidgetTester tester) async {
-      var mockFirebaseDatabaseApi = MockFirebaseDatabaseApi();
+    testWidgets('add ki should update repository', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardManager,
-              child:
-                  KiBoardWidget(kiBoardsDatabaseApi: mockFirebaseDatabaseApi),
+              child: KiBoardWidget(),
             ),
           ),
         ),
@@ -66,9 +65,10 @@ void main() {
 
       var expectedKiBoard = KiBoard();
       expectedKiBoard.addKi(Point(1, 2));
-      verify(mockFirebaseDatabaseApi.update(boardId, expectedKiBoard));
+
+      verify(mockKiBoardRepository.saveKiBoard(any, expectedKiBoard));
     });
   });
 }
 
-class MockFirebaseDatabaseApi extends Mock implements KiBoardsDatabaseApi {}
+class MockKiBoardRepository extends Mock implements IKiBoardRepository {}
