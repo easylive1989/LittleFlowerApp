@@ -19,7 +19,6 @@ import 'package:provider/provider.dart';
 
 void main() {
   group('ki board widget', () {
-    String boardId = 'boardId';
     KiBoardManager kiBoardManager;
     MockKiBoardRepository mockKiBoardRepository;
 
@@ -40,8 +39,8 @@ void main() {
         ),
       );
 
-      var formField =
-          tester.widget<TextFormField>(find.byKey(ValueKey("boardIdText")));
+      var formField = tester.widget<TextFormField>(
+          find.byWidgetPredicate((widget) => widget is TextFormField));
 
       expect(find.byWidget(formField), findsOneWidget);
     });
