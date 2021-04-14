@@ -16,12 +16,11 @@ class KiBoardManager extends ChangeNotifier {
 
   KiBoardManager(IKiBoardRepository kiBoardRepository) {
     _kiBoardRepository = kiBoardRepository;
-    resetKiBoard(boardId: getBoardId());
   }
 
-  void resetKiBoard({boardId}) {
+  Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
-    _updateKiBoard(KiBoard());
+    _updateKiBoard(await _kiBoardRepository.getKiBoard(_boardId));
     notify();
   }
 

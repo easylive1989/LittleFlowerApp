@@ -14,6 +14,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var kiBoardManager = KiBoardManager(PreferenceApi());
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -21,8 +22,12 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: ChangeNotifierProvider(
-          create: (context) => KiBoardManager(PreferenceApi()),
-          child: KiBoardWidget(),
+          create: (context) => kiBoardManager,
+          child: FutureBuilder(
+              future: kiBoardManager.resetKiBoard(),
+              builder: (context, snapshot) {
+                return KiBoardWidget();
+              }),
         ),
       ),
     );

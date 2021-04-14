@@ -25,6 +25,9 @@ void main() {
     setUp(() async {
       mockKiBoardRepository = MockKiBoardRepository();
       kiBoardManager = KiBoardManager(mockKiBoardRepository);
+      when(mockKiBoardRepository.getKiBoard(any))
+          .thenAnswer((realInvocation) => Future.value(KiBoard()));
+      await kiBoardManager.resetKiBoard();
     });
 
     testWidgets('show game id in ki board', (WidgetTester tester) async {

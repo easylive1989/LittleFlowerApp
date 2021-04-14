@@ -23,8 +23,8 @@ class KiBoardWidget extends StatelessWidget {
                 key: ValueKey(model.boardId),
                 textAlign: TextAlign.center,
                 initialValue: model.boardId,
-                onFieldSubmitted: (text) =>
-                    Provider.of<KiBoardManager>(context, listen: false)
+                onFieldSubmitted: (text) async =>
+                    await Provider.of<KiBoardManager>(context, listen: false)
                         .resetKiBoard(boardId: text),
               ),
             ),
@@ -57,9 +57,10 @@ class KiBoardWidget extends StatelessWidget {
                       height: 5,
                     ),
                     TextButton(
-                      onPressed: () =>
-                          Provider.of<KiBoardManager>(context, listen: false)
-                              .resetKiBoard(),
+                      onPressed: () async => await Provider.of<KiBoardManager>(
+                              context,
+                              listen: false)
+                          .resetKiBoard(),
                       child: Container(
                         padding: EdgeInsets.symmetric(
                           vertical: 5.0,
