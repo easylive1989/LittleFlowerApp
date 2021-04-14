@@ -26,7 +26,12 @@ class MyApp extends StatelessWidget {
           child: FutureBuilder(
               future: kiBoardManager.resetKiBoard(),
               builder: (context, snapshot) {
-                return KiBoardWidget();
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return KiBoardWidget();
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }),
         ),
       ),

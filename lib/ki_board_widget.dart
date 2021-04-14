@@ -19,6 +19,7 @@ class KiBoardWidget extends StatelessWidget {
           children: [
             Container(
               width: 100,
+              padding: EdgeInsets.only(bottom: 30),
               child: TextFormField(
                 key: ValueKey(model.boardId),
                 textAlign: TextAlign.center,
@@ -45,6 +46,7 @@ class KiBoardWidget extends StatelessWidget {
               ),
             ),
             Container(
+              padding: EdgeInsets.only(top: 30),
               child: Visibility(
                 visible: model.current.isGameOver,
                 child: Column(
