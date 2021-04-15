@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:little_flower_app/IKiBoardRepository.dart';
-import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/repo/IKiBoardRepository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceApi implements IKiBoardRepository {

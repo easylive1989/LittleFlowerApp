@@ -1,4 +1,4 @@
-import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/model/ki_board.dart';
 
 class IKiBoardRepository {
   void saveKiBoard(String boardId, KiBoard kiBoard) {}

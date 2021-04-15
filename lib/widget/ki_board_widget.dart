@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/ki_board.dart';
-import 'package:little_flower_app/ki_board_manager.dart';
-import 'package:little_flower_app/ki_board_painter.dart';
+import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/widget/ki_board_painter.dart';
 import 'package:provider/provider.dart';
 
 class KiBoardWidget extends StatelessWidget {

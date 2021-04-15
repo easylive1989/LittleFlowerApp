@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:little_flower_app/IKiBoardRepository.dart';
-import 'package:little_flower_app/ki_board.dart';
-import 'package:little_flower_app/ki_board_manager.dart';
+import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/repo/IKiBoardRepository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 

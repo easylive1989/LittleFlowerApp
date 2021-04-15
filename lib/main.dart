@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/ki_board_manager.dart';
-import 'package:little_flower_app/ki_board_widget.dart';
-import 'package:little_flower_app/preference_api.dart';
+import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/repo/preference_api.dart';
+import 'package:little_flower_app/widget/ki_board_widget.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

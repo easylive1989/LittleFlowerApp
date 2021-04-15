@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/model/ki_board.dart';
 
 class FirebaseDatabaseApi {
   DatabaseReference _kiBoardRef;

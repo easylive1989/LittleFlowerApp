@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/IKiBoardRepository.dart';
-import 'package:little_flower_app/ki_board.dart';
+import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/repo/IKiBoardRepository.dart';
 import 'package:random_string/random_string.dart';
 
 class KiBoardManager extends ChangeNotifier {

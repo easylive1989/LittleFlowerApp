@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:little_flower_app/ki_board.dart';
-import 'package:little_flower_app/ki_boards_database_api.dart';
+import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/repo/ki_boards_database_api.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 

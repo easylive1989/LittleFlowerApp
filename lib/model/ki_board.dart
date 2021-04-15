@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/game_over_checker.dart';
-import 'package:little_flower_app/ki.dart';
+import 'package:little_flower_app/model/game_over_checker.dart';
+import 'package:little_flower_app/model/ki.dart';
 
 class KiBoard extends ChangeNotifier {
   static int row = 15;
