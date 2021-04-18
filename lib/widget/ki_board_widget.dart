@@ -15,18 +15,20 @@ class KiBoardWidget extends StatelessWidget {
       builder: (context, model, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              width: 100,
-              padding: EdgeInsets.only(bottom: 30),
-              child: TextFormField(
-                key: ValueKey(model.boardId),
-                textAlign: TextAlign.center,
-                initialValue: model.boardId,
-                onFieldSubmitted: (text) async =>
-                    await Provider.of<KiBoardManager>(context, listen: false)
-                        .resetKiBoard(boardId: text),
+            Expanded(
+              child: Container(
+                width: 100,
+                alignment: Alignment.center,
+                child: TextFormField(
+                  key: ValueKey(model.boardId),
+                  textAlign: TextAlign.center,
+                  initialValue: model.boardId,
+                  onFieldSubmitted: (text) async =>
+                      await Provider.of<KiBoardManager>(context, listen: false)
+                          .resetKiBoard(boardId: text),
+                ),
               ),
             ),
             Center(
@@ -45,37 +47,40 @@ class KiBoardWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 30),
-              child: Visibility(
-                visible: model.current.isGameOver,
-                child: Column(
-                  children: [
-                    Text(
-                      "${model.current.winner} Wins",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    TextButton(
-                      onPressed: () async => await Provider.of<KiBoardManager>(
-                              context,
-                              listen: false)
-                          .resetKiBoard(),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 5.0,
-                          horizontal: 10.0,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text("Play Again"),
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 30),
+                child: Visibility(
+                  visible: model.current.isGameOver,
+                  child: Column(
+                    children: [
+                      Text(
+                        "${model.current.winner} Wins",
+                        style: TextStyle(fontSize: 20),
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 5,
+                      ),
+                      TextButton(
+                        onPressed: () async =>
+                            await Provider.of<KiBoardManager>(context,
+                                    listen: false)
+                                .resetKiBoard(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5.0,
+                            horizontal: 10.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text("Play Again"),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
