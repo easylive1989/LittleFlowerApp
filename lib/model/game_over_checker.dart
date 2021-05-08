@@ -42,8 +42,8 @@ class GameOverChecker {
     return false;
   }
 
-  int _verify(Point point, Point Function(Point) nextPositiveFn,
-      Point Function(Point) nextNegativeFn) {
+  int _verify(Point point, Point Function(Point)? nextPositiveFn,
+      Point Function(Point)? nextNegativeFn) {
     if (point.x < 0 || point.y < 0 || point.x > row || point.y > column) {
       return 0;
     }

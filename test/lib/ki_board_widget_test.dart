@@ -11,16 +11,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repo/IKiBoardRepository.dart';
+import 'package:little_flower_app/repo/ki_board_repository.dart';
 import 'package:little_flower_app/widget/ki_board_painter.dart';
 import 'package:little_flower_app/widget/ki_board_widget.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import 'ki_board_manager_test.mocks.dart';
+
+@GenerateMocks([KiBoardRepository])
 void main() {
   group('ki board widget', () {
-    KiBoardManager kiBoardManager;
-    MockKiBoardRepository mockKiBoardRepository;
+    late KiBoardManager kiBoardManager;
+    late MockKiBoardRepository mockKiBoardRepository;
 
     setUp(() async {
       mockKiBoardRepository = MockKiBoardRepository();
@@ -63,7 +67,7 @@ void main() {
       CustomPaint painter = tester.widget<CustomPaint>(find.byWidgetPredicate(
           (widget) =>
               widget is CustomPaint && widget.painter is KiBoardPainter));
-      (painter.painter as KiBoardPainter).onTap(1, 2);
+      (painter.painter as KiBoardPainter).onTap?.call(1, 2);
 
       var expectedKiBoard = KiBoard();
       expectedKiBoard.addKi(Point(1, 2));
@@ -72,5 +76,3 @@ void main() {
     });
   });
 }
-
-class MockKiBoardRepository extends Mock implements IKiBoardRepository {}

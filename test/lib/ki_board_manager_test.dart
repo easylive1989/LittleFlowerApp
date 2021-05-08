@@ -2,14 +2,18 @@ import 'dart:math';
 
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repo/IKiBoardRepository.dart';
+import 'package:little_flower_app/repo/ki_board_repository.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'ki_board_manager_test.mocks.dart';
+
+@GenerateMocks([KiBoardRepository])
 void main() {
-  StubKiBoardManager kiBoardManager;
+  late StubKiBoardManager kiBoardManager;
+  late MockKiBoardRepository mockKiBoardRepository;
   String boardId = "boardId";
-  MockKiBoardRepository mockKiBoardRepository;
 
   void _givenKiBoard(KiBoard kiBoard) {
     when(mockKiBoardRepository.getKiBoard(any)).thenAnswer((realInvocation) {
@@ -53,4 +57,4 @@ class StubKiBoardManager extends KiBoardManager {
   }
 }
 
-class MockKiBoardRepository extends Mock implements IKiBoardRepository {}
+// class MockKiBoardRepository extends Mock implements KiBoardRepository {}

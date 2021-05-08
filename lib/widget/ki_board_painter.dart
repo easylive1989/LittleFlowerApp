@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class KiBoardPainter extends CustomPainter {
-  final Function(int x, int y) onTap;
+  final Function(int x, int y)? onTap;
   final List<Point<int>> blackKiList;
   final List<Point<int>> whiteKiList;
 
@@ -12,10 +12,10 @@ class KiBoardPainter extends CustomPainter {
   final int column;
 
   KiBoardPainter({
-    @required this.row,
-    @required this.column,
-    @required this.blackKiList,
-    @required this.whiteKiList,
+    required this.row,
+    required this.column,
+    required this.blackKiList,
+    required this.whiteKiList,
     this.onTap,
   });
 
@@ -113,9 +113,7 @@ class KiBoardPainter extends CustomPainter {
     int finalY = position.dy % 20 == 0
         ? position.dy.toInt() ~/ 20
         : (position.dy + 10) ~/ 20;
-    if (onTap != null) {
-      onTap(finalX, finalY);
-    }
+    onTap?.call(finalX, finalY);
     return true;
   }
 }

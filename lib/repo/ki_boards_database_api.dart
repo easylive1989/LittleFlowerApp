@@ -4,11 +4,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 
 class FirebaseDatabaseApi {
-  DatabaseReference _kiBoardRef;
+  final DatabaseReference _kiBoardRef;
 
-  FirebaseDatabaseApi() {
-    _kiBoardRef = FirebaseDatabase.instance.reference().child('kiBoards');
-  }
+  FirebaseDatabaseApi()
+      : _kiBoardRef = FirebaseDatabase.instance.reference().child('kiBoards');
 
   void update(String boardId, KiBoard kiBoard) {
     _kiBoardRef.child(boardId).set(jsonEncode(kiBoard.toJson()));
