@@ -10,7 +10,6 @@ void main() {
     setUp(() {
       kiBoardModel = KiBoard();
     });
-
     test('add ki when ki board is empty should add black ki', () {
       kiBoardModel.addKi(Point(1, 1));
 

@@ -7,7 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'ki_board_manager_test.mocks.dart';
+import '../fixture/fixtures.dart';
 
 @GenerateMocks([KiBoardRepository])
 void main() {
@@ -56,5 +56,3 @@ class StubKiBoardManager extends KiBoardManager {
     return boardId;
   }
 }
-
-// class MockKiBoardRepository extends Mock implements KiBoardRepository {}

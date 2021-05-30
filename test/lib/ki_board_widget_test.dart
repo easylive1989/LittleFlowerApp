@@ -11,16 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repo/ki_board_repository.dart';
 import 'package:little_flower_app/widget/ki_board_painter.dart';
 import 'package:little_flower_app/widget/ki_board_widget.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
-import 'ki_board_manager_test.mocks.dart';
+import '../fixture/fixtures.dart';
 
-@GenerateMocks([KiBoardRepository])
 void main() {
   group('ki board widget', () {
     late KiBoardManager kiBoardManager;
