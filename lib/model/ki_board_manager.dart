@@ -6,15 +6,13 @@ import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
 import 'package:random_string/random_string.dart';
 
 class KiBoardManager extends ChangeNotifier {
-  late KiBoard _current;
-
   KiBoard get current => _current;
-
-  late String _boardId;
-
   String get boardId => _boardId;
+  GameVisibility get visibility => _visibility;
 
-  GameVisibility visibility;
+  KiBoard _current;
+  late String _boardId;
+  GameVisibility _visibility;
 
   KiBoardRepositoryFactory _kiBoardRepositoryFactory;
   KiBoardRepository _kiBoardRepository;
@@ -23,7 +21,7 @@ class KiBoardManager extends ChangeNotifier {
       : _kiBoardRepository =
             kiBoardRepositoryFactory.get(GameVisibility.private),
         _current = KiBoard(),
-        visibility = GameVisibility.private,
+        _visibility = GameVisibility.private,
         _kiBoardRepositoryFactory = kiBoardRepositoryFactory;
 
   Future resetKiBoard({boardId}) async {
@@ -44,7 +42,7 @@ class KiBoardManager extends ChangeNotifier {
   }
 
   void enablePublic(bool enable) {
-    visibility = enable ? GameVisibility.public : GameVisibility.private;
+    _visibility = enable ? GameVisibility.public : GameVisibility.private;
     _kiBoardRepository = _kiBoardRepositoryFactory.get(visibility);
     notifyListeners();
   }
