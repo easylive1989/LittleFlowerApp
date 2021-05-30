@@ -9,6 +9,36 @@ class BoardInfoArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Align(
+          alignment: Alignment.topRight,
+          child: _buildShareSwitch(),
+        ),
+        _buildBoardId(context),
+      ],
+    );
+  }
+
+  Padding _buildShareSwitch() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 15, 0),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        direction: Axis.horizontal,
+        children: [
+          Text("Share"),
+          Switch(
+            value: true,
+            onChanged: (value) {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBoardId(BuildContext context) {
     return Container(
       width: 100,
       alignment: Alignment.center,

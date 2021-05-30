@@ -1,0 +1,4 @@
+enum GameVisibility {
+  public,
+  private,
+}
