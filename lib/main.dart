@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:little_flower_app/repo/preference_api.dart';
+import 'package:little_flower_app/widget/board_id_widget.dart';
 import 'package:little_flower_app/widget/ki_board_widget.dart';
+import 'package:little_flower_app/widget/result_widget.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
               future: kiBoardManager.resetKiBoard(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return KiBoardWidget();
+                  return _buildKiBoardArea();
                 }
                 return Center(
                   child: CircularProgressIndicator(),
@@ -38,4 +40,20 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildKiBoardArea() {
+  return Consumer<KiBoardManager>(
+    builder: (context, model, child) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          BoardIdWidget(model),
+          KiBoardWidget(model),
+          Expanded(child: ResultWidget(model)),
+        ],
+      );
+    },
+  );
 }

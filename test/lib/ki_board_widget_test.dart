@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/widget/board_id_widget.dart';
 import 'package:little_flower_app/widget/ki_board_painter.dart';
 import 'package:little_flower_app/widget/ki_board_widget.dart';
 import 'package:mockito/mockito.dart';
@@ -37,7 +38,7 @@ void main() {
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardManager,
-              child: KiBoardWidget(),
+              child: BoardIdWidget(kiBoardManager),
             ),
           ),
         ),
@@ -55,7 +56,7 @@ void main() {
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardManager,
-              child: KiBoardWidget(),
+              child: KiBoardWidget(kiBoardManager),
             ),
           ),
         ),
