@@ -37,7 +37,7 @@ void main() {
     test('ki board manager can get current key board', () async {
       _givenKiBoard(KiBoard());
       await kiBoardManager.resetKiBoard();
-      expect(kiBoardManager.current, KiBoard());
+      expect(kiBoardManager.board, KiBoard());
     });
 
     test('read board from repository when reset', () async {
@@ -47,7 +47,7 @@ void main() {
 
       await kiBoardManager.resetKiBoard();
 
-      expect(kiBoardManager.current, kiBoard);
+      expect(kiBoardManager.board, kiBoard);
     });
 
     test('enable game visibility', () {

@@ -6,11 +6,11 @@ import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
 import 'package:random_string/random_string.dart';
 
 class KiBoardManager extends ChangeNotifier {
-  KiBoard get current => _current;
+  KiBoard get board => _board;
   String get boardId => _boardId;
   GameVisibility get visibility => _visibility;
 
-  KiBoard _current;
+  KiBoard _board;
   late String _boardId;
   GameVisibility _visibility;
 
@@ -20,7 +20,7 @@ class KiBoardManager extends ChangeNotifier {
   KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
       : _kiBoardRepository =
             kiBoardRepositoryFactory.get(GameVisibility.private),
-        _current = KiBoard(),
+        _board = KiBoard(),
         _visibility = GameVisibility.private,
         _kiBoardRepositoryFactory = kiBoardRepositoryFactory;
 
@@ -31,13 +31,13 @@ class KiBoardManager extends ChangeNotifier {
   }
 
   void _updateKiBoard(KiBoard kiBoard) {
-    _current.removeListener(notify);
-    _current = kiBoard;
-    _current.addListener(notify);
+    _board.removeListener(notify);
+    _board = kiBoard;
+    _board.addListener(notify);
   }
 
   void notify() {
-    _kiBoardRepository.saveKiBoard(boardId, _current);
+    _kiBoardRepository.saveKiBoard(boardId, _board);
     notifyListeners();
   }
 

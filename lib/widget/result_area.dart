@@ -14,11 +14,11 @@ class ResultArea extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 30),
         child: Visibility(
-          visible: _kiBoardManager.current.isGameOver,
+          visible: _kiBoardManager.board.isGameOver,
           child: Column(
             children: [
               Text(
-                "${_kiBoardManager.current.winner} Wins",
+                "${_kiBoardManager.board.winner} Wins",
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(

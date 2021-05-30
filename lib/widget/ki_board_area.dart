@@ -18,11 +18,11 @@ class KiBoardArea extends StatelessWidget {
         painter: KiBoardPainter(
           row: KiBoard.row,
           column: KiBoard.column,
-          blackKiList: _kiBoardManager.current.blackKiList,
-          whiteKiList: _kiBoardManager.current.whiteKiList,
+          blackKiList: _kiBoardManager.board.blackKiList,
+          whiteKiList: _kiBoardManager.board.whiteKiList,
           onTap: (x, y) {
             Provider.of<KiBoardManager>(context, listen: false)
-                .current
+                .board
                 .addKi(Point(x, y));
           },
         ),
