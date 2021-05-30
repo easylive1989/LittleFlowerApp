@@ -26,7 +26,9 @@ void main() {
 
     setUp(() async {
       mockKiBoardRepository = MockKiBoardRepository();
-      kiBoardManager = KiBoardManager(mockKiBoardRepository);
+      var mockFactory = MockKiBoardRepositoryFactory();
+      when(mockFactory.get(any)).thenReturn(mockKiBoardRepository);
+      kiBoardManager = KiBoardManager(mockFactory);
       when(mockKiBoardRepository.getKiBoard(any))
           .thenAnswer((realInvocation) => Future.value(KiBoard()));
       await kiBoardManager.resetKiBoard();

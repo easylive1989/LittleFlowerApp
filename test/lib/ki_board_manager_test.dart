@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:little_flower_app/repo/ki_board_repository.dart';
+import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -13,6 +15,7 @@ import '../fixture/fixtures.dart';
 void main() {
   late StubKiBoardManager kiBoardManager;
   late MockKiBoardRepository mockKiBoardRepository;
+  late MockKiBoardRepositoryFactory mockKiBoardRepositoryFactory;
   String boardId = "boardId";
 
   void _givenKiBoard(KiBoard kiBoard) {
@@ -24,7 +27,11 @@ void main() {
   group('ki board manager tests', () {
     setUp(() {
       mockKiBoardRepository = MockKiBoardRepository();
-      kiBoardManager = StubKiBoardManager(boardId, mockKiBoardRepository);
+      mockKiBoardRepositoryFactory = MockKiBoardRepositoryFactory();
+      when(mockKiBoardRepositoryFactory.get(any))
+          .thenReturn(mockKiBoardRepository);
+      kiBoardManager =
+          StubKiBoardManager(boardId, mockKiBoardRepositoryFactory);
     });
 
     test('ki board manager can get current key board', () async {
@@ -42,14 +49,22 @@ void main() {
 
       expect(kiBoardManager.current, kiBoard);
     });
+
+    test('enable game visibility', () {
+      kiBoardManager.enablePublic(true);
+
+      expect(kiBoardManager.visibility, GameVisibility.public);
+      verify(mockKiBoardRepositoryFactory.get(GameVisibility.public));
+    });
   });
 }
 
 class StubKiBoardManager extends KiBoardManager {
   String boardId;
 
-  StubKiBoardManager(this.boardId, MockKiBoardRepository mockKiBoardRepository)
-      : super(mockKiBoardRepository);
+  StubKiBoardManager(
+      this.boardId, KiBoardRepositoryFactory kiBoardRepositoryFactory)
+      : super(kiBoardRepositoryFactory);
 
   @override
   String getBoardId() {
