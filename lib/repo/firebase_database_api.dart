@@ -29,7 +29,7 @@ class FirebaseDatabaseApi extends KiBoardRepository {
   }
 
   @override
-  void saveKiBoard(String boardId, KiBoard kiBoard) {
-    _kiBoardRef.child(boardId).set(jsonEncode(kiBoard.toJson()));
+  Future saveKiBoard(String boardId, KiBoard kiBoard) async {
+    await _kiBoardRef.child(boardId).set(jsonEncode(kiBoard.toJson()));
   }
 }

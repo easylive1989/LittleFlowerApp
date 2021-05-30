@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,7 +10,9 @@ import 'package:random_string/random_string.dart';
 
 class KiBoardManager extends ChangeNotifier {
   KiBoard get board => _board;
+
   String get boardId => _boardId;
+
   GameVisibility get visibility => _visibility;
 
   late KiBoard _board;
@@ -18,29 +21,39 @@ class KiBoardManager extends ChangeNotifier {
 
   KiBoardRepositoryFactory _kiBoardRepositoryFactory;
   KiBoardRepository _kiBoardRepository;
+  late StreamSubscription _kiBoardSubscription;
 
-  KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
-      : _kiBoardRepository =
-            kiBoardRepositoryFactory.get(GameVisibility.private),
-        _visibility = GameVisibility.private,
-        _kiBoardRepositoryFactory = kiBoardRepositoryFactory;
+  KiBoardManager(this._kiBoardRepositoryFactory)
+      : _visibility = GameVisibility.private,
+        _kiBoardRepository =
+            _kiBoardRepositoryFactory.get(GameVisibility.private);
 
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
     _board = await _kiBoardRepository.getKiBoard(_boardId);
     _kiBoardRepository.saveKiBoard(_boardId, _board);
+    _kiBoardSubscription =
+        _kiBoardRepository.onValue(_boardId).listen(_onBoardUpdate);
     notifyListeners();
   }
 
-  void addKi(Point<int> point) {
+  Future addKi(Point<int> point) async {
     _board.addKi(point);
-    _kiBoardRepository.saveKiBoard(boardId, _board);
-    notifyListeners();
+    await _kiBoardRepository.saveKiBoard(boardId, _board);
   }
 
   void enablePublic(bool enable) {
     _visibility = enable ? GameVisibility.public : GameVisibility.private;
+    _kiBoardSubscription.cancel();
     _kiBoardRepository = _kiBoardRepositoryFactory.get(visibility);
+    _kiBoardRepository.saveKiBoard(_boardId, _board);
+    _kiBoardSubscription =
+        _kiBoardRepository.onValue(_boardId).listen(_onBoardUpdate);
+    notifyListeners();
+  }
+
+  void _onBoardUpdate(KiBoard board) {
+    _board = board;
     notifyListeners();
   }
 

@@ -6,13 +6,22 @@ import 'package:mockito/mockito.dart';
 
 class MockKiBoardRepository extends Mock implements KiBoardRepository {
   @override
-  void saveKiBoard(String? boardId, KiBoard? kiBoard) =>
+  Future saveKiBoard(String? boardId, KiBoard? kiBoard) =>
       super.noSuchMethod(Invocation.method(#saveKiBoard, [boardId, kiBoard]),
-          returnValueForMissingStub: null);
+          returnValue: Future.value(),
+          returnValueForMissingStub: Future.value());
+
   @override
   Future<KiBoard> getKiBoard(String? boardId) =>
-      (super.noSuchMethod(Invocation.method(#getKiBoard, [boardId]),
-          returnValue: Future<KiBoard>.value(KiBoard())) as Future<KiBoard>);
+      super.noSuchMethod(Invocation.method(#getKiBoard, [boardId]),
+          returnValue: Future<KiBoard>.value(KiBoard()));
+
+  @override
+  Stream<KiBoard> onValue(String? boardId) => super.noSuchMethod(
+        Invocation.method(#onValue, [boardId]),
+        returnValue: Stream.fromIterable(List<KiBoard>.empty()),
+        returnValueForMissingStub: Stream.fromIterable(List<KiBoard>.empty()),
+      );
 }
 
 class MockKiBoardRepositoryFactory extends Mock
