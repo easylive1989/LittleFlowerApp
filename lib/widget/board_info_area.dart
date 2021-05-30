@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -28,10 +29,12 @@ class BoardInfoArea extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         direction: Axis.horizontal,
         children: [
-          Text("Share"),
+          Text("Public"),
           Switch(
-            value: true,
-            onChanged: (value) {},
+            value: _kiBoardManager.visibility.isPublic(),
+            onChanged: (value) {
+              _kiBoardManager.enablePublic(value);
+            },
           ),
         ],
       ),
