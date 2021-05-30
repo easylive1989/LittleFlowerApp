@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:little_flower_app/model/game_over_checker.dart';
 import 'package:little_flower_app/model/ki.dart';
 
-class KiBoard extends ChangeNotifier {
+class KiBoard {
   static int row = 15;
   static int column = 15;
 
@@ -46,15 +45,12 @@ class KiBoard extends ChangeNotifier {
     var kiList = _getKiList(_getKi())..add(point);
 
     _isGameOver = GameOverChecker(kiList, row, column).isGameOver(point);
-
-    notifyListeners();
   }
 
   void cleanUp() {
     _blackKiList.clear();
     _whiteKiList.clear();
     _isGameOver = false;
-    notifyListeners();
   }
 
   Ki _getKi() {

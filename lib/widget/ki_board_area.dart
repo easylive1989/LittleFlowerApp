@@ -22,7 +22,6 @@ class KiBoardArea extends StatelessWidget {
           whiteKiList: _kiBoardManager.board.whiteKiList,
           onTap: (x, y) {
             Provider.of<KiBoardManager>(context, listen: false)
-                .board
                 .addKi(Point(x, y));
           },
         ),

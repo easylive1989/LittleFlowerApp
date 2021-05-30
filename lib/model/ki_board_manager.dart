@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
@@ -10,7 +12,7 @@ class KiBoardManager extends ChangeNotifier {
   String get boardId => _boardId;
   GameVisibility get visibility => _visibility;
 
-  KiBoard _board;
+  late KiBoard _board;
   late String _boardId;
   GameVisibility _visibility;
 
@@ -20,23 +22,18 @@ class KiBoardManager extends ChangeNotifier {
   KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
       : _kiBoardRepository =
             kiBoardRepositoryFactory.get(GameVisibility.private),
-        _board = KiBoard(),
         _visibility = GameVisibility.private,
         _kiBoardRepositoryFactory = kiBoardRepositoryFactory;
 
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
-    _updateKiBoard(await _kiBoardRepository.getKiBoard(_boardId));
-    notify();
+    _board = await _kiBoardRepository.getKiBoard(_boardId);
+    _kiBoardRepository.saveKiBoard(_boardId, _board);
+    notifyListeners();
   }
 
-  void _updateKiBoard(KiBoard kiBoard) {
-    _board.removeListener(notify);
-    _board = kiBoard;
-    _board.addListener(notify);
-  }
-
-  void notify() {
+  void addKi(Point<int> point) {
+    _board.addKi(point);
     _kiBoardRepository.saveKiBoard(boardId, _board);
     notifyListeners();
   }
