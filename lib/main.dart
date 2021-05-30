@@ -10,13 +10,17 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  var kiBoardManager = KiBoardManager(KiBoardRepositoryFactory());
+  runApp(MyApp(kiBoardManager));
 }
 
 class MyApp extends StatelessWidget {
+  final KiBoardManager _kiBoardManager;
+
+  MyApp(this._kiBoardManager);
+
   @override
   Widget build(BuildContext context) {
-    var kiBoardManager = KiBoardManager(KiBoardRepositoryFactory());
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -25,9 +29,9 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: ChangeNotifierProvider(
-          create: (context) => kiBoardManager,
+          create: (context) => _kiBoardManager,
           child: FutureBuilder(
-              future: kiBoardManager.resetKiBoard(),
+              future: _kiBoardManager.resetKiBoard(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return _buildKiBoardArea();
