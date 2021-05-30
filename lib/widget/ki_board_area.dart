@@ -6,9 +6,9 @@ import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:little_flower_app/widget/ki_board_painter.dart';
 import 'package:provider/provider.dart';
 
-class KiBoardWidget extends StatelessWidget {
+class KiBoardArea extends StatelessWidget {
   final KiBoardManager _kiBoardManager;
-  KiBoardWidget(this._kiBoardManager);
+  KiBoardArea(this._kiBoardManager);
 
   @override
   Widget build(BuildContext context) {

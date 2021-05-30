@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:provider/provider.dart';
 
-class ResultWidget extends StatelessWidget {
+class ResultArea extends StatelessWidget {
   final KiBoardManager _kiBoardManager;
-  const ResultWidget(this._kiBoardManager);
+  const ResultArea(this._kiBoardManager);
 
   @override
   Widget build(BuildContext context) {

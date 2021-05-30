@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:provider/provider.dart';
 
-class BoardIdWidget extends StatelessWidget {
+class BoardInfoArea extends StatelessWidget {
   final KiBoardManager _kiBoardManager;
 
-  const BoardIdWidget(this._kiBoardManager);
+  const BoardInfoArea(this._kiBoardManager);
 
   @override
   Widget build(BuildContext context) {
