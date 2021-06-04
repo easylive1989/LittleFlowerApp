@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
@@ -22,10 +24,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: ChangeNotifierProvider(

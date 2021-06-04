@@ -28,12 +28,8 @@ class KiBoard {
     _isGameOver = isGameOver;
   }
 
-  String get winner =>
-      (_blackKiList.length > _whiteKiList.length ? Ki.black : Ki.white)
-          .toString()
-          .split(".")
-          .last
-          .toUpperCase();
+  Ki get winner =>
+      _blackKiList.length > _whiteKiList.length ? Ki.black : Ki.white;
 
   void addKi(Point<int> point) {
     if (_blackKiList.contains(point) ||

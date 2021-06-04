@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:little_flower_app/generated/l10n.dart';
+import 'package:little_flower_app/helper/translate_helper.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +20,8 @@ class ResultArea extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "${_kiBoardManager.board.winner} Wins",
+                S.of(context).text_ki_wins(TranslateHelper.getKi(
+                    context, _kiBoardManager.board.winner)),
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(
@@ -37,7 +40,7 @@ class ResultArea extends StatelessWidget {
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Text("Play Again"),
+                  child: Text(S.of(context).button_play_again),
                 ),
               )
             ],

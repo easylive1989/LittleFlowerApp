@@ -1,0 +1,8 @@
+{
+  "@@locale": "zh",
+  "button_play_again": "再玩一次",
+  "switch_public": "公開",
+  "text_ki_wins": "{ki} 贏了",
+  "ki_black": "黑棋",
+  "ki_white": "白棋"
+}

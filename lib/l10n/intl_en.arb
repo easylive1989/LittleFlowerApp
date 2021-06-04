@@ -1,0 +1,8 @@
+{
+  "@@locale": "en",
+  "button_play_again": "Play Again",
+  "switch_public": "Public",
+  "text_ki_wins": "{ki} Wins",
+  "ki_black": "Black",
+  "ki_white": "White"
+}
