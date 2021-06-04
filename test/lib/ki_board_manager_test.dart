@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
+import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 

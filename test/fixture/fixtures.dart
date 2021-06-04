@@ -1,7 +1,7 @@
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
-import 'package:little_flower_app/repo/ki_board_repository.dart';
-import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
+import 'package:little_flower_app/repository/ki_board_repository.dart';
+import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:mockito/mockito.dart';
 
 class MockKiBoardRepository extends Mock implements KiBoardRepository {

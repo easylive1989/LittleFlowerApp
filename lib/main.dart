@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repo/ki_board_repository_factory.dart';
+import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
 import 'package:little_flower_app/widget/result_area.dart';

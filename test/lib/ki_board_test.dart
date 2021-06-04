@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:little_flower_app/model/ki.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:test/test.dart';
 
@@ -35,7 +36,7 @@ void main() {
       kiBoardModel.addKi(Point(1, 5));
 
       expect(kiBoardModel.isGameOver, true);
-      expect(kiBoardModel.winner, "BLACK");
+      expect(kiBoardModel.winner, Ki.black);
     });
 
     test('convert json to ki board', () {
