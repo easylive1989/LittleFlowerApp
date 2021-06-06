@@ -8,7 +8,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
@@ -37,6 +39,13 @@ void main() {
     testWidgets('show game id in ki board', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardManager,
@@ -46,6 +55,7 @@ void main() {
         ),
       );
 
+      await tester.pumpAndSettle();
       var formField = tester.widget<TextFormField>(
           find.byWidgetPredicate((widget) => widget is TextFormField));
 
