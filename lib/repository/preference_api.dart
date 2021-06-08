@@ -17,11 +17,11 @@ class PreferenceApi implements KiBoardRepository {
     _stream.add(kiBoard);
   }
 
-  Future<KiBoard> getKiBoard(String id) async {
+  Future<KiBoard?> getKiBoard(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.get(id);
     if (data == null) {
-      return KiBoard();
+      return null;
     }
     return KiBoard.fromJson(jsonDecode(data.toString()));
   }

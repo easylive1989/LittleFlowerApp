@@ -41,17 +41,18 @@ void main() {
     test('enable game visibility', () async {
       await givenKiBoard(KiBoard());
 
-      kiBoardManager.enablePublic(true);
+      givenBoardPublic();
 
       expect(kiBoardManager.visibility, GameVisibility.public);
       verify(mockKiBoardRepositoryFactory.get(GameVisibility.public));
     });
 
-    test('update board when board id change', () async {
+    test('update board when public board change', () async {
       var streamController = StreamController<KiBoard>();
       when(mockKiBoardRepository.onValue(any))
           .thenAnswer((realInvocation) => streamController.stream);
       await givenKiBoard(KiBoard());
+      givenBoardPublic();
 
       var kiBoard = KiBoard();
       kiBoard.addKi(Point(1, 1));
@@ -64,6 +65,10 @@ void main() {
       await streamController.close();
     });
   });
+}
+
+void givenBoardPublic() {
+  kiBoardManager.enablePublic(true);
 }
 
 Future givenKiBoard(KiBoard kiBoard) async {

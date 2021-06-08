@@ -21,12 +21,12 @@ class FirebaseDatabaseApi extends KiBoardRepository {
   }
 
   @override
-  Future<KiBoard> getKiBoard(String boardId) async {
+  Future<KiBoard?> getKiBoard(String boardId) async {
     var dataSnapshot = await _kiBoardRef.child(boardId).once();
     if (dataSnapshot.value != null) {
       return KiBoard.fromJson(jsonDecode(dataSnapshot.value));
     } else {
-      return KiBoard();
+      return null;
     }
   }
 

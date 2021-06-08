@@ -23,7 +23,7 @@ class KiBoardManager extends ChangeNotifier {
 
   KiBoardRepositoryFactory _kiBoardRepositoryFactory;
   KiBoardRepository _kiBoardRepository;
-  late StreamSubscription _kiBoardSubscription;
+  StreamSubscription? _kiBoardSubscription;
 
   KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
       : _visibility = GameVisibility.private,
@@ -33,26 +33,30 @@ class KiBoardManager extends ChangeNotifier {
 
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
-    _board = await _kiBoardRepository.getKiBoard(_boardId);
-    _kiBoardRepository.saveKiBoard(_boardId, _board);
-    _kiBoardSubscription =
-        _kiBoardRepository.onValue(_boardId).listen(_onBoardUpdate);
+    _board = await _kiBoardRepository.getKiBoard(_boardId) ?? KiBoard();
     notifyListeners();
   }
 
   Future addKi(Point<int> point) async {
     _board.addKi(point);
     await _kiBoardRepository.saveKiBoard(boardId, _board);
+    notifyListeners();
   }
 
   void enablePublic(bool enable) {
     _visibility = enable ? GameVisibility.public : GameVisibility.private;
-    _kiBoardSubscription.cancel();
     _kiBoardRepository = _kiBoardRepositoryFactory.get(visibility);
-    _kiBoardRepository.saveKiBoard(_boardId, _board);
-    _kiBoardSubscription =
-        _kiBoardRepository.onValue(_boardId).listen(_onBoardUpdate);
+    if (enable) {
+      listenToRemoteChange();
+    }
     notifyListeners();
+  }
+
+  void listenToRemoteChange() {
+    _kiBoardSubscription?.cancel();
+    _kiBoardRepository.saveKiBoard(boardId, _board);
+    _kiBoardSubscription =
+        _kiBoardRepository.onValue(boardId).listen(_onBoardUpdate);
   }
 
   void _onBoardUpdate(KiBoard board) {
