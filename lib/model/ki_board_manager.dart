@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:random_string/random_string.dart';
 
+@Injectable()
 class KiBoardManager extends ChangeNotifier {
   KiBoard get board => _board;
 
@@ -23,10 +25,11 @@ class KiBoardManager extends ChangeNotifier {
   KiBoardRepository _kiBoardRepository;
   late StreamSubscription _kiBoardSubscription;
 
-  KiBoardManager(this._kiBoardRepositoryFactory)
+  KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
       : _visibility = GameVisibility.private,
+        _kiBoardRepositoryFactory = kiBoardRepositoryFactory,
         _kiBoardRepository =
-            _kiBoardRepositoryFactory.get(GameVisibility.private);
+            kiBoardRepositoryFactory.get(GameVisibility.private);
 
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();

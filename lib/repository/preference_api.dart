@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ki_board_repository.dart';
 
+@Injectable()
 class PreferenceApi implements KiBoardRepository {
   StreamController<KiBoard> _stream = StreamController<KiBoard>();
 

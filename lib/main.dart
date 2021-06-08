@@ -1,18 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
 import 'package:little_flower_app/widget/result_area.dart';
 import 'package:provider/provider.dart';
 
+import 'injection.dart';
+
 void main() async {
+  configureInjection();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  var kiBoardManager = KiBoardManager(KiBoardRepositoryFactory());
+  var kiBoardManager = GetIt.I<KiBoardManager>();
   runApp(MyApp(kiBoardManager));
 }
 

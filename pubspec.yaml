@@ -37,12 +37,16 @@ dependencies:
   firebase_core: ^1.2.0
   random_string: ^2.2.0-nullsafety
   shared_preferences: ^2.0.5
+  injectable: ^1.4.1
+  get_it: ^7.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   test: any
   mockito: ^5.0.7
+  injectable_generator: ^1.4.1
+  build_runner: ^2.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
