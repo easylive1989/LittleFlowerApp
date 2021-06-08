@@ -9,7 +9,7 @@ import 'ki_board_repository.dart';
 
 @Injectable()
 class PreferenceApi implements KiBoardRepository {
-  StreamController<KiBoard> _stream = StreamController<KiBoard>();
+  StreamController<KiBoard> _stream = StreamController<KiBoard>.broadcast();
 
   Future saveKiBoard(String id, KiBoard kiBoard) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
