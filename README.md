@@ -1,5 +1,4 @@
 # 五子棋記事本
----
 [![Build Status](https://travis-ci.com/easylive1989/LittleFlowerApp.svg?branch=master)](https://travis-ci.com/easylive1989/LittleFlowerApp)
 [![BCH compliance](https://bettercodehub.com/edge/badge/easylive1989/LittleFlowerApp?branch=master)](https://bettercodehub.com/)
 
