@@ -16,61 +16,45 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: 150,
+      height: _isListOpen ? 352 : 52,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
       child: Column(
         children: [
           _buildBoardId(context),
-          Visibility(
-            visible: _isListOpen,
-            child: Container(
-              color: Colors.white,
-              child: _buildBoardIdList(),
-            ),
-          ),
+          _isListOpen ? _buildBoardIdList() : Container(),
         ],
       ),
     );
   }
 
   Widget _buildBoardIdList() {
-    var list = [
-      "abc",
-      "def",
-      "ghi",
-      "jkl",
-      "mno",
-      "abc",
-      "def",
-      "ghi",
-      "jkl",
-      "mno",
-      "abc",
-      "def",
-      "ghi",
-      "jkl",
-      "mno",
-      "abc",
-      "def",
-      "ghi",
-      "jkl",
-      "mno",
-      "abc",
-      "def",
-      "ghi",
-      "jkl",
-      "mno",
-      "abc",
-      "def",
-      "ghi",
-      "jkl",
-      "mno"
-    ];
-    return LimitedBox(
-      maxHeight: 300,
+    var allBoardIds = Provider.of<KiBoardManager>(context).allBoardIds;
+    return Container(
+      height: 300,
+      color: Colors.white,
       child: ListView.builder(
-        itemCount: list.length,
+        padding: EdgeInsets.all(0),
+        itemCount: allBoardIds.length,
         itemBuilder: (context, index) {
-          return Text(
-            list[index],
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _isListOpen = false;
+              });
+              Provider.of<KiBoardManager>(context, listen: false)
+                  .resetKiBoard(boardId: allBoardIds[index]);
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 2),
+              child: Text(
+                allBoardIds[index],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
           );
         },
       ),
@@ -79,10 +63,6 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   Widget _buildBoardId(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(5.0),
-      ),
       height: 50,
       child: Stack(
         children: [
@@ -90,6 +70,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
             key: ValueKey(Provider.of<KiBoardManager>(context).boardId),
             decoration: InputDecoration(border: InputBorder.none),
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20),
             initialValue: Provider.of<KiBoardManager>(context).boardId,
             onFieldSubmitted: (text) async =>
                 await Provider.of<KiBoardManager>(context, listen: false)
@@ -101,7 +82,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
               onTap: () {
                 setState(() {
                   _isListOpen = !_isListOpen;
-                  print("abc");
+                  FocusScope.of(context).requestFocus(new FocusNode());
                 });
               },
               child: Icon(

@@ -19,7 +19,7 @@ class BoardInfoArea extends StatelessWidget {
           child: _buildShareSwitch(context),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 60),
+          padding: EdgeInsets.only(top: 80),
           child: BoardIdWidget(),
         ),
       ],
