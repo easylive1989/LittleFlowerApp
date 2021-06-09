@@ -57,13 +57,17 @@ class MyApp extends StatelessWidget {
 Widget _buildKiBoardArea() {
   return Consumer<KiBoardManager>(
     builder: (context, model, child) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
+      return Stack(
         children: [
-          Expanded(child: BoardInfoArea(model)),
-          KiBoardArea(model),
-          ResultArea(model),
+          Align(
+            alignment: Alignment.center,
+            child: KiBoardArea(model),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ResultArea(model),
+          ),
+          BoardInfoArea(model),
         ],
       );
     },

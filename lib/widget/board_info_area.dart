@@ -12,13 +12,16 @@ class BoardInfoArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       children: [
         Align(
           alignment: Alignment.topRight,
           child: _buildShareSwitch(context),
         ),
-        BoardIdWidget(),
+        Padding(
+          padding: EdgeInsets.only(top: 60),
+          child: BoardIdWidget(),
+        ),
       ],
     );
   }

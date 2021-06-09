@@ -11,40 +11,39 @@ class ResultArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.only(top: 30),
-        child: Visibility(
-          visible: _kiBoardManager.board.isGameOver,
-          child: Column(
-            children: [
-              Text(
-                S.of(context).text_ki_wins(TranslateHelper.getKi(
-                    context, _kiBoardManager.board.winner)),
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextButton(
-                onPressed: () async =>
-                    await Provider.of<KiBoardManager>(context, listen: false)
-                        .resetKiBoard(),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 5.0,
-                    horizontal: 10.0,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(S.of(context).button_play_again),
+    return Container(
+      height: 180,
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: 30),
+      child: Visibility(
+        visible: _kiBoardManager.board.isGameOver,
+        child: Column(
+          children: [
+            Text(
+              S.of(context).text_ki_wins(
+                  TranslateHelper.getKi(context, _kiBoardManager.board.winner)),
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            TextButton(
+              onPressed: () async =>
+                  await Provider.of<KiBoardManager>(context, listen: false)
+                      .resetKiBoard(),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 10.0,
                 ),
-              )
-            ],
-          ),
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(S.of(context).button_play_again),
+              ),
+            )
+          ],
         ),
       ),
     );
