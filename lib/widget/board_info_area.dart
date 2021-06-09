@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:provider/provider.dart';
+import 'package:little_flower_app/widget/board_id_widget.dart';
 
 class BoardInfoArea extends StatelessWidget {
   final KiBoardManager _kiBoardManager;
@@ -18,7 +18,7 @@ class BoardInfoArea extends StatelessWidget {
           alignment: Alignment.topRight,
           child: _buildShareSwitch(context),
         ),
-        _buildBoardId(context),
+        BoardIdWidget(),
       ],
     );
   }
@@ -38,21 +38,6 @@ class BoardInfoArea extends StatelessWidget {
             },
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBoardId(BuildContext context) {
-    return Container(
-      width: 100,
-      alignment: Alignment.center,
-      child: TextFormField(
-        key: ValueKey(_kiBoardManager.boardId),
-        textAlign: TextAlign.center,
-        initialValue: _kiBoardManager.boardId,
-        onFieldSubmitted: (text) async =>
-            await Provider.of<KiBoardManager>(context, listen: false)
-                .resetKiBoard(boardId: text),
       ),
     );
   }
