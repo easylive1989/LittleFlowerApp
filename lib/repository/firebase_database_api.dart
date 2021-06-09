@@ -34,4 +34,14 @@ class FirebaseDatabaseApi extends KiBoardRepository {
   Future saveKiBoard(String boardId, KiBoard kiBoard) async {
     await _kiBoardRef.child(boardId).set(jsonEncode(kiBoard.toJson()));
   }
+
+  @override
+  Future<List<String>> getBoardIds() async {
+    var data = await _kiBoardRef.once();
+    if (data.value != null) {
+      return data.value;
+    } else {
+      return List<String>.empty();
+    }
+  }
 }

@@ -30,4 +30,10 @@ class PreferenceApi implements KiBoardRepository {
   Stream<KiBoard> onValue(String boardId) {
     return _stream.stream;
   }
+
+  @override
+  Future<List<String>> getBoardIds() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getKeys().toList();
+  }
 }
