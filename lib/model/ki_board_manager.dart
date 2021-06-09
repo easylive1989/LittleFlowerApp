@@ -25,25 +25,24 @@ class KiBoardManager extends ChangeNotifier {
   String _boardId = "";
   GameVisibility _visibility = GameVisibility.private;
 
-  KiBoardRepositoryFactory _kiBoardRepositoryFactory;
-  KiBoardRepository _kiBoardRepository;
+  KiBoardRepository _localRepository;
+  KiBoardRepository _remoteRepository;
   StreamSubscription? _kiBoardSubscription;
 
   KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
-      : _kiBoardRepositoryFactory = kiBoardRepositoryFactory,
-        _kiBoardRepository =
-            kiBoardRepositoryFactory.get(GameVisibility.private);
+      : _localRepository = kiBoardRepositoryFactory.local(),
+        _remoteRepository = kiBoardRepositoryFactory.remote();
 
   Future loadBoardIds() async {
-    _allBoardIds = await _kiBoardRepository.getBoardIds();
+    _allBoardIds = await _localRepository.getBoardIds();
   }
 
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
-    var board = await _kiBoardRepository.getKiBoard(_boardId);
+    var board = await _localRepository.getKiBoard(_boardId);
     if (board == null) {
       _board = KiBoard();
-      _kiBoardRepository.saveKiBoard(_boardId, _board);
+      _saveBoard(boardId, _board);
       _allBoardIds.add(_boardId);
     } else {
       _board = board;
@@ -53,28 +52,36 @@ class KiBoardManager extends ChangeNotifier {
 
   Future addKi(Point<int> point) async {
     _board.addKi(point);
-    await _kiBoardRepository.saveKiBoard(boardId, _board);
+    await _saveBoard(_boardId, _board);
     notifyListeners();
+  }
+
+  Future<void> _saveBoard(String boardId, KiBoard kiBoard) async {
+    await _localRepository.saveKiBoard(boardId, kiBoard);
+    if (_visibility == GameVisibility.public) {
+      _remoteRepository.saveKiBoard(boardId, kiBoard);
+    }
   }
 
   void enablePublic(bool enable) {
     _visibility = enable ? GameVisibility.public : GameVisibility.private;
-    _kiBoardRepository = _kiBoardRepositoryFactory.get(visibility);
     if (enable) {
-      listenToRemoteChange();
+      _kiBoardSubscription =
+          _remoteRepository.onValue(boardId).listen(_onBoardUpdate);
+    } else {
+      _kiBoardSubscription?.cancel();
     }
     notifyListeners();
   }
 
   void listenToRemoteChange() {
-    _kiBoardSubscription?.cancel();
-    _kiBoardRepository.saveKiBoard(boardId, _board);
     _kiBoardSubscription =
-        _kiBoardRepository.onValue(boardId).listen(_onBoardUpdate);
+        _remoteRepository.onValue(boardId).listen(_onBoardUpdate);
   }
 
-  void _onBoardUpdate(KiBoard board) {
+  Future _onBoardUpdate(KiBoard board) async {
     _board = board;
+    await _localRepository.saveKiBoard(boardId, _board);
     notifyListeners();
   }
 

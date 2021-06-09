@@ -10,16 +10,20 @@ import 'package:test/test.dart';
 import '../fixture/fixtures.dart';
 
 late KiBoardManager kiBoardManager;
-late MockKiBoardRepository mockKiBoardRepository;
+late MockKiBoardRepository mockLocalRepository;
+late MockKiBoardRepository mockRemoteRepository;
 late MockKiBoardRepositoryFactory mockKiBoardRepositoryFactory;
 String boardId = "boardId";
 void main() {
   group('ki board manager tests', () {
     setUp(() {
-      mockKiBoardRepository = MockKiBoardRepository();
+      mockLocalRepository = MockKiBoardRepository();
+      mockRemoteRepository = MockKiBoardRepository();
       mockKiBoardRepositoryFactory = MockKiBoardRepositoryFactory();
-      when(mockKiBoardRepositoryFactory.get(any))
-          .thenReturn(mockKiBoardRepository);
+      when(mockKiBoardRepositoryFactory.local())
+          .thenReturn(mockLocalRepository);
+      when(mockKiBoardRepositoryFactory.remote())
+          .thenReturn(mockRemoteRepository);
       kiBoardManager = KiBoardManager(mockKiBoardRepositoryFactory);
     });
 
@@ -42,12 +46,12 @@ void main() {
       givenBoardPublic();
 
       expect(kiBoardManager.visibility, GameVisibility.public);
-      verify(mockKiBoardRepositoryFactory.get(GameVisibility.public));
+      verify(mockRemoteRepository.onValue(boardId));
     });
 
     test('update board when public board change', () async {
       var streamController = StreamController<KiBoard>();
-      when(mockKiBoardRepository.onValue(any))
+      when(mockRemoteRepository.onValue(any))
           .thenAnswer((realInvocation) => streamController.stream);
       await resetKiBoard(KiBoard(), boardId);
       givenBoardPublic();
@@ -82,8 +86,7 @@ void main() {
 }
 
 void givenBoardIds(List<String> list) {
-  when(mockKiBoardRepository.getBoardIds())
-      .thenAnswer((_) => Future.value(list));
+  when(mockLocalRepository.getBoardIds()).thenAnswer((_) => Future.value(list));
 }
 
 void givenBoardPublic() {
@@ -91,7 +94,7 @@ void givenBoardPublic() {
 }
 
 Future resetKiBoard(KiBoard? kiBoard, String boardId) async {
-  when(mockKiBoardRepository.getKiBoard(any)).thenAnswer((realInvocation) {
+  when(mockLocalRepository.getKiBoard(any)).thenAnswer((realInvocation) {
     return Future.value(kiBoard);
   });
   await kiBoardManager.resetKiBoard(boardId: boardId);

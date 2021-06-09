@@ -1,4 +1,3 @@
-import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
@@ -35,8 +34,12 @@ class MockKiBoardRepository extends Mock implements KiBoardRepository {
 class MockKiBoardRepositoryFactory extends Mock
     implements KiBoardRepositoryFactory {
   @override
-  KiBoardRepository get(GameVisibility? gameVisibility) =>
-      super.noSuchMethod(Invocation.method(#get, [gameVisibility]),
+  KiBoardRepository local() => super.noSuchMethod(Invocation.method(#local, []),
+      returnValue: MockKiBoardRepository(),
+      returnValueForMissingStub: MockKiBoardRepository());
+  @override
+  KiBoardRepository remote() =>
+      super.noSuchMethod(Invocation.method(#remote, []),
           returnValue: MockKiBoardRepository(),
           returnValueForMissingStub: MockKiBoardRepository());
 }
