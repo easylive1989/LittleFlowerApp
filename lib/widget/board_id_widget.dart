@@ -14,18 +14,38 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: _isListOpen ? 352 : 52,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: Column(
-        children: [
-          _buildBoardId(context),
-          _isListOpen ? _buildBoardIdList() : Container(),
-        ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 40,
+        ),
+        Container(
+          width: 150,
+          height: _isListOpen ? 352 : 52,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: Column(
+            children: [
+              _buildBoardId(context),
+              _isListOpen ? _buildBoardIdList() : Container(),
+            ],
+          ),
+        ),
+        SizedBox(width: 10),
+        _buildDeleteIcon(),
+      ],
+    );
+  }
+
+  Widget _buildDeleteIcon() {
+    return GestureDetector(
+      onTap: () {},
+      child: Icon(
+        Icons.delete_rounded,
+        size: 30,
       ),
     );
   }
