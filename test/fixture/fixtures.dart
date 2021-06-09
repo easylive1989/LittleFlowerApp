@@ -12,15 +12,23 @@ class MockKiBoardRepository extends Mock implements KiBoardRepository {
           returnValueForMissingStub: Future.value());
 
   @override
-  Future<KiBoard> getKiBoard(String? boardId) =>
+  Future<KiBoard?> getKiBoard(String? boardId) =>
       super.noSuchMethod(Invocation.method(#getKiBoard, [boardId]),
-          returnValue: Future<KiBoard>.value(KiBoard()));
+          returnValue: Future<KiBoard>.value(KiBoard()),
+          returnValueForMissingStub: Future.value(KiBoard()));
 
   @override
   Stream<KiBoard> onValue(String? boardId) => super.noSuchMethod(
         Invocation.method(#onValue, [boardId]),
         returnValue: Stream.fromIterable(List<KiBoard>.empty()),
         returnValueForMissingStub: Stream.fromIterable(List<KiBoard>.empty()),
+      );
+
+  @override
+  Future<List<String>> getBoardIds() => super.noSuchMethod(
+        Invocation.method(#getBoardIds, []),
+        returnValue: Future.value(List<String>.empty()),
+        returnValueForMissingStub: Future.value(List<String>.empty()),
       );
 }
 

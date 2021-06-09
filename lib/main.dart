@@ -16,6 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   var kiBoardManager = GetIt.I<KiBoardManager>();
+  kiBoardManager.loadBoardIds();
   runApp(MyApp(kiBoardManager));
 }
 

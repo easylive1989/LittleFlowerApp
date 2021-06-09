@@ -17,23 +17,37 @@ class KiBoardManager extends ChangeNotifier {
 
   GameVisibility get visibility => _visibility;
 
-  late KiBoard _board;
-  late String _boardId;
-  GameVisibility _visibility;
+  List<String> get allBoardIds =>
+      _allBoardIds.where((id) => id != _boardId).toList();
+
+  List<String> _allBoardIds = [];
+  KiBoard _board = KiBoard();
+  String _boardId = "";
+  GameVisibility _visibility = GameVisibility.private;
 
   KiBoardRepositoryFactory _kiBoardRepositoryFactory;
   KiBoardRepository _kiBoardRepository;
   StreamSubscription? _kiBoardSubscription;
 
   KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
-      : _visibility = GameVisibility.private,
-        _kiBoardRepositoryFactory = kiBoardRepositoryFactory,
+      : _kiBoardRepositoryFactory = kiBoardRepositoryFactory,
         _kiBoardRepository =
             kiBoardRepositoryFactory.get(GameVisibility.private);
 
+  Future loadBoardIds() async {
+    _allBoardIds = await _kiBoardRepository.getBoardIds();
+  }
+
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
-    _board = await _kiBoardRepository.getKiBoard(_boardId) ?? KiBoard();
+    var board = await _kiBoardRepository.getKiBoard(_boardId);
+    if (board == null) {
+      _board = KiBoard();
+      _kiBoardRepository.saveKiBoard(_boardId, _board);
+      _allBoardIds.add(_boardId);
+    } else {
+      _board = board;
+    }
     notifyListeners();
   }
 

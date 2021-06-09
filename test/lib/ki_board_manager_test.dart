@@ -4,13 +4,12 @@ import 'dart:math';
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
-import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../fixture/fixtures.dart';
 
-late StubKiBoardManager kiBoardManager;
+late KiBoardManager kiBoardManager;
 late MockKiBoardRepository mockKiBoardRepository;
 late MockKiBoardRepositoryFactory mockKiBoardRepositoryFactory;
 String boardId = "boardId";
@@ -21,25 +20,24 @@ void main() {
       mockKiBoardRepositoryFactory = MockKiBoardRepositoryFactory();
       when(mockKiBoardRepositoryFactory.get(any))
           .thenReturn(mockKiBoardRepository);
-      kiBoardManager =
-          StubKiBoardManager(boardId, mockKiBoardRepositoryFactory);
+      kiBoardManager = KiBoardManager(mockKiBoardRepositoryFactory);
     });
 
     test('ki board manager can get current key board', () async {
-      await givenKiBoard(KiBoard());
+      await resetKiBoard(KiBoard(), boardId);
       expect(kiBoardManager.board, KiBoard());
     });
 
     test('read board from repository when reset', () async {
       var kiBoard = KiBoard();
       kiBoard.addKi(Point(1, 1));
-      await givenKiBoard(kiBoard);
+      await resetKiBoard(kiBoard, boardId);
 
       expect(kiBoardManager.board, kiBoard);
     });
 
     test('enable game visibility', () async {
-      await givenKiBoard(KiBoard());
+      await resetKiBoard(KiBoard(), boardId);
 
       givenBoardPublic();
 
@@ -51,7 +49,7 @@ void main() {
       var streamController = StreamController<KiBoard>();
       when(mockKiBoardRepository.onValue(any))
           .thenAnswer((realInvocation) => streamController.stream);
-      await givenKiBoard(KiBoard());
+      await resetKiBoard(KiBoard(), boardId);
       givenBoardPublic();
 
       var kiBoard = KiBoard();
@@ -64,29 +62,37 @@ void main() {
 
       await streamController.close();
     });
+
+    test('reset board should reload board ids', () async {
+      givenBoardIds(["abc", "cde"]);
+      await kiBoardManager.loadBoardIds();
+      await resetKiBoard(null, boardId);
+
+      expect(kiBoardManager.allBoardIds, ["abc", "cde"]);
+    });
+
+    test('load all board id', () async {
+      givenBoardIds(["abc", "cde"]);
+
+      await kiBoardManager.loadBoardIds();
+
+      expect(kiBoardManager.allBoardIds, ["abc", "cde"]);
+    });
   });
+}
+
+void givenBoardIds(List<String> list) {
+  when(mockKiBoardRepository.getBoardIds())
+      .thenAnswer((_) => Future.value(list));
 }
 
 void givenBoardPublic() {
   kiBoardManager.enablePublic(true);
 }
 
-Future givenKiBoard(KiBoard kiBoard) async {
+Future resetKiBoard(KiBoard? kiBoard, String boardId) async {
   when(mockKiBoardRepository.getKiBoard(any)).thenAnswer((realInvocation) {
     return Future.value(kiBoard);
   });
-  await kiBoardManager.resetKiBoard();
-}
-
-class StubKiBoardManager extends KiBoardManager {
-  String boardId;
-
-  StubKiBoardManager(
-      this.boardId, KiBoardRepositoryFactory kiBoardRepositoryFactory)
-      : super(kiBoardRepositoryFactory);
-
-  @override
-  String getBoardId() {
-    return boardId;
-  }
+  await kiBoardManager.resetKiBoard(boardId: boardId);
 }
