@@ -72,6 +72,11 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
             initialValue: Provider.of<KiBoardManager>(context).boardId,
+            onTap: () {
+              setState(() {
+                _isListOpen = false;
+              });
+            },
             onFieldSubmitted: (text) async =>
                 await Provider.of<KiBoardManager>(context, listen: false)
                     .resetKiBoard(boardId: text),
