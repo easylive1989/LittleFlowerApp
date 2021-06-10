@@ -43,7 +43,7 @@ void main() {
     test('enable game visibility', () async {
       await resetKiBoard(KiBoard(), boardId);
 
-      givenBoardPublic();
+      kiBoardManager.enablePublic();
 
       expect(kiBoardManager.visibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId));
@@ -54,7 +54,7 @@ void main() {
       when(mockRemoteRepository.onValue(any))
           .thenAnswer((realInvocation) => streamController.stream);
       await resetKiBoard(KiBoard(), boardId);
-      givenBoardPublic();
+      kiBoardManager.enablePublic();
 
       var kiBoard = KiBoard();
       kiBoard.addKi(Point(1, 1));
@@ -99,10 +99,6 @@ void main() {
 
 void givenBoardIds(List<String> list) {
   when(mockLocalRepository.getBoardIds()).thenAnswer((_) => Future.value(list));
-}
-
-void givenBoardPublic() {
-  kiBoardManager.enablePublic(true);
 }
 
 Future resetKiBoard(KiBoard? kiBoard, String boardId) async {

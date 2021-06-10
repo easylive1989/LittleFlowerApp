@@ -56,16 +56,18 @@ class KiBoardManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _saveBoard(String boardId, KiBoard kiBoard) async {
+  Future _saveBoard(String boardId, KiBoard kiBoard) async {
     await _localRepository.saveKiBoard(boardId, kiBoard);
     if (_visibility == GameVisibility.public) {
       _remoteRepository.saveKiBoard(boardId, kiBoard);
     }
   }
 
-  void enablePublic(bool enable) {
-    _visibility = enable ? GameVisibility.public : GameVisibility.private;
-    if (enable) {
+  void enablePublic() {
+    _visibility = _visibility == GameVisibility.public
+        ? GameVisibility.private
+        : GameVisibility.public;
+    if (_visibility == GameVisibility.public) {
       _kiBoardSubscription =
           _remoteRepository.onValue(boardId).listen(_onBoardUpdate);
     } else {

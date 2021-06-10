@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -40,10 +41,12 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
         _buildDeleteIcon(context),
         IconButton(
           onPressed: () {
-            // context.read<KiBoardManager>().enablePublic();
+            context.read<KiBoardManager>().enablePublic();
           },
           icon: Icon(Icons.share_rounded),
           iconSize: 30,
+          color:
+              kiBoardManager.visibility.isPublic() ? Colors.blue : Colors.grey,
         )
       ],
     );
@@ -55,7 +58,10 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
         context.read<KiBoardManager>().resetKiBoard();
       },
       iconSize: 30,
-      icon: Icon(Icons.refresh_rounded),
+      icon: Icon(
+        Icons.refresh_rounded,
+        color: Colors.blue,
+      ),
     );
   }
 
@@ -68,7 +74,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
         iconSize: 30,
         icon: Icon(
           Icons.delete_rounded,
-          size: 30,
+          color: Colors.red,
         ),
       ),
     );
