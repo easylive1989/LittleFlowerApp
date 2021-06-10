@@ -19,8 +19,6 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildRefreshIcon(context),
-        SizedBox(width: 10),
         Container(
           width: 150,
           height: _isListOpen ? 352 : 52,
@@ -38,7 +36,15 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
           ),
         ),
         SizedBox(width: 10),
+        _buildRefreshIcon(context),
         _buildDeleteIcon(context),
+        IconButton(
+          onPressed: () {
+            // context.read<KiBoardManager>().enablePublic();
+          },
+          icon: Icon(Icons.share_rounded),
+          iconSize: 30,
+        )
       ],
     );
   }
