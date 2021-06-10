@@ -42,7 +42,7 @@ class KiBoardManager extends ChangeNotifier {
     var board = await _localRepository.getKiBoard(_boardId);
     if (board == null) {
       _board = KiBoard();
-      _saveBoard(boardId, _board);
+      _saveBoard(_boardId, _board);
       _allBoardIds.add(_boardId);
     } else {
       _board = board;

@@ -7,22 +7,19 @@ import 'package:little_flower_app/widget/ki_board_painter.dart';
 import 'package:provider/provider.dart';
 
 class KiBoardArea extends StatelessWidget {
-  final KiBoardManager _kiBoardManager;
-  KiBoardArea(this._kiBoardManager);
-
   @override
   Widget build(BuildContext context) {
+    var kiBoardManager = context.watch<KiBoardManager>();
     return Center(
       child: CustomPaint(
         size: Size(300, 300),
         painter: KiBoardPainter(
           row: KiBoard.row,
           column: KiBoard.column,
-          blackKiList: _kiBoardManager.board.blackKiList,
-          whiteKiList: _kiBoardManager.board.whiteKiList,
+          blackKiList: kiBoardManager.board.blackKiList,
+          whiteKiList: kiBoardManager.board.whiteKiList,
           onTap: (x, y) {
-            Provider.of<KiBoardManager>(context, listen: false)
-                .addKi(Point(x, y));
+            context.read<KiBoardManager>().addKi(Point(x, y));
           },
         ),
       ),

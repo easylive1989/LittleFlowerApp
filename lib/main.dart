@@ -56,21 +56,17 @@ class MyApp extends StatelessWidget {
 }
 
 Widget _buildKiBoardArea() {
-  return Consumer<KiBoardManager>(
-    builder: (context, model, child) {
-      return Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: KiBoardArea(model),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ResultArea(model),
-          ),
-          BoardInfoArea(model),
-        ],
-      );
-    },
+  return Stack(
+    children: [
+      Align(
+        alignment: Alignment.center,
+        child: KiBoardArea(),
+      ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: ResultArea(),
+      ),
+      BoardInfoArea(),
+    ],
   );
 }

@@ -14,20 +14,13 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var kiBoardManager = context.watch<KiBoardManager>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IconButton(
-          onPressed: () {
-            Provider.of<KiBoardManager>(context, listen: false).resetKiBoard();
-          },
-          iconSize: 30,
-          icon: Icon(Icons.refresh_rounded),
-        ),
-        SizedBox(
-          width: 10,
-        ),
+        _buildRefreshIcon(context),
+        SizedBox(width: 10),
         Container(
           width: 150,
           height: _isListOpen ? 352 : 52,
@@ -37,23 +30,34 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
           ),
           child: Column(
             children: [
-              _buildBoardId(context),
-              _isListOpen ? _buildBoardIdList() : Container(),
+              _buildBoardId(context, kiBoardManager),
+              _isListOpen
+                  ? _buildBoardIdList(context, kiBoardManager)
+                  : Container(),
             ],
           ),
         ),
         SizedBox(width: 10),
-        _buildDeleteIcon(),
+        _buildDeleteIcon(context),
       ],
     );
   }
 
-  Widget _buildDeleteIcon() {
+  IconButton _buildRefreshIcon(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        context.read<KiBoardManager>().resetKiBoard();
+      },
+      iconSize: 30,
+      icon: Icon(Icons.refresh_rounded),
+    );
+  }
+
+  Widget _buildDeleteIcon(BuildContext context) {
     return GestureDetector(
       child: IconButton(
         onPressed: () {
-          Provider.of<KiBoardManager>(context, listen: false)
-              .removeCurrentBoard();
+          context.read<KiBoardManager>().removeCurrentBoard();
         },
         iconSize: 30,
         icon: Icon(
@@ -64,8 +68,9 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
     );
   }
 
-  Widget _buildBoardIdList() {
-    var allBoardIds = Provider.of<KiBoardManager>(context).allBoardIds;
+  Widget _buildBoardIdList(
+      BuildContext context, KiBoardManager kiBoardManager) {
+    var allBoardIds = kiBoardManager.allBoardIds;
     return Container(
       height: 300,
       color: Colors.white,
@@ -78,7 +83,8 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
               setState(() {
                 _isListOpen = false;
               });
-              Provider.of<KiBoardManager>(context, listen: false)
+              context
+                  .read<KiBoardManager>()
                   .resetKiBoard(boardId: allBoardIds[index]);
             },
             child: Padding(
@@ -95,25 +101,25 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
     );
   }
 
-  Widget _buildBoardId(BuildContext context) {
+  Widget _buildBoardId(BuildContext context, KiBoardManager kiBoardManager) {
     return Container(
       height: 50,
       child: Stack(
         children: [
           TextFormField(
-            key: ValueKey(Provider.of<KiBoardManager>(context).boardId),
+            key: ValueKey(kiBoardManager.boardId),
             decoration: InputDecoration(border: InputBorder.none),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
-            initialValue: Provider.of<KiBoardManager>(context).boardId,
+            initialValue: kiBoardManager.boardId,
             onTap: () {
               setState(() {
                 _isListOpen = false;
               });
             },
-            onFieldSubmitted: (text) async =>
-                await Provider.of<KiBoardManager>(context, listen: false)
-                    .resetKiBoard(boardId: text),
+            onFieldSubmitted: (text) async => await context
+                .read<KiBoardManager>()
+                .resetKiBoard(boardId: text),
           ),
           Align(
             alignment: Alignment.centerRight,

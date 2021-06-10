@@ -49,7 +49,7 @@ void main() {
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardManager,
-              child: BoardInfoArea(kiBoardManager),
+              child: BoardInfoArea(),
             ),
           ),
         ),
@@ -68,7 +68,7 @@ void main() {
           home: Scaffold(
             body: ChangeNotifierProvider(
               create: (context) => kiBoardManager,
-              child: KiBoardArea(kiBoardManager),
+              child: KiBoardArea(),
             ),
           ),
         ),
