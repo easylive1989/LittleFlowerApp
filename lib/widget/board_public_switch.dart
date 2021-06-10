@@ -17,7 +17,7 @@ class BoardPublicSwitch extends StatelessWidget {
         children: [
           Text(S.of(context).switch_public),
           Switch(
-            value: context.read<KiBoardManager>().visibility.isPublic(),
+            value: context.watch<KiBoardManager>().visibility.isPublic(),
             onChanged: (value) {
               context.read<KiBoardManager>().enablePublic(value);
             },
