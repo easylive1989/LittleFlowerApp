@@ -88,9 +88,10 @@ void main() {
       await kiBoardManager.loadBoardIds();
       await resetKiBoard(KiBoard(), boardId);
 
-      await kiBoardManager.removeBoard(boardId);
+      await kiBoardManager.removeCurrentBoard();
 
       expect(kiBoardManager.boardId, "abc");
+      expect(kiBoardManager.allBoardIds, ["cde"]);
       verify(mockLocalRepository.remove(boardId));
     });
   });

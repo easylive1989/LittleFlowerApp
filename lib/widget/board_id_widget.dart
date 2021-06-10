@@ -16,6 +16,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           width: 40,
@@ -41,11 +42,17 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   }
 
   Widget _buildDeleteIcon() {
-    return GestureDetector(
-      onTap: () {},
-      child: Icon(
-        Icons.delete_rounded,
-        size: 30,
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: GestureDetector(
+        onTap: () {
+          Provider.of<KiBoardManager>(context, listen: false)
+              .removeCurrentBoard();
+        },
+        child: Icon(
+          Icons.delete_rounded,
+          size: 30,
+        ),
       ),
     );
   }
