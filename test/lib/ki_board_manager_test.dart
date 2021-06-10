@@ -82,6 +82,17 @@ void main() {
 
       expect(kiBoardManager.allBoardIds, ["abc", "cde"]);
     });
+
+    test('remove board', () async {
+      givenBoardIds(["abc", "cde"]);
+      await kiBoardManager.loadBoardIds();
+      await resetKiBoard(KiBoard(), boardId);
+
+      await kiBoardManager.removeBoard(boardId);
+
+      expect(kiBoardManager.boardId, "abc");
+      verify(mockLocalRepository.remove(boardId));
+    });
   });
 }
 

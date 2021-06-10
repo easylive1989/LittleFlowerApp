@@ -88,4 +88,10 @@ class KiBoardManager extends ChangeNotifier {
   String getBoardId() {
     return randomAlpha(5);
   }
+
+  Future removeBoard(String boardId) async {
+    await resetKiBoard(
+        boardId: allBoardIds.isNotEmpty ? allBoardIds.first : null);
+    await _localRepository.remove(boardId);
+  }
 }

@@ -36,4 +36,10 @@ class PreferenceApi implements KiBoardRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getKeys().toList();
   }
+
+  @override
+  Future remove(String boardId) async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.remove(boardId);
+  }
 }

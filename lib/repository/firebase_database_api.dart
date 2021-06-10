@@ -44,4 +44,9 @@ class FirebaseDatabaseApi extends KiBoardRepository {
       return List<String>.empty();
     }
   }
+
+  @override
+  Future remove(String boardId) async {
+    await _kiBoardRef.child(boardId).remove();
+  }
 }
