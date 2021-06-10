@@ -49,4 +49,10 @@ class FirebaseDatabaseApi extends KiBoardRepository {
   Future remove(String boardId) async {
     await _kiBoardRef.child(boardId).remove();
   }
+
+  @override
+  Future<bool> containsId(String boardId) async {
+    var snapShot = await _kiBoardRef.child(boardId).once();
+    return snapShot.value == null;
+  }
 }
