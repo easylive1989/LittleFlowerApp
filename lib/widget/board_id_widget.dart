@@ -18,8 +18,15 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        IconButton(
+          onPressed: () {
+            Provider.of<KiBoardManager>(context, listen: false).resetKiBoard();
+          },
+          iconSize: 30,
+          icon: Icon(Icons.refresh_rounded),
+        ),
         SizedBox(
-          width: 40,
+          width: 10,
         ),
         Container(
           width: 150,
@@ -42,14 +49,14 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   }
 
   Widget _buildDeleteIcon() {
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: GestureDetector(
-        onTap: () {
+    return GestureDetector(
+      child: IconButton(
+        onPressed: () {
           Provider.of<KiBoardManager>(context, listen: false)
               .removeCurrentBoard();
         },
-        child: Icon(
+        iconSize: 30,
+        icon: Icon(
           Icons.delete_rounded,
           size: 30,
         ),
