@@ -27,8 +27,23 @@ void main() {
       kiBoardManager = KiBoardManager(mockKiBoardRepositoryFactory);
     });
 
-    test('ki board manager can get current key board', () async {
+    test('reset a exist private board', () async {
+      givenRemoteBoard(null);
       await resetKiBoard(KiBoard(), boardId);
+      expect(kiBoardManager.board, KiBoard());
+      expect(kiBoardManager.visibility, GameVisibility.private);
+    });
+
+    test('reset a exist public board', () async {
+      givenRemoteBoard(KiBoard());
+      await resetKiBoard(KiBoard(), boardId);
+      expect(kiBoardManager.board, KiBoard());
+      expect(kiBoardManager.visibility, GameVisibility.public);
+      verify(mockRemoteRepository.onValue(boardId));
+    });
+
+    test('reset a non-exist private board', () async {
+      await resetKiBoard(null, boardId);
       expect(kiBoardManager.board, KiBoard());
     });
 
@@ -40,13 +55,23 @@ void main() {
       expect(kiBoardManager.board, kiBoard);
     });
 
-    test('enable game visibility', () async {
+    test('toggle a private game should change to public', () async {
       await resetKiBoard(KiBoard(), boardId);
 
       kiBoardManager.enablePublic();
 
       expect(kiBoardManager.visibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId));
+    });
+
+    test('toggle a public game should remain in public', () async {
+      await resetKiBoard(KiBoard(), boardId);
+
+      kiBoardManager.enablePublic();
+      kiBoardManager.enablePublic();
+
+      expect(kiBoardManager.visibility, GameVisibility.public);
+      verify(mockRemoteRepository.onValue(boardId)).called(1);
     });
 
     test('update board when public board change', () async {
@@ -83,7 +108,7 @@ void main() {
       expect(kiBoardManager.allBoardIds, ["abc", "cde"]);
     });
 
-    test('remove board', () async {
+    test('remove private board', () async {
       givenBoardIds(["abc", "cde"]);
       await kiBoardManager.loadBoardIds();
       await resetKiBoard(KiBoard(), boardId);
@@ -93,8 +118,22 @@ void main() {
       expect(kiBoardManager.boardId, "abc");
       expect(kiBoardManager.allBoardIds, ["cde"]);
       verify(mockLocalRepository.remove(boardId));
+      verifyNever(mockRemoteRepository.remove(any));
     });
+
+    // test('remove public board should cancel remote listening', () async {
+    //   await resetKiBoard(KiBoard(), boardId);
+    //
+    //   await kiBoardManager.removeCurrentBoard();
+    //
+    //   verify.
+    // });
   });
+}
+
+void givenRemoteBoard(KiBoard? board) {
+  when(mockRemoteRepository.getKiBoard(any))
+      .thenAnswer((realInvocation) => Future.value(board));
 }
 
 void givenBoardIds(List<String> list) {

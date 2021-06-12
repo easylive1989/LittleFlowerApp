@@ -40,12 +40,21 @@ class KiBoardManager extends ChangeNotifier {
   Future resetKiBoard({boardId}) async {
     _boardId = boardId ?? getBoardId();
     var board = await _localRepository.getKiBoard(_boardId);
-    if (board == null) {
+    var remoteBoard = await _remoteRepository.getKiBoard(_boardId);
+    _visibility =
+        remoteBoard == null ? GameVisibility.private : GameVisibility.public;
+    if (board == null && remoteBoard == null) {
       _board = KiBoard();
       _saveBoard(_boardId, _board);
-      _allBoardIds.add(_boardId);
+      _allBoardIds.insert(0, _boardId);
     } else {
-      _board = board;
+      _board = board ?? remoteBoard!;
+      if (remoteBoard != null) {
+        listenToRemote(_boardId);
+      }
+      if (!_allBoardIds.contains(_boardId)) {
+        _allBoardIds.insert(0, _boardId);
+      }
     }
     notifyListeners();
   }
@@ -64,19 +73,14 @@ class KiBoardManager extends ChangeNotifier {
   }
 
   void enablePublic() {
-    _visibility = _visibility == GameVisibility.public
-        ? GameVisibility.private
-        : GameVisibility.public;
-    if (_visibility == GameVisibility.public) {
-      _kiBoardSubscription =
-          _remoteRepository.onValue(boardId).listen(_onBoardUpdate);
-    } else {
-      _kiBoardSubscription?.cancel();
+    if (_visibility == GameVisibility.private) {
+      listenToRemote(boardId);
     }
+    _visibility = GameVisibility.public;
     notifyListeners();
   }
 
-  void listenToRemoteChange() {
+  void listenToRemote(String boardId) {
     _kiBoardSubscription =
         _remoteRepository.onValue(boardId).listen(_onBoardUpdate);
   }
@@ -94,6 +98,9 @@ class KiBoardManager extends ChangeNotifier {
   Future removeCurrentBoard() async {
     await _localRepository.remove(_boardId);
     _allBoardIds.remove(_boardId);
+    if (_visibility == GameVisibility.public) {
+      _kiBoardSubscription?.cancel();
+    }
     await resetKiBoard(
         boardId: _allBoardIds.isNotEmpty ? _allBoardIds.first : null);
   }

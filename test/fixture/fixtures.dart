@@ -35,6 +35,13 @@ class MockKiBoardRepository extends Mock implements KiBoardRepository {
         returnValue: Future.value(List<String>.empty()),
         returnValueForMissingStub: Future.value(List<String>.empty()),
       );
+
+  @override
+  Future<bool> containsId(String? boardId) => super.noSuchMethod(
+        Invocation.method(#containsId, [boardId]),
+        returnValue: Future.value(false),
+        returnValueForMissingStub: Future.value(false),
+      );
 }
 
 class MockKiBoardRepositoryFactory extends Mock

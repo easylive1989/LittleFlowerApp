@@ -38,17 +38,21 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
         ),
         SizedBox(width: 10),
         _buildRefreshIcon(context),
+        _buildShareIcon(context, kiBoardManager),
         _buildDeleteIcon(context),
-        IconButton(
-          onPressed: () {
-            context.read<KiBoardManager>().enablePublic();
-          },
-          icon: Icon(Icons.share_rounded),
-          iconSize: 30,
-          color:
-              kiBoardManager.visibility.isPublic() ? Colors.blue : Colors.grey,
-        )
       ],
+    );
+  }
+
+  IconButton _buildShareIcon(
+      BuildContext context, KiBoardManager kiBoardManager) {
+    return IconButton(
+      onPressed: () {
+        context.read<KiBoardManager>().enablePublic();
+      },
+      icon: Icon(Icons.share_rounded),
+      iconSize: 30,
+      color: kiBoardManager.visibility.isPublic() ? Colors.blue : Colors.grey,
     );
   }
 

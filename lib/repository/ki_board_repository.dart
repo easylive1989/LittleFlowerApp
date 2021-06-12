@@ -6,5 +6,4 @@ abstract class KiBoardRepository {
   Stream<KiBoard> onValue(String boardId);
   Future<List<String>> getBoardIds();
   Future remove(String boardId);
-  Future<bool> containsId(String boardId);
 }
