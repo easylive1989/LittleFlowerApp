@@ -120,14 +120,6 @@ void main() {
       verify(mockLocalRepository.remove(boardId));
       verifyNever(mockRemoteRepository.remove(any));
     });
-
-    // test('remove public board should cancel remote listening', () async {
-    //   await resetKiBoard(KiBoard(), boardId);
-    //
-    //   await kiBoardManager.removeCurrentBoard();
-    //
-    //   verify.
-    // });
   });
 }
 

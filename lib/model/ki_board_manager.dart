@@ -38,6 +38,7 @@ class KiBoardManager extends ChangeNotifier {
   }
 
   Future resetKiBoard({boardId}) async {
+    _kiBoardSubscription?.cancel();
     _boardId = boardId ?? getBoardId();
     var board = await _localRepository.getKiBoard(_boardId);
     var remoteBoard = await _remoteRepository.getKiBoard(_boardId);
