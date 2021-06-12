@@ -17,8 +17,9 @@ class KiBoardManager extends ChangeNotifier {
 
   GameVisibility get visibility => _visibility;
 
-  List<String> get allBoardIds =>
+  List<String> get allOtherBoardIds =>
       _allBoardIds.where((id) => id != _boardId).toList();
+  List<String> get allBoardIds => _allBoardIds;
 
   List<String> _allBoardIds = [];
   KiBoard _board = KiBoard();
@@ -42,20 +43,20 @@ class KiBoardManager extends ChangeNotifier {
     _boardId = boardId ?? getBoardId();
     var board = await _localRepository.getKiBoard(_boardId);
     var remoteBoard = await _remoteRepository.getKiBoard(_boardId);
-    _visibility =
-        remoteBoard == null ? GameVisibility.private : GameVisibility.public;
     if (board == null && remoteBoard == null) {
       _board = KiBoard();
       _saveBoard(_boardId, _board);
       _allBoardIds.insert(0, _boardId);
-    } else {
-      _board = board ?? remoteBoard!;
-      if (remoteBoard != null) {
-        listenToRemote(_boardId);
-      }
-      if (!_allBoardIds.contains(_boardId)) {
-        _allBoardIds.insert(0, _boardId);
-      }
+      _visibility = GameVisibility.private;
+    } else if (board == null && remoteBoard != null) {
+      _board = remoteBoard;
+      _saveBoard(_boardId, _board);
+      _allBoardIds.insert(0, _boardId);
+      listenToRemote(_boardId);
+      _visibility = GameVisibility.public;
+    } else if (board != null) {
+      _board = board;
+      _visibility = GameVisibility.private;
     }
     notifyListeners();
   }

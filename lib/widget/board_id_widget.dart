@@ -86,7 +86,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   Widget _buildBoardIdList(
       BuildContext context, KiBoardManager kiBoardManager) {
-    var allBoardIds = kiBoardManager.allBoardIds;
+    var allBoardIds = kiBoardManager.allOtherBoardIds;
     return Container(
       height: 300,
       color: Colors.white,
