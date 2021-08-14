@@ -11,8 +11,11 @@ jobs:
         with:
           fileName: 'android/app/key.jks'
           encodedString: ${{ secrets.ANDROID_KEY_STORE }}
-      - name: write google-service.json
-        run: echo "${{ secrets.GOOGLE_SERVICE }}" >> android/app/google-services.json
+      - name: decode google-service.json
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: 'android/app/google-services.json'
+          encodedString: ${{ secrets.GOOGLE_SERVICE }}
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
