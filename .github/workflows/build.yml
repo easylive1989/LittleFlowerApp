@@ -23,7 +23,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable' # or: 'beta', 'dev' or 'master'
-      - run: cd android && ls
+      - run: cd android/app && ls
       - run: flutter pub get
       - run: flutter test
       - run: flutter build appbundle
