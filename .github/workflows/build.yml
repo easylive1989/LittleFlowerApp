@@ -26,7 +26,6 @@ jobs:
         with:
           channel: 'stable' # or: 'beta', 'dev' or 'master'
           filelocation: ${{ steps.decode_google_service.outputs.filePath }}
-      - run: cd android/app && ls
       - run: flutter pub get
       - run: flutter test
       - run: flutter build appbundle
