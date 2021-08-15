@@ -14,7 +14,7 @@ jobs:
         with:
           channel: 'stable' # or: 'beta', 'dev' or 'master'
           filelocation: ${{ steps.decode_google_service.outputs.filePath }}
-      - run: echo $ANDROID_KEY_STORE | base64 -di > android/app/keystore.jks
+      - run: echo $ANDROID_KEY_STORE | base64 -di > android/app/key.jks
         env:
           ANDROID_KEY_STORE: ${{ secrets.ANDROID_KEY_STORE }}
       - run: echo $GOOGLE_SERVICE | base64 -di > android/app/google-services.json
