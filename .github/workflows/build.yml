@@ -1,6 +1,9 @@
 name: Little Flower App
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -33,15 +36,21 @@ jobs:
           path: build/app/outputs/bundle/release/app-release.aab
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v2
-      - run: echo $ANDROID_PLAY_SECRET | base64 -di > script/secret.json
+      - run: echo $ANDROID_PLAY_SECRET | base64 -di > script/key.json
         env:
           ANDROID_KEY_STORE: ${{ secrets.ANDROID_PLAY_SECRET }}
       - name: setup
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+      - name: download bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: app bundle
       - run: |
         pip install google-api-python-client
-        python main.py "$NOTION_BOT_TOKEN" "$DATABASE_LIST"
+#        python script/deploy.py com.paulwu.little_flower_app build/app/outputs/bundle/release/app-release.aab production
+        
