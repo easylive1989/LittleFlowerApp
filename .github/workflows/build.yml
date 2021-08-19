@@ -31,3 +31,17 @@ jobs:
         with:
           name: app bundle
           path: build/app/outputs/bundle/release/app-release.aab
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo $ANDROID_PLAY_SECRET | base64 -di > script/secret.json
+        env:
+          ANDROID_KEY_STORE: ${{ secrets.ANDROID_PLAY_SECRET }}
+      - name: setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - run: |
+        pip install google-api-python-client
+        python main.py "$NOTION_BOT_TOKEN" "$DATABASE_LIST"
