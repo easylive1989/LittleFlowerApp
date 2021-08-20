@@ -1,9 +1,6 @@
 name: Little Flower App
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build:
@@ -52,4 +49,4 @@ jobs:
           name: app bundle
       - run: |
           pip install google-api-python-client
-#         python script/deploy.py com.paulwu.little_flower_app build/app/outputs/bundle/release/app-release.aab production
+          python script/deploy.py com.paulwu.little_flower_app build/app/outputs/bundle/release/app-release.aab internal
