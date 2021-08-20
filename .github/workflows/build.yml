@@ -52,8 +52,8 @@ jobs:
           pip install google-api-python-client
           pip install oauth2client
       - name: depoly for internal
-          if: "contains(github.ref, 'release')"
-          run: python script/deploy.py com.paulwu.little_flower_app script/key.json build/app/outputs/bundle/release/app-release.aab internal
+        if: "contains(github.ref, 'release')"
+        run: python script/deploy.py com.paulwu.little_flower_app script/key.json build/app/outputs/bundle/release/app-release.aab internal
       - name: depoly for release
-          if: "contains(github.ref, 'master')"
-          run: python script/deploy.py com.paulwu.little_flower_app script/key.json build/app/outputs/bundle/release/app-release.aab production
+        if: "contains(github.ref, 'master')"
+        run: python script/deploy.py com.paulwu.little_flower_app script/key.json build/app/outputs/bundle/release/app-release.aab production
