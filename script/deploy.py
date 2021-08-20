@@ -28,6 +28,8 @@ from oauth2client.service_account import ServiceAccountCredentials, client
 argparser = argparse.ArgumentParser(add_help=False)
 argparser.add_argument('package_name',
                        help='The package name. Example: com.android.sample')
+argparser.add_argument('key_json',
+                       help='The package name. Example: com.android.sample')
 argparser.add_argument('bundle_file',
                        nargs='?',
                        default='test.aab',
@@ -41,20 +43,22 @@ mimetypes.add_type("application/octet-stream", ".apk")
 mimetypes.add_type("application/octet-stream", ".aab")
 
 def main(argv):
+  flags = argparser.parse_args()
+  # Process flags and read their values.
+  package_name = flags.package_name
+  key_json = flags.key_json
+  bundle_file = flags.bundle_file
+  track = flags.track
+
   credentials = ServiceAccountCredentials.from_json_keyfile_name(
-      'key.json',
+      key_json,
       scopes=['https://www.googleapis.com/auth/androidpublisher'])
   http = httplib2.Http()
   http = credentials.authorize(http)
 
   service = build('androidpublisher', 'v3', http=http)
 
-  flags = argparser.parse_args()
 
-  # Process flags and read their values.
-  package_name = flags.package_name
-  bundle_file = flags.bundle_file
-  track = flags.track
 
   try:
     edit_request = service.edits().insert(body={}, packageName=package_name)

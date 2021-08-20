@@ -50,5 +50,4 @@ jobs:
       - run: |
           pip install google-api-python-client
           pip install oauth2client
-          cd script
-          python deploy.py com.paulwu.little_flower_app build/app/outputs/bundle/release/app-release.aab internal
+          python script/deploy.py script/key.json com.paulwu.little_flower_app build/app/outputs/bundle/release/app-release.aab internal
