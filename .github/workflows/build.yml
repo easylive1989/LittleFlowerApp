@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: echo $ANDROID_PLAY_SECRET | base64 -di > script/key.json
         env:
-          ANDROID_KEY_STORE: ${{ secrets.ANDROID_PLAY_SECRET }}
+          ANDROID_PLAY_SECRET: ${{ secrets.ANDROID_PLAY_SECRET }}
       - name: setup
         uses: actions/setup-python@v2
         with:
