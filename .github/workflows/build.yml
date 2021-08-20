@@ -56,4 +56,4 @@ jobs:
         run: python script/deploy.py com.paulwu.little_flower_app script/key.json build/app/outputs/bundle/release/app-release.aab internal
       - name: depoly for release
         if: "contains(github.ref, 'master')"
-        run: python script/deploy.py com.paulwu.little_flower_app script/key.json build/app/outputs/bundle/release/app-release.aab production
+        run: python script/deploy.py com.paulwu.little_flower_app script/key.json app-release.aab production
