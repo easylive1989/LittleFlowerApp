@@ -12,7 +12,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/model/ki_board.dart';
-import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
 import 'package:little_flower_app/widget/ki_board_painter.dart';
@@ -23,7 +23,7 @@ import '../fixture/fixtures.dart';
 
 void main() {
   group('ki board widget', () {
-    late KiBoardManager kiBoardManager;
+    late KiBoardService kiBoardService;
     late MockKiBoardRepository mockKiBoardRepository;
 
     setUp(() async {
@@ -32,8 +32,8 @@ void main() {
       when(mockFactory.local()).thenReturn(mockKiBoardRepository);
       when(mockKiBoardRepository.getKiBoard(any))
           .thenAnswer((realInvocation) => Future.value(KiBoard()));
-      kiBoardManager = KiBoardManager(mockFactory);
-      await kiBoardManager.resetKiBoard();
+      kiBoardService = KiBoardService(mockFactory);
+      await kiBoardService.resetKiBoard();
     });
 
     testWidgets('show game id in ki board', (WidgetTester tester) async {
@@ -48,7 +48,7 @@ void main() {
           supportedLocales: S.delegate.supportedLocales,
           home: Scaffold(
             body: ChangeNotifierProvider(
-              create: (context) => kiBoardManager,
+              create: (context) => kiBoardService,
               child: BoardInfoArea(),
             ),
           ),
@@ -67,7 +67,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ChangeNotifierProvider(
-              create: (context) => kiBoardManager,
+              create: (context) => kiBoardService,
               child: KiBoardArea(),
             ),
           ),

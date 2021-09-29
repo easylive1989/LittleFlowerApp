@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/model/game_visibility.dart';
-import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:provider/provider.dart';
 
 class BoardIdWidget extends StatefulWidget {
@@ -15,7 +15,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var kiBoardManager = context.watch<KiBoardManager>();
+    var kiBoardManager = context.watch<KiBoardService>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,10 +45,10 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   }
 
   IconButton _buildShareIcon(
-      BuildContext context, KiBoardManager kiBoardManager) {
+      BuildContext context, KiBoardService kiBoardManager) {
     return IconButton(
       onPressed: () {
-        context.read<KiBoardManager>().enablePublic();
+        context.read<KiBoardService>().enablePublic();
       },
       icon: Icon(Icons.share_rounded),
       iconSize: 30,
@@ -59,7 +59,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   IconButton _buildRefreshIcon(BuildContext context) {
     return IconButton(
       onPressed: () {
-        context.read<KiBoardManager>().resetKiBoard();
+        context.read<KiBoardService>().resetKiBoard();
       },
       iconSize: 30,
       icon: Icon(
@@ -73,7 +73,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
     return GestureDetector(
       child: IconButton(
         onPressed: () {
-          context.read<KiBoardManager>().removeCurrentBoard();
+          context.read<KiBoardService>().removeCurrentBoard();
         },
         iconSize: 30,
         icon: Icon(
@@ -85,7 +85,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   }
 
   Widget _buildBoardIdList(
-      BuildContext context, KiBoardManager kiBoardManager) {
+      BuildContext context, KiBoardService kiBoardManager) {
     var allBoardIds = kiBoardManager.allOtherBoardIds;
     return Container(
       height: 300,
@@ -100,7 +100,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
                 _isListOpen = false;
               });
               context
-                  .read<KiBoardManager>()
+                  .read<KiBoardService>()
                   .resetKiBoard(boardId: allBoardIds[index]);
             },
             child: Padding(
@@ -117,7 +117,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
     );
   }
 
-  Widget _buildBoardId(BuildContext context, KiBoardManager kiBoardManager) {
+  Widget _buildBoardId(BuildContext context, KiBoardService kiBoardManager) {
     return Container(
       height: 50,
       child: Stack(
@@ -134,7 +134,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
               });
             },
             onFieldSubmitted: (text) async => await context
-                .read<KiBoardManager>()
+                .read<KiBoardService>()
                 .resetKiBoard(boardId: text),
           ),
           Align(

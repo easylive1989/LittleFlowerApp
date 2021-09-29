@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:little_flower_app/generated/l10n.dart';
-import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
 import 'package:little_flower_app/widget/result_area.dart';
@@ -15,15 +15,15 @@ void main() async {
   configureInjection();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  var kiBoardManager = GetIt.I<KiBoardManager>();
+  var kiBoardManager = GetIt.I<KiBoardService>();
   kiBoardManager.loadBoardIds();
   runApp(MyApp(kiBoardManager));
 }
 
 class MyApp extends StatelessWidget {
-  final KiBoardManager _kiBoardManager;
+  final KiBoardService _kiBoardService;
 
-  MyApp(this._kiBoardManager);
+  MyApp(this._kiBoardService);
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +38,9 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: ChangeNotifierProvider(
-          create: (context) => _kiBoardManager,
+          create: (context) => _kiBoardService,
           child: FutureBuilder(
-              future: _kiBoardManager.resetKiBoard(),
+              future: _kiBoardService.resetKiBoard(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return _buildKiBoardArea();

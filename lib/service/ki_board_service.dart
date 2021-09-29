@@ -10,7 +10,7 @@ import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:random_string/random_string.dart';
 
 @Injectable()
-class KiBoardManager extends ChangeNotifier {
+class KiBoardService extends ChangeNotifier {
   KiBoard get board => _board;
 
   String get boardId => _boardId;
@@ -30,7 +30,7 @@ class KiBoardManager extends ChangeNotifier {
   KiBoardRepository _remoteRepository;
   StreamSubscription? _kiBoardSubscription;
 
-  KiBoardManager(KiBoardRepositoryFactory kiBoardRepositoryFactory)
+  KiBoardService(KiBoardRepositoryFactory kiBoardRepositoryFactory)
       : _localRepository = kiBoardRepositoryFactory.local(),
         _remoteRepository = kiBoardRepositoryFactory.remote();
 

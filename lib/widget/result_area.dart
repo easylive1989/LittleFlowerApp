@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/helper/translate_helper.dart';
-import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:provider/provider.dart';
 
 class ResultArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var kiBoardManager = context.watch<KiBoardManager>();
+    var kiBoardManager = context.watch<KiBoardService>();
     return Container(
       height: 180,
       alignment: Alignment.center,
@@ -27,7 +27,7 @@ class ResultArea extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async =>
-                  await context.read<KiBoardManager>().resetKiBoard(),
+                  await context.read<KiBoardService>().resetKiBoard(),
               child: Container(
                 padding: EdgeInsets.symmetric(
                   vertical: 5.0,

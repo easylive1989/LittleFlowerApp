@@ -3,13 +3,13 @@ import 'dart:math';
 
 import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
-import 'package:little_flower_app/model/ki_board_manager.dart';
+import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../fixture/fixtures.dart';
 
-late KiBoardManager kiBoardManager;
+late KiBoardService kiBoardService;
 late MockKiBoardRepository mockLocalRepository;
 late MockKiBoardRepository mockRemoteRepository;
 late MockKiBoardRepositoryFactory mockKiBoardRepositoryFactory;
@@ -26,26 +26,26 @@ void main() {
           .thenReturn(mockLocalRepository);
       when(mockKiBoardRepositoryFactory.remote())
           .thenReturn(mockRemoteRepository);
-      kiBoardManager = KiBoardManager(mockKiBoardRepositoryFactory);
+      kiBoardService = KiBoardService(mockKiBoardRepositoryFactory);
     });
 
     test('reset a exist public board', () async {
       givenRemoteBoard(KiBoard());
 
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      expect(kiBoardManager.board, KiBoard());
-      expect(kiBoardManager.visibility, GameVisibility.public);
+      expect(kiBoardService.board, KiBoard());
+      expect(kiBoardService.visibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId));
     });
 
     test('reset a non-exist private board', () async {
       givenLocalBoard(null);
 
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      expect(kiBoardManager.board, KiBoard());
-      expect(kiBoardManager.visibility, GameVisibility.private);
+      expect(kiBoardService.board, KiBoard());
+      expect(kiBoardService.visibility, GameVisibility.private);
       verifyNever(mockRemoteRepository.onValue(boardId));
     });
 
@@ -53,37 +53,37 @@ void main() {
       var kiBoard = getBoard(points: [Point(1, 1)]);
       givenLocalBoard(kiBoard);
 
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      expect(kiBoardManager.board, kiBoard);
-      expect(kiBoardManager.visibility, GameVisibility.private);
+      expect(kiBoardService.board, kiBoard);
+      expect(kiBoardService.visibility, GameVisibility.private);
       verifyNever(mockRemoteRepository.onValue(boardId));
     });
 
     test('board ids increase when reset a non-exist board', () async {
       givenBoardIdsLoad(["xxxx", "yyyy"]);
 
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      expect(kiBoardManager.allBoardIds, [boardId, "xxxx", "yyyy"]);
+      expect(kiBoardService.allBoardIds, [boardId, "xxxx", "yyyy"]);
     });
 
     test('toggle a private game should change to public', () async {
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      kiBoardManager.enablePublic();
+      kiBoardService.enablePublic();
 
-      expect(kiBoardManager.visibility, GameVisibility.public);
+      expect(kiBoardService.visibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId));
     });
 
     test('toggle a public game should remain in public', () async {
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      kiBoardManager.enablePublic();
-      kiBoardManager.enablePublic();
+      kiBoardService.enablePublic();
+      kiBoardService.enablePublic();
 
-      expect(kiBoardManager.visibility, GameVisibility.public);
+      expect(kiBoardService.visibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId)).called(1);
     });
 
@@ -94,7 +94,7 @@ void main() {
       whenRemoteBoardChange(getBoard(points: kiBoard));
 
       await Future.delayed(Duration(milliseconds: 100), () {
-        expect(kiBoardManager.board, getBoard(points: kiBoard));
+        expect(kiBoardService.board, getBoard(points: kiBoard));
       });
 
       await streamController.close();
@@ -103,19 +103,19 @@ void main() {
     test('load all board ids', () async {
       givenBoardIds(["abc", "cde"]);
 
-      await kiBoardManager.loadBoardIds();
+      await kiBoardService.loadBoardIds();
 
-      expect(kiBoardManager.allOtherBoardIds, ["abc", "cde"]);
+      expect(kiBoardService.allOtherBoardIds, ["abc", "cde"]);
     });
 
     test('remove private board', () async {
       givenBoardIdsLoad(["abc", "cde"]);
-      await kiBoardManager.resetKiBoard(boardId: boardId);
+      await kiBoardService.resetKiBoard(boardId: boardId);
 
-      await kiBoardManager.removeCurrentBoard();
+      await kiBoardService.removeCurrentBoard();
 
-      expect(kiBoardManager.boardId, "abc");
-      expect(kiBoardManager.allOtherBoardIds, ["cde"]);
+      expect(kiBoardService.boardId, "abc");
+      expect(kiBoardService.allOtherBoardIds, ["cde"]);
       verify(mockLocalRepository.remove(boardId));
       verifyNever(mockRemoteRepository.remove(any));
     });
@@ -125,7 +125,7 @@ void main() {
 Future<void> givenRemoteBoardReset(KiBoard kiBoard) async {
   givenRemoteController();
   givenRemoteBoard(kiBoard);
-  await kiBoardManager.resetKiBoard(boardId: boardId);
+  await kiBoardService.resetKiBoard(boardId: boardId);
 }
 
 void whenRemoteBoardChange(KiBoard kiBoard) {
@@ -140,7 +140,7 @@ void givenRemoteController() {
 
 Future<void> givenBoardIdsLoad(List<String> boardIds) async {
   givenBoardIds(boardIds);
-  await kiBoardManager.loadBoardIds();
+  await kiBoardService.loadBoardIds();
 }
 
 KiBoard getBoard({
