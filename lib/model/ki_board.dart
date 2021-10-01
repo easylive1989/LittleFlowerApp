@@ -13,19 +13,14 @@ class KiBoard {
   List<Point<int>> get blackKiList => List.from(_blackKiList);
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
 
-  bool _isGameOver = false;
-  bool get isGameOver => _isGameOver;
-
   KiBoard();
 
   KiBoard._(
     List<Point<int>> blackKiList,
     List<Point<int>> whiteKiList,
-    bool isGameOver,
   ) {
     _blackKiList.addAll(blackKiList);
     _whiteKiList.addAll(whiteKiList);
-    _isGameOver = isGameOver;
   }
 
   Ki get winner =>
@@ -34,19 +29,30 @@ class KiBoard {
   void addKi(Point<int> point) {
     if (_blackKiList.contains(point) ||
         _whiteKiList.contains(point) ||
-        _isGameOver) {
+        isGameOver()) {
       return;
     }
 
-    var kiList = _getKiList(_getKi())..add(point);
+    _getKiList(_getKi()).add(point);
+  }
 
-    _isGameOver = GameOverChecker(kiList, row, column).isGameOver(point);
+  bool isGameOver() {
+    if (blackKiList.isEmpty && whiteKiList.isEmpty) {
+      return false;
+    }
+
+    if (blackKiList.length == whiteKiList.length) {
+      return GameOverChecker(whiteKiList, row, column)
+          .isGameOver(whiteKiList.last);
+    } else {
+      return GameOverChecker(blackKiList, row, column)
+          .isGameOver(blackKiList.last);
+    }
   }
 
   void cleanUp() {
     _blackKiList.clear();
     _whiteKiList.clear();
-    _isGameOver = false;
   }
 
   Ki _getKi() {
@@ -63,7 +69,6 @@ class KiBoard {
     return {
       "blackKiList": _blackKiList.map((point) => pointToJson(point)).toList(),
       "whiteKiList": _whiteKiList.map((point) => pointToJson(point)).toList(),
-      "isGameOver": _isGameOver,
     };
   }
 
@@ -71,9 +76,7 @@ class KiBoard {
   bool operator ==(Object other) {
     return other is KiBoard &&
         listEquals(blackKiList, other.blackKiList) &&
-        listEquals(whiteKiList, other.whiteKiList) &&
-        isGameOver == other.isGameOver &&
-        winner == other.winner;
+        listEquals(whiteKiList, other.whiteKiList);
   }
 
   @override
@@ -88,7 +91,6 @@ class KiBoard {
     return KiBoard._(
       toPointList(json["blackKiList"]),
       toPointList(json["whiteKiList"]),
-      json["isGameOver"],
     );
   }
 }

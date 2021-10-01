@@ -35,7 +35,7 @@ void main() {
       kiBoardModel.addKi(Point(2, 4));
       kiBoardModel.addKi(Point(1, 5));
 
-      expect(kiBoardModel.isGameOver, true);
+      expect(kiBoardModel.isGameOver(), true);
       expect(kiBoardModel.winner, Ki.black);
     });
 

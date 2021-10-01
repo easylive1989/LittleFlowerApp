@@ -14,7 +14,7 @@ class ResultArea extends StatelessWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.only(top: 30),
       child: Visibility(
-        visible: kiBoardManager.board.isGameOver,
+        visible: kiBoardManager.board.isGameOver(),
         child: Column(
           children: [
             Text(
