@@ -14,9 +14,7 @@ class FirebaseDatabaseApi extends KiBoardRepository {
 
   Stream<KiBoard> onValue(boardId) {
     return _kiBoardRef.child(boardId).onValue.map((event) {
-      return event.snapshot.value != null
-          ? KiBoard.fromJson(jsonDecode(event.snapshot.value))
-          : KiBoard();
+      return KiBoard.fromJson(jsonDecode(event.snapshot.value));
     });
   }
 
