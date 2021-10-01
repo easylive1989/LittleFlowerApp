@@ -35,7 +35,7 @@ void main() {
       await kiBoardService.resetKiBoard(boardId: boardId);
 
       expect(kiBoardService.board, KiBoard());
-      expect(kiBoardService.visibility, GameVisibility.public);
+      expect(kiBoardService.visibility, GameVisibility.private);
       verify(mockRemoteRepository.onValue(boardId));
     });
 

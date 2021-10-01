@@ -15,7 +15,7 @@ class KiBoardService extends ChangeNotifier {
 
   String get boardId => _boardId;
 
-  GameVisibility get visibility => _visibility;
+  GameVisibility get visibility => _board.gameVisibility;
 
   List<String> get allOtherBoardIds =>
       _allBoardIds.where((id) => id != _boardId).toList();
@@ -24,7 +24,6 @@ class KiBoardService extends ChangeNotifier {
   List<String> _allBoardIds = [];
   KiBoard _board = KiBoard();
   String _boardId = "";
-  GameVisibility _visibility = GameVisibility.private;
 
   KiBoardRepository _localRepository;
   KiBoardRepository _remoteRepository;
@@ -47,16 +46,13 @@ class KiBoardService extends ChangeNotifier {
       _board = KiBoard();
       _saveBoard(_boardId, _board);
       _allBoardIds.insert(0, _boardId);
-      _visibility = GameVisibility.private;
     } else if (board == null && remoteBoard != null) {
       _board = remoteBoard;
       _saveBoard(_boardId, _board);
       _allBoardIds.insert(0, _boardId);
       listenToRemote(_boardId);
-      _visibility = GameVisibility.public;
     } else if (board != null) {
       _board = board;
-      _visibility = GameVisibility.private;
     }
     notifyListeners();
   }
@@ -69,16 +65,16 @@ class KiBoardService extends ChangeNotifier {
 
   Future _saveBoard(String boardId, KiBoard kiBoard) async {
     await _localRepository.saveKiBoard(boardId, kiBoard);
-    if (_visibility == GameVisibility.public) {
+    if (visibility == GameVisibility.public) {
       _remoteRepository.saveKiBoard(boardId, kiBoard);
     }
   }
 
   void enablePublic() {
-    if (_visibility == GameVisibility.private) {
+    if (visibility == GameVisibility.private) {
       listenToRemote(boardId);
     }
-    _visibility = GameVisibility.public;
+    _board.gameVisibility = GameVisibility.public;
     notifyListeners();
   }
 
@@ -100,7 +96,7 @@ class KiBoardService extends ChangeNotifier {
   Future removeCurrentBoard() async {
     await _localRepository.remove(_boardId);
     _allBoardIds.remove(_boardId);
-    if (_visibility == GameVisibility.public) {
+    if (visibility == GameVisibility.public) {
       _kiBoardSubscription?.cancel();
     }
     await resetKiBoard(
