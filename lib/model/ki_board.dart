@@ -77,7 +77,7 @@ class KiBoard {
     return {
       "blackKiList": _blackKiList.map((point) => pointToJson(point)).toList(),
       "whiteKiList": _whiteKiList.map((point) => pointToJson(point)).toList(),
-      "gameVisibility": gameVisibility,
+      "gameVisibility": gameVisibility.toInt(),
     };
   }
 
@@ -100,7 +100,7 @@ class KiBoard {
     return KiBoard._(
       toPointList(json["blackKiList"]),
       toPointList(json["whiteKiList"]),
-      json["gameVisibility"],
+      int.parse(json["gameVisibility"]).toGameVisibility(),
     );
   }
 }
