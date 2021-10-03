@@ -13,17 +13,14 @@ import 'package:random_string/random_string.dart';
 class KiBoardService extends ChangeNotifier {
   KiBoard get board => _board;
 
-  String get boardId => _boardId;
-
   GameVisibility get visibility => _board.gameVisibility;
 
   List<String> get allOtherBoardIds =>
-      _allBoardIds.where((id) => id != _boardId).toList();
+      _allBoardIds.where((id) => id != _board.boardId).toList();
   List<String> get allBoardIds => _allBoardIds;
 
   List<String> _allBoardIds = [];
-  KiBoard _board = KiBoard();
-  String _boardId = "";
+  late KiBoard _board = KiBoard(boardId: "not exist");
 
   KiBoardRepository _localRepository;
   KiBoardRepository _remoteRepository;
@@ -39,27 +36,35 @@ class KiBoardService extends ChangeNotifier {
 
   Future resetKiBoard({boardId}) async {
     _kiBoardSubscription?.cancel();
-    _boardId = boardId ?? getBoardId();
-    var board = await _localRepository.getKiBoard(_boardId);
-    var remoteBoard = await _remoteRepository.getKiBoard(_boardId);
+    if (boardId == null) {
+      _createNewBoard(boardId);
+      notifyListeners();
+      return;
+    }
+    var board = await _localRepository.getKiBoard(boardId);
+    var remoteBoard = await _remoteRepository.getKiBoard(boardId);
     if (board == null && remoteBoard == null) {
-      _board = KiBoard();
-      _saveBoard(_boardId, _board);
-      _allBoardIds.insert(0, _boardId);
+      _createNewBoard(boardId);
     } else if (board == null && remoteBoard != null) {
       _board = remoteBoard;
-      _saveBoard(_boardId, _board);
-      _allBoardIds.insert(0, _boardId);
-      listenToRemote(_boardId);
+      _saveBoard(_board.boardId, _board);
+      _allBoardIds.insert(0, _board.boardId);
+      listenToRemote(_board.boardId);
     } else if (board != null) {
       _board = board;
     }
     notifyListeners();
   }
 
+  void _createNewBoard(boardId) {
+    _board = KiBoard(boardId: boardId ?? getBoardId());
+    _saveBoard(_board.boardId, _board);
+    _allBoardIds.insert(0, _board.boardId);
+  }
+
   Future addKi(Point<int> point) async {
     _board.addKi(point);
-    await _saveBoard(_boardId, _board);
+    await _saveBoard(_board.boardId, _board);
     notifyListeners();
   }
 
@@ -72,7 +77,7 @@ class KiBoardService extends ChangeNotifier {
 
   void enablePublic() {
     if (visibility == GameVisibility.private) {
-      listenToRemote(boardId);
+      listenToRemote(_board.boardId);
     }
     _board.gameVisibility = GameVisibility.public;
     notifyListeners();
@@ -85,7 +90,7 @@ class KiBoardService extends ChangeNotifier {
 
   Future _onBoardUpdate(KiBoard board) async {
     _board = board;
-    await _localRepository.saveKiBoard(boardId, _board);
+    await _localRepository.saveKiBoard(_board.boardId, _board);
     notifyListeners();
   }
 
@@ -94,8 +99,8 @@ class KiBoardService extends ChangeNotifier {
   }
 
   Future removeCurrentBoard() async {
-    await _localRepository.remove(_boardId);
-    _allBoardIds.remove(_boardId);
+    await _localRepository.remove(_board.boardId);
+    _allBoardIds.remove(_board.boardId);
     if (visibility == GameVisibility.public) {
       _kiBoardSubscription?.cancel();
     }

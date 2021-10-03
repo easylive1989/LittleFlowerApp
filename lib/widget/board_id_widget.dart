@@ -123,11 +123,11 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
       child: Stack(
         children: [
           TextFormField(
-            key: ValueKey(kiBoardManager.boardId),
+            key: ValueKey(kiBoardManager.board.boardId),
             decoration: InputDecoration(border: InputBorder.none),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
-            initialValue: kiBoardManager.boardId,
+            initialValue: kiBoardManager.board.boardId,
             onTap: () {
               setState(() {
                 _isListOpen = false;

@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../fixture/fixtures.dart';
 
+String boardId = "boardId";
 void main() {
   group('ki board widget', () {
     late KiBoardService kiBoardService;
@@ -30,8 +31,8 @@ void main() {
       mockKiBoardRepository = MockKiBoardRepository();
       var mockFactory = MockKiBoardRepositoryFactory();
       when(mockFactory.local()).thenReturn(mockKiBoardRepository);
-      when(mockKiBoardRepository.getKiBoard(any))
-          .thenAnswer((realInvocation) => Future.value(KiBoard()));
+      when(mockKiBoardRepository.getKiBoard(any)).thenAnswer(
+          (realInvocation) => Future.value(KiBoard(boardId: boardId)));
       kiBoardService = KiBoardService(mockFactory);
       await kiBoardService.resetKiBoard();
     });
@@ -79,7 +80,7 @@ void main() {
               widget is CustomPaint && widget.painter is KiBoardPainter));
       (painter.painter as KiBoardPainter).onTap?.call(1, 2);
 
-      var expectedKiBoard = KiBoard();
+      var expectedKiBoard = KiBoard(boardId: boardId);
       expectedKiBoard.addKi(Point(1, 2));
 
       verify(mockKiBoardRepository.saveKiBoard(any, expectedKiBoard));

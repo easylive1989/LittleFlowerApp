@@ -12,9 +12,3 @@ extension GameVisibilityExtension on GameVisibility {
     return GameVisibility.values.indexOf(this);
   }
 }
-
-extension GameVisibilityIntExtension on int {
-  GameVisibility toGameVisibility() {
-    return GameVisibility.values[this];
-  }
-}

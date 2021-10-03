@@ -4,12 +4,13 @@ import 'package:little_flower_app/model/ki.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:test/test.dart';
 
+String boardId = "boardId";
 void main() {
   group('KiBoardModel', () {
     late KiBoard kiBoardModel;
 
     setUp(() {
-      kiBoardModel = KiBoard();
+      kiBoardModel = KiBoard(boardId: boardId);
     });
     test('add ki when ki board is empty should add black ki', () {
       kiBoardModel.addKi(Point(1, 1));

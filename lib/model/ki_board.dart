@@ -19,13 +19,18 @@ class KiBoard {
 
   GameVisibility gameVisibility = GameVisibility.private;
 
-  KiBoard();
+  final String _boardId;
+
+  String get boardId => _boardId;
+
+  KiBoard({required String boardId}) : _boardId = boardId;
 
   KiBoard._(
     List<Point<int>> blackKiList,
     List<Point<int>> whiteKiList,
     GameVisibility gameVisibility,
-  ) {
+    String boardId,
+  ) : _boardId = boardId {
     _blackKiList.addAll(blackKiList);
     _whiteKiList.addAll(whiteKiList);
     this.gameVisibility = gameVisibility;
@@ -78,6 +83,7 @@ class KiBoard {
       "blackKiList": _blackKiList.map((point) => pointToJson(point)).toList(),
       "whiteKiList": _whiteKiList.map((point) => pointToJson(point)).toList(),
       "gameVisibility": gameVisibility.toInt(),
+      "boardId": _boardId,
     };
   }
 
@@ -100,7 +106,8 @@ class KiBoard {
     return KiBoard._(
       toPointList(json["blackKiList"]),
       toPointList(json["whiteKiList"]),
-      int.parse(json["gameVisibility"]).toGameVisibility(),
+      GameVisibility.values[json["gameVisibility"]],
+      json["boardId"],
     );
   }
 }
