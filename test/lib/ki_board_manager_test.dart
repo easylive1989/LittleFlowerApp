@@ -35,7 +35,7 @@ void main() {
       await kiBoardService.resetKiBoard(boardId: boardId);
 
       expect(kiBoardService.board, KiBoard(boardId: boardId));
-      expect(kiBoardService.visibility, GameVisibility.private);
+      expect(kiBoardService.board.gameVisibility, GameVisibility.private);
       verify(mockRemoteRepository.onValue(boardId));
     });
 
@@ -45,7 +45,7 @@ void main() {
       await kiBoardService.resetKiBoard(boardId: boardId);
 
       expect(kiBoardService.board, KiBoard(boardId: boardId));
-      expect(kiBoardService.visibility, GameVisibility.private);
+      expect(kiBoardService.board.gameVisibility, GameVisibility.private);
       verifyNever(mockRemoteRepository.onValue(boardId));
     });
 
@@ -56,7 +56,7 @@ void main() {
       await kiBoardService.resetKiBoard(boardId: boardId);
 
       expect(kiBoardService.board, kiBoard);
-      expect(kiBoardService.visibility, GameVisibility.private);
+      expect(kiBoardService.board.gameVisibility, GameVisibility.private);
       verifyNever(mockRemoteRepository.onValue(boardId));
     });
 
@@ -73,7 +73,7 @@ void main() {
 
       kiBoardService.enablePublic();
 
-      expect(kiBoardService.visibility, GameVisibility.public);
+      expect(kiBoardService.board.gameVisibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId));
     });
 
@@ -83,7 +83,7 @@ void main() {
       kiBoardService.enablePublic();
       kiBoardService.enablePublic();
 
-      expect(kiBoardService.visibility, GameVisibility.public);
+      expect(kiBoardService.board.gameVisibility, GameVisibility.public);
       verify(mockRemoteRepository.onValue(boardId)).called(1);
     });
 

@@ -52,7 +52,9 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
       },
       icon: Icon(Icons.share_rounded),
       iconSize: 30,
-      color: kiBoardManager.visibility.isPublic() ? Colors.blue : Colors.grey,
+      color: kiBoardManager.board.gameVisibility.isPublic()
+          ? Colors.blue
+          : Colors.grey,
     );
   }
 

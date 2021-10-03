@@ -13,8 +13,6 @@ import 'package:random_string/random_string.dart';
 class KiBoardService extends ChangeNotifier {
   KiBoard get board => _board;
 
-  GameVisibility get visibility => _board.gameVisibility;
-
   List<String> get allOtherBoardIds =>
       _allBoardIds.where((id) => id != _board.boardId).toList();
   List<String> get allBoardIds => _allBoardIds;
@@ -70,13 +68,13 @@ class KiBoardService extends ChangeNotifier {
 
   Future _saveBoard(String boardId, KiBoard kiBoard) async {
     await _localRepository.saveKiBoard(boardId, kiBoard);
-    if (visibility == GameVisibility.public) {
+    if (board.gameVisibility == GameVisibility.public) {
       _remoteRepository.saveKiBoard(boardId, kiBoard);
     }
   }
 
   void enablePublic() {
-    if (visibility == GameVisibility.private) {
+    if (board.gameVisibility == GameVisibility.private) {
       listenToRemote(_board.boardId);
     }
     _board.gameVisibility = GameVisibility.public;
@@ -101,7 +99,7 @@ class KiBoardService extends ChangeNotifier {
   Future removeCurrentBoard() async {
     await _localRepository.remove(_board.boardId);
     _allBoardIds.remove(_board.boardId);
-    if (visibility == GameVisibility.public) {
+    if (board.gameVisibility == GameVisibility.public) {
       _kiBoardSubscription?.cancel();
     }
     await resetKiBoard(
