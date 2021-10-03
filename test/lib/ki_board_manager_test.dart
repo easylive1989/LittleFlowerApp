@@ -60,14 +60,6 @@ void main() {
       verifyNever(mockRemoteRepository.onValue(boardId));
     });
 
-    test('board ids increase when reset a non-exist board', () async {
-      givenBoardIdsLoad(["xxxx", "yyyy"]);
-
-      await kiBoardService.resetKiBoard(boardId: boardId);
-
-      expect(kiBoardService.allBoardIds, [boardId, "xxxx", "yyyy"]);
-    });
-
     test('toggle a private game should change to public', () async {
       await kiBoardService.resetKiBoard(boardId: boardId);
 
@@ -103,9 +95,9 @@ void main() {
     test('load all board ids', () async {
       givenBoardIds(["abc", "cde"]);
 
-      await kiBoardService.loadBoardIds();
+      // await kiBoardService.getBoardIds();
 
-      expect(kiBoardService.allOtherBoardIds, ["abc", "cde"]);
+      expect(await kiBoardService.allOtherBoardIds, ["abc", "cde"]);
     });
 
     test('remove private board', () async {
@@ -115,7 +107,7 @@ void main() {
       await kiBoardService.removeCurrentBoard();
 
       expect(kiBoardService.board.boardId, "abc");
-      expect(kiBoardService.allOtherBoardIds, ["cde"]);
+      expect(await kiBoardService.allOtherBoardIds, ["cde"]);
       verify(mockLocalRepository.remove(boardId));
       verifyNever(mockRemoteRepository.remove(any));
     });
@@ -140,7 +132,7 @@ void givenRemoteController() {
 
 Future<void> givenBoardIdsLoad(List<String> boardIds) async {
   givenBoardIds(boardIds);
-  await kiBoardService.loadBoardIds();
+  // await kiBoardService.getBoardIds();
 }
 
 KiBoard getBoard({

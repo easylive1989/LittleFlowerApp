@@ -13,11 +13,10 @@ import 'package:random_string/random_string.dart';
 class KiBoardService extends ChangeNotifier {
   KiBoard get board => _board;
 
-  List<String> get allOtherBoardIds =>
-      _allBoardIds.where((id) => id != _board.boardId).toList();
-  List<String> get allBoardIds => _allBoardIds;
+  Future<List<String>> get allOtherBoardIds async =>
+      (await _getBoardIdList()).where((id) => id != _board.boardId).toList();
+  Future<List<String>> get allBoardIds async => await _getBoardIdList();
 
-  List<String> _allBoardIds = [];
   late KiBoard _board = KiBoard(boardId: "not exist");
 
   KiBoardRepository _localRepository;
@@ -28,8 +27,8 @@ class KiBoardService extends ChangeNotifier {
       : _localRepository = kiBoardRepositoryFactory.local(),
         _remoteRepository = kiBoardRepositoryFactory.remote();
 
-  Future loadBoardIds() async {
-    _allBoardIds = await _localRepository.getBoardIds();
+  Future<List<String>> _getBoardIdList() async {
+    return await _localRepository.getBoardIds();
   }
 
   Future resetKiBoard({boardId}) async {
@@ -46,7 +45,6 @@ class KiBoardService extends ChangeNotifier {
     } else if (board == null && remoteBoard != null) {
       _board = remoteBoard;
       _saveBoard(_board.boardId, _board);
-      _allBoardIds.insert(0, _board.boardId);
       listenToRemote(_board.boardId);
     } else if (board != null) {
       _board = board;
@@ -57,7 +55,6 @@ class KiBoardService extends ChangeNotifier {
   void _createNewBoard(boardId) {
     _board = KiBoard(boardId: boardId ?? getBoardId());
     _saveBoard(_board.boardId, _board);
-    _allBoardIds.insert(0, _board.boardId);
   }
 
   Future addKi(Point<int> point) async {
@@ -98,11 +95,11 @@ class KiBoardService extends ChangeNotifier {
 
   Future removeCurrentBoard() async {
     await _localRepository.remove(_board.boardId);
-    _allBoardIds.remove(_board.boardId);
     if (board.gameVisibility == GameVisibility.public) {
       _kiBoardSubscription?.cancel();
     }
+    var boardIdList = await _getBoardIdList();
     await resetKiBoard(
-        boardId: _allBoardIds.isNotEmpty ? _allBoardIds.first : null);
+        boardId: boardIdList.isNotEmpty ? boardIdList.first : null);
   }
 }

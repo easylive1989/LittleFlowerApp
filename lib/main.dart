@@ -16,8 +16,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   var kiBoardManager = GetIt.I<KiBoardService>();
-  kiBoardManager.loadBoardIds();
-  runApp(MyApp(kiBoardManager));
+  runApp(
+    MyApp(kiBoardManager),
+  );
 }
 
 class MyApp extends StatelessWidget {

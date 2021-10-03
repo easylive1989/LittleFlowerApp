@@ -88,35 +88,43 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   Widget _buildBoardIdList(
       BuildContext context, KiBoardService kiBoardManager) {
-    var allBoardIds = kiBoardManager.allOtherBoardIds;
-    return Container(
-      height: 300,
-      color: Colors.white,
-      child: ListView.builder(
-        padding: EdgeInsets.all(0),
-        itemCount: allBoardIds.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _isListOpen = false;
-              });
-              context
-                  .read<KiBoardService>()
-                  .resetKiBoard(boardId: allBoardIds[index]);
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 2),
-              child: Text(
-                allBoardIds[index],
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
+    return FutureBuilder<List<String>>(
+        future: kiBoardManager.allBoardIds,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var allBoardIds = snapshot.data!;
+            return Container(
+              height: 300,
+              color: Colors.white,
+              child: ListView.builder(
+                padding: EdgeInsets.all(0),
+                itemCount: allBoardIds.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isListOpen = false;
+                      });
+                      context
+                          .read<KiBoardService>()
+                          .resetKiBoard(boardId: allBoardIds[index]);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        allBoardIds[index],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  );
+                },
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 
   Widget _buildBoardId(BuildContext context, KiBoardService kiBoardManager) {
