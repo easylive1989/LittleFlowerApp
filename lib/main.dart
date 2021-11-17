@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
@@ -12,6 +14,9 @@ import 'package:provider/provider.dart';
 import 'injection.dart';
 
 void main() async {
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  }
   configureInjection();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
