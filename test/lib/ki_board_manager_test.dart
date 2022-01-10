@@ -28,19 +28,6 @@ void main() {
       kiBoardService = KiBoardService(mockKiBoardRepositoryFactory);
     });
 
-    test('update board when public board change', () async {
-      await givenRemoteBoardReset(KiBoard(boardId: boardId));
-
-      var kiBoard = [Point(1, 1)];
-      whenRemoteBoardChange(getBoard(points: kiBoard));
-
-      await Future.delayed(Duration(milliseconds: 100), () {
-        expect(kiBoardService.board, getBoard(points: kiBoard));
-      });
-
-      await streamController.close();
-    });
-
     test('load all board ids', () async {
       givenBoardIds(["abc", "cde"]);
 
