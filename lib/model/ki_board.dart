@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:little_flower_app/model/game_over_checker.dart';
 import 'package:little_flower_app/model/ki.dart';
 
-import 'game_visibility.dart';
-
 class KiBoard {
   static int row = 15;
   static int column = 15;
@@ -17,8 +15,6 @@ class KiBoard {
 
   List<Point<int>> get whiteKiList => List.from(_whiteKiList);
 
-  GameVisibility gameVisibility = GameVisibility.private;
-
   final String _boardId;
 
   String get boardId => _boardId;
@@ -28,12 +24,10 @@ class KiBoard {
   KiBoard._(
     List<Point<int>> blackKiList,
     List<Point<int>> whiteKiList,
-    GameVisibility gameVisibility,
     String boardId,
   ) : _boardId = boardId {
     _blackKiList.addAll(blackKiList);
     _whiteKiList.addAll(whiteKiList);
-    this.gameVisibility = gameVisibility;
   }
 
   Ki get winner =>
@@ -82,7 +76,6 @@ class KiBoard {
     return {
       "blackKiList": _blackKiList.map((point) => pointToJson(point)).toList(),
       "whiteKiList": _whiteKiList.map((point) => pointToJson(point)).toList(),
-      "gameVisibility": gameVisibility.toInt(),
       "boardId": _boardId,
     };
   }
@@ -106,7 +99,6 @@ class KiBoard {
     return KiBoard._(
       toPointList(json["blackKiList"]),
       toPointList(json["whiteKiList"]),
-      GameVisibility.values[json["gameVisibility"]],
       json["boardId"],
     );
   }

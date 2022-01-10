@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:provider/provider.dart';
 
@@ -38,23 +37,8 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
         ),
         SizedBox(width: 10),
         _buildRefreshIcon(context),
-        _buildShareIcon(context, kiBoardManager),
         _buildDeleteIcon(context),
       ],
-    );
-  }
-
-  IconButton _buildShareIcon(
-      BuildContext context, KiBoardService kiBoardManager) {
-    return IconButton(
-      onPressed: () {
-        context.read<KiBoardService>().enablePublic();
-      },
-      icon: Icon(Icons.share_rounded),
-      iconSize: 30,
-      color: kiBoardManager.board.gameVisibility.isPublic()
-          ? Colors.blue
-          : Colors.grey,
     );
   }
 

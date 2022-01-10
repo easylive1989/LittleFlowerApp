@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:little_flower_app/model/game_visibility.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:mockito/mockito.dart';
@@ -27,56 +26,6 @@ void main() {
       when(mockKiBoardRepositoryFactory.remote())
           .thenReturn(mockRemoteRepository);
       kiBoardService = KiBoardService(mockKiBoardRepositoryFactory);
-    });
-
-    test('reset a exist public board', () async {
-      givenRemoteBoard(KiBoard(boardId: boardId));
-
-      await kiBoardService.resetKiBoard(boardId: boardId);
-
-      expect(kiBoardService.board, KiBoard(boardId: boardId));
-      expect(kiBoardService.board.gameVisibility, GameVisibility.private);
-      verify(mockRemoteRepository.onValue(boardId));
-    });
-
-    test('reset a non-exist private board', () async {
-      givenLocalBoard(null);
-
-      await kiBoardService.resetKiBoard(boardId: boardId);
-
-      expect(kiBoardService.board, KiBoard(boardId: boardId));
-      expect(kiBoardService.board.gameVisibility, GameVisibility.private);
-      verifyNever(mockRemoteRepository.onValue(boardId));
-    });
-
-    test('reset a exist private board', () async {
-      var kiBoard = getBoard(points: [Point(1, 1)]);
-      givenLocalBoard(kiBoard);
-
-      await kiBoardService.resetKiBoard(boardId: boardId);
-
-      expect(kiBoardService.board, kiBoard);
-      expect(kiBoardService.board.gameVisibility, GameVisibility.private);
-      verifyNever(mockRemoteRepository.onValue(boardId));
-    });
-
-    test('toggle a private game should change to public', () async {
-      await kiBoardService.resetKiBoard(boardId: boardId);
-
-      kiBoardService.enablePublic();
-
-      expect(kiBoardService.board.gameVisibility, GameVisibility.public);
-      verify(mockRemoteRepository.onValue(boardId));
-    });
-
-    test('toggle a public game should remain in public', () async {
-      await kiBoardService.resetKiBoard(boardId: boardId);
-
-      kiBoardService.enablePublic();
-      kiBoardService.enablePublic();
-
-      expect(kiBoardService.board.gameVisibility, GameVisibility.public);
-      verify(mockRemoteRepository.onValue(boardId)).called(1);
     });
 
     test('update board when public board change', () async {

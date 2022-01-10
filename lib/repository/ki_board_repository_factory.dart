@@ -1,23 +1,15 @@
 import 'package:injectable/injectable.dart';
-import 'package:little_flower_app/repository/firebase_database_api.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 import 'package:little_flower_app/repository/preference_api.dart';
 
 @Injectable()
 class KiBoardRepositoryFactory {
-  final FirebaseDatabaseApi _firebaseDatabaseApi;
   final PreferenceApi _preferenceApi;
 
-  KiBoardRepositoryFactory(
-      FirebaseDatabaseApi firebaseDatabaseApi, PreferenceApi preferenceApi)
-      : _firebaseDatabaseApi = firebaseDatabaseApi,
-        _preferenceApi = preferenceApi;
+  KiBoardRepositoryFactory(PreferenceApi preferenceApi)
+      : _preferenceApi = preferenceApi;
 
   KiBoardRepository local() {
     return _preferenceApi;
-  }
-
-  KiBoardRepository remote() {
-    return _firebaseDatabaseApi;
   }
 }
