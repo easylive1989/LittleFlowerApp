@@ -40,7 +40,6 @@ dependencies:
   shared_preferences: ^2.0.5
   injectable: ^1.4.1
   get_it: ^7.1.3
-  in_app_purchase: ^1.0.8
 
 dev_dependencies:
   flutter_test:
