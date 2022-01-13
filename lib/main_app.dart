@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/generated/l10n.dart';
-import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:little_flower_app/widget/board_info_area.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
 import 'package:little_flower_app/widget/result_area.dart';
 import 'package:provider/provider.dart';
 
 class MainApp extends StatelessWidget {
-  final KiBoardService _kiBoardService;
+  final KiBoardController _kiBoardController;
 
-  MainApp(this._kiBoardService);
+  MainApp(this._kiBoardController);
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: ChangeNotifierProvider(
-          create: (context) => _kiBoardService,
+          create: (context) => _kiBoardController,
           child: FutureBuilder(
-              future: _kiBoardService.resetKiBoard(),
+              future: _kiBoardController.resetKiBoard(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return _buildKiBoardArea();

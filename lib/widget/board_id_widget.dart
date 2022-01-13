@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/service/ki_board_service.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var kiBoardManager = context.watch<KiBoardService>();
+    var kiBoardController = context.watch<KiBoardController>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,16 +29,16 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
           ),
           child: Column(
             children: [
-              _buildBoardId(context, kiBoardManager),
+              _buildBoardId(context, kiBoardController.boardId),
               _isListOpen
-                  ? _buildBoardIdList(context, kiBoardManager)
+                  ? _buildBoardIdList(context, kiBoardController.allBoardId)
                   : Container(),
             ],
           ),
         ),
         SizedBox(width: 10),
         _buildRefreshIcon(context),
-        _buildDeleteIcon(context),
+        _buildDeleteIcon(context, kiBoardController.boardId),
       ],
     );
   }
@@ -45,7 +46,7 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   IconButton _buildRefreshIcon(BuildContext context) {
     return IconButton(
       onPressed: () {
-        context.read<KiBoardService>().resetKiBoard();
+        context.read<KiBoardController>().resetKiBoard();
       },
       iconSize: 30,
       icon: Icon(
@@ -55,11 +56,11 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
     );
   }
 
-  Widget _buildDeleteIcon(BuildContext context) {
+  Widget _buildDeleteIcon(BuildContext context, String boardId) {
     return GestureDetector(
       child: IconButton(
         onPressed: () {
-          context.read<KiBoardService>().removeCurrentBoard();
+          context.read<KiBoardController>().removeCurrentBoard(boardId);
         },
         iconSize: 30,
         icon: Icon(
@@ -71,9 +72,9 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
   }
 
   Widget _buildBoardIdList(
-      BuildContext context, KiBoardService kiBoardManager) {
+      BuildContext context, Future<List<String>> getBoardIdFuture) {
     return FutureBuilder<List<String>>(
-        future: kiBoardManager.allBoardIds,
+        future: getBoardIdFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var allBoardIds = snapshot.data!;
@@ -90,8 +91,8 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
                         _isListOpen = false;
                       });
                       context
-                          .read<KiBoardService>()
-                          .resetKiBoard(boardId: allBoardIds[index]);
+                          .read<KiBoardController>()
+                          .changeKiBoard(allBoardIds[index]);
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 2),
@@ -111,25 +112,24 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
         });
   }
 
-  Widget _buildBoardId(BuildContext context, KiBoardService kiBoardManager) {
+  Widget _buildBoardId(BuildContext context, String boardId) {
     return Container(
       height: 50,
       child: Stack(
         children: [
           TextFormField(
-            key: ValueKey(kiBoardManager.board.boardId),
+            key: ValueKey(boardId),
             decoration: InputDecoration(border: InputBorder.none),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
-            initialValue: kiBoardManager.board.boardId,
+            initialValue: boardId,
             onTap: () {
               setState(() {
                 _isListOpen = false;
               });
             },
-            onFieldSubmitted: (text) async => await context
-                .read<KiBoardService>()
-                .resetKiBoard(boardId: text),
+            onFieldSubmitted: (text) async =>
+                await context.read<KiBoardService>().changeKiBoard(text),
           ),
           Align(
             alignment: Alignment.centerRight,
