@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/service/ki_board_service.dart';
+import 'package:little_flower_app/widget/delete_button.dart';
+import 'package:little_flower_app/widget/refresh_button.dart';
 import 'package:provider/provider.dart';
 
 class BoardIdWidget extends StatefulWidget {
@@ -37,37 +39,15 @@ class _BoardIdWidgetState extends State<BoardIdWidget> {
           ),
         ),
         SizedBox(width: 10),
-        _buildRefreshIcon(context),
-        _buildDeleteIcon(context, kiBoardController.boardId),
+        RefreshButton(onTap: () {
+          context.read<KiBoardController>().resetKiBoard();
+        }),
+        DeleteButton(onTap: () {
+          context
+              .read<KiBoardController>()
+              .removeCurrentBoard(kiBoardController.boardId);
+        }),
       ],
-    );
-  }
-
-  IconButton _buildRefreshIcon(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        context.read<KiBoardController>().resetKiBoard();
-      },
-      iconSize: 30,
-      icon: Icon(
-        Icons.refresh_rounded,
-        color: Colors.blue,
-      ),
-    );
-  }
-
-  Widget _buildDeleteIcon(BuildContext context, String boardId) {
-    return GestureDetector(
-      child: IconButton(
-        onPressed: () {
-          context.read<KiBoardController>().removeCurrentBoard(boardId);
-        },
-        iconSize: 30,
-        icon: Icon(
-          Icons.delete_rounded,
-          color: Colors.red,
-        ),
-      ),
     );
   }
 
