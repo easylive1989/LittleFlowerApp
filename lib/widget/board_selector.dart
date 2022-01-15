@@ -21,10 +21,13 @@ class BoardSelector extends StatelessWidget {
         items: allBoardIds
             .map((boardId) => DropdownMenuItem(
                 value: boardId,
-                child: Text(
-                  boardId,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    boardId,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
                 )))
             .toList());
   }
