@@ -20,8 +20,12 @@ jobs:
           GOOGLE_SERVICE: ${{ secrets.GOOGLE_SERVICE }}
       - name: docker-build
         run: |
-          docker build --build-arg KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --build-arg KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --build-arg STORE_PASSWORD="${{ secrets.STORE_PASSWORD }}" -t dummy .
+          docker build --build-arg KEY_ALIAS="$KEY_ALIAS" --build-arg KEY_PASSWORD="$KEY_PASSWORD" --build-arg STORE_PASSWORD="$STORE_PASSWORD" -t dummy .
           docker cp dummy:/workspace/build/app/outputs/bundle/release/app-release.aab /app-release.aab
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
       - name: upload appbundle
         uses: actions/upload-artifact@v2
         with:
