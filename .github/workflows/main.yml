@@ -1,39 +1,32 @@
 name: Little Flower App
 
-on:
-  push:
-    branches:
-      - develop
+on: ['push']
+#on:
+#  push:
+#    branches:
+#      - develop
+#      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable' # or: 'beta', 'dev' or 'master'
       - run: echo $ANDROID_KEY_STORE | base64 -di > android/app/key.jks
         env:
           ANDROID_KEY_STORE: ${{ secrets.ANDROID_KEY_STORE }}
       - run: echo $GOOGLE_SERVICE | base64 -di > android/app/google-services.json
         env:
           GOOGLE_SERVICE: ${{ secrets.GOOGLE_SERVICE }}
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter build appbundle
-        env:
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      - name: docker-build
+        run: |
+          docker build --build-arg KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --build-arg KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --build-arg STORE_PASSWORD="${{ secrets.STORE_PASSWORD }}" --name dummy .
+          docker cp dummy:/workspace/build/app/outputs/bundle/release/app-release.aab /app-release.aab
       - name: upload appbundle
         uses: actions/upload-artifact@v2
         with:
           name: app bundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          path: /app-release.aab
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -54,9 +47,6 @@ jobs:
         run: |
           pip install google-api-python-client
           pip install oauth2client
-      - name: depoly for internal
-        if: "contains(github.ref, 'release')"
-        run: python script/deploy.py com.paulwu.little_flower_app script/key.json app-release.aab internal
       - name: depoly for release
         if: "contains(github.ref, 'master')"
         run: python script/deploy.py com.paulwu.little_flower_app script/key.json app-release.aab production
