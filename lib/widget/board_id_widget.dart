@@ -32,9 +32,7 @@ class BoardIdWidget extends StatelessWidget {
           context.read<KiBoardController>().resetKiBoard();
         }),
         DeleteButton(onTap: () {
-          context
-              .read<KiBoardController>()
-              .removeCurrentBoard();
+          context.read<KiBoardController>().removeCurrentBoard();
         }),
       ],
     );
