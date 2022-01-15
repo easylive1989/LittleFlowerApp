@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
         body: ChangeNotifierProvider(
           create: (context) => _kiBoardController,
           child: FutureBuilder(
-              future: _kiBoardController.resetKiBoard(),
+              future: _kiBoardController.createBoard(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return _buildKiBoardArea();

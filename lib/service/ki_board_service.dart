@@ -19,12 +19,16 @@ class KiBoardService {
       : _localRepository = kiBoardRepositoryFactory.local();
 
   Future resetKiBoard() async {
-    _createNewBoard(getBoardId());
+    _createBoard(_board.boardId);
   }
 
-  void _createNewBoard(String boardId) {
+  Future createNewBoard() async {
+    _createBoard(randomAlpha(5));
+  }
+
+  Future _createBoard(String boardId) async {
     _board = KiBoard(boardId: boardId);
-    _saveBoard(_board.boardId, _board);
+    await _saveBoard(_board.boardId, _board);
   }
 
   Future addKi(Point<int> point) async {
@@ -36,10 +40,6 @@ class KiBoardService {
     await _localRepository.saveKiBoard(boardId, kiBoard);
   }
 
-  String getBoardId() {
-    return randomAlpha(5);
-  }
-
   Future removeCurrentBoard(String boardId) async {
     await _localRepository.remove(_board.boardId);
   }
@@ -47,7 +47,7 @@ class KiBoardService {
   Future changeKiBoard(String boardId) async {
     var board = await _localRepository.getKiBoard(boardId);
     if (board == null) {
-      _createNewBoard(boardId);
+      _createBoard(boardId);
     } else {
       _board = board;
     }

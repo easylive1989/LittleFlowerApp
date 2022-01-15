@@ -27,7 +27,7 @@ class ResultArea extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async =>
-                  await context.read<KiBoardController>().resetKiBoard(),
+                  await context.read<KiBoardController>().createBoard(),
               child: Container(
                 padding: EdgeInsets.symmetric(
                   vertical: 5.0,

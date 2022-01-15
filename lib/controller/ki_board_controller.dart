@@ -28,8 +28,13 @@ class KiBoardController extends ChangeNotifier {
     if (boardIdList.isNotEmpty) {
       await _kiBoardService.changeKiBoard(boardIdList.first);
     } else {
-      await _kiBoardService.resetKiBoard();
+      await _kiBoardService.createNewBoard();
     }
+    notifyListeners();
+  }
+
+  Future createBoard() async {
+    await _kiBoardService.createNewBoard();
     notifyListeners();
   }
 
