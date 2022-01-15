@@ -13,6 +13,7 @@ class BoardSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+        underline: SizedBox(),
         isExpanded: true,
         onChanged: (value) {
           context.read<KiBoardController>().changeKiBoard(value!);
