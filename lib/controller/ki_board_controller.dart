@@ -10,6 +10,8 @@ class KiBoardController extends ChangeNotifier {
   final KiBoardService _kiBoardService;
   final BoardListService _boardListService;
 
+  List<String> _boardIds = [];
+
   KiBoardController({
     required BoardListService boardListService,
     required KiBoardService kiBoardService,
@@ -18,7 +20,7 @@ class KiBoardController extends ChangeNotifier {
 
   String get boardId => _kiBoardService.board.boardId;
 
-  Future<List<String>> get allBoardId => _boardListService.allBoardIds;
+  List<String> get boardIds => _boardIds;
 
   get board => _kiBoardService.board;
 
@@ -29,12 +31,14 @@ class KiBoardController extends ChangeNotifier {
       await _kiBoardService.changeKiBoard(boardIdList.first);
     } else {
       await _kiBoardService.createNewBoard();
+      _boardIds = await _boardListService.allBoardIds;
     }
     notifyListeners();
   }
 
   Future createBoard() async {
     await _kiBoardService.createNewBoard();
+    _boardIds = await _boardListService.allBoardIds;
     notifyListeners();
   }
 

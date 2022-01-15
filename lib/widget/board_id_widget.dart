@@ -22,7 +22,7 @@ class BoardIdWidget extends StatelessWidget {
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(5.0),
           ),
-          child: _buildBoardSelector(context, kiBoardController.allBoardId),
+          child: BoardSelector(allBoardIds: kiBoardController.boardIds),
         ),
         SizedBox(width: 10),
         AddButton(onTap: () {
@@ -37,23 +37,6 @@ class BoardIdWidget extends StatelessWidget {
               .removeCurrentBoard(kiBoardController.boardId);
         }),
       ],
-    );
-  }
-
-  Widget _buildBoardSelector(
-    BuildContext context,
-    Future<List<String>> getBoardIdFuture,
-  ) {
-    return FutureBuilder<List<String>>(
-      future: getBoardIdFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          var allBoardIds = snapshot.data!;
-          return BoardSelector(allBoardIds: allBoardIds);
-        } else {
-          return Container();
-        }
-      },
     );
   }
 }

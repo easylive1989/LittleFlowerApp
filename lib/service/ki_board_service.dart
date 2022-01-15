@@ -19,11 +19,11 @@ class KiBoardService {
       : _localRepository = kiBoardRepositoryFactory.local();
 
   Future resetKiBoard() async {
-    _createBoard(_board.boardId);
+    await _createBoard(_board.boardId);
   }
 
   Future createNewBoard() async {
-    _createBoard(randomAlpha(5));
+    await _createBoard(randomAlpha(5));
   }
 
   Future _createBoard(String boardId) async {
