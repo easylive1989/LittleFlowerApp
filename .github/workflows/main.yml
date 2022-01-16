@@ -1,11 +1,10 @@
 name: Little Flower App
 
-on: ['push']
-#on:
-#  push:
-#    branches:
-#      - develop
-#      - master
+on:
+  push:
+    branches:
+      - develop
+      - master
 
 jobs:
   build:
@@ -50,5 +49,5 @@ jobs:
         run: |
           pip install google-api-python-client
           pip install oauth2client
-#      - name: depoly for release
-#        run: python script/deploy.py com.paulwu.little_flower_app script/key.json app-release.aab production
+      - name: depoly for release
+        run: python script/deploy.py com.paulwu.little_flower_app script/key.json app-release.aab production
