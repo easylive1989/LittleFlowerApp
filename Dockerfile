@@ -1,12 +1,3 @@
 FROM cirrusci/flutter:stable as build
 
-ARG KEY_ALIAS
-ARG KEY_PASSWORD
-ARG STORE_PASSWORD
-ENV KEY_ALIAS=$KEY_ALIAS
-ENV KEY_PASSWORD=$KEY_PASSWORD
-ENV STORE_PASSWORD=$STORE_PASSWORD
-
-COPY / /workspace/
-WORKDIR /workspace
-RUN flutter build appbundle
+ENTRYPOINT ["flutter"]
