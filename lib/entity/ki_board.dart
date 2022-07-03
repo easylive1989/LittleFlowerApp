@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:little_flower_app/model/game_over_checker.dart';
-import 'package:little_flower_app/model/ki.dart';
+import 'package:little_flower_app/entity/game_over_checker.dart';
+import 'package:little_flower_app/entity/ki.dart';
 
 class KiBoard {
   static int row = 15;
