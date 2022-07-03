@@ -61,13 +61,24 @@ main() {
         throwsA(isA<SharedPreferenceAccessException>()));
   });
 
-  test("remove", () async {
+  test("remove ok", () async {
     givenRemoveOk();
 
     await kiBoardRepository.remove("123");
 
     verify(() => mockSharedPreferences.remove("123"));
   });
+
+  test("remove fail", () async {
+    givenRemoveFail();
+
+    expect(() => kiBoardRepository.remove("123"),
+        throwsA(isA<SharedPreferenceAccessException>()));
+  });
+}
+
+void givenRemoveFail() {
+  when(() => mockSharedPreferences.remove(any())).thenThrow(Exception());
 }
 
 void givenGetKeysFail() {

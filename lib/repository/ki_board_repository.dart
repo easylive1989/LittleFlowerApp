@@ -43,6 +43,10 @@ class KiBoardRepository {
   }
 
   Future remove(String boardId) async {
-    _prefs.remove(boardId);
+    try {
+      _prefs.remove(boardId);
+    } catch (e) {
+      throw SharedPreferenceAccessException();
+    }
   }
 }
