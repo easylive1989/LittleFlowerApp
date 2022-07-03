@@ -46,12 +46,19 @@ main() {
         throwsA(isA<SharedPreferenceAccessException>()));
   });
 
-  test("getBoardIds", () async {
+  test("getBoardIds ok", () async {
     givenGetKeys({"111", "222", "333"});
 
     List<String> boardIds = await kiBoardRepository.getBoardIds();
 
     expect(boardIds, ["111", "222", "333"]);
+  });
+
+  test("getBoardIds fail", () async {
+    givenGetKeysFail();
+
+    expect(() => kiBoardRepository.getBoardIds(),
+        throwsA(isA<SharedPreferenceAccessException>()));
   });
 
   test("remove", () async {
@@ -61,6 +68,10 @@ main() {
 
     verify(() => mockSharedPreferences.remove("123"));
   });
+}
+
+void givenGetKeysFail() {
+  when(() => mockSharedPreferences.getKeys()).thenThrow(Exception());
 }
 
 void givenGetFail() {

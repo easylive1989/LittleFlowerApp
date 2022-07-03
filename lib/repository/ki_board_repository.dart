@@ -35,7 +35,11 @@ class KiBoardRepository {
   }
 
   Future<List<String>> getBoardIds() async {
-    return _prefs.getKeys().toList();
+    try {
+      return _prefs.getKeys().toList();
+    } catch (e) {
+      throw SharedPreferenceAccessException();
+    }
   }
 
   Future remove(String boardId) async {
