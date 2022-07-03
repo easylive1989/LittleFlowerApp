@@ -44,15 +44,8 @@ class KiBoardRepository {
 
   List<KiBoard> getKiBoards() {
     try {
-      List<KiBoard?> list =
-          _prefs.getKeys().map((boardId) => getKiBoard(boardId)).toList();
-      List<KiBoard> result = [];
-      list.forEach((board) {
-        if (board != null) {
-          result.add(board);
-        }
-      });
-      return result;
+      var boards = _prefs.getKeys().map((boardId) => getKiBoard(boardId));
+      return boards.whereType<KiBoard>().toList();
     } catch (e) {
       throw SharedPreferenceAccessException();
     }
