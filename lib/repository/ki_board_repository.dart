@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/entity/ki_board.dart';
+import 'package:little_flower_app/repository/shared_preference_access_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @Injectable()
@@ -14,7 +15,11 @@ class KiBoardRepository {
   }) : _prefs = sharedPreferences;
 
   Future saveKiBoard(String id, KiBoard kiBoard) async {
-    await _prefs.setString(id, jsonEncode(kiBoard.toJson()));
+    try {
+      await _prefs.setString(id, jsonEncode(kiBoard.toJson()));
+    } catch (e) {
+      throw SharedPreferenceAccessException();
+    }
   }
 
   Future<KiBoard?> getKiBoard(String id) async {

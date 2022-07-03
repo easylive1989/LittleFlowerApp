@@ -1,0 +1,1 @@
+class SharedPreferenceAccessException implements Exception {}

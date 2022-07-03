@@ -1,5 +1,6 @@
 import 'package:little_flower_app/entity/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
+import 'package:little_flower_app/repository/shared_preference_access_exception.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -14,13 +15,20 @@ main() {
         KiBoardRepository(sharedPreferences: mockSharedPreferences);
   });
 
-  test("saveKiBoard", () async {
+  test("saveKiBoard ok", () async {
     givenSetStringOk();
 
     await kiBoardRepository.saveKiBoard("123", KiBoard(boardId: "123"));
 
     verify(() => mockSharedPreferences.setString(
         "123", "{\"blackKiList\":[],\"whiteKiList\":[],\"boardId\":\"123\"}"));
+  });
+
+  test("saveKiBoard fail", () async {
+    givenSetStringFail();
+
+    expect(() => kiBoardRepository.saveKiBoard("123", KiBoard(boardId: "123")),
+        throwsA(isA<SharedPreferenceAccessException>()));
   });
 
   test("getKiBoard", () async {
@@ -46,6 +54,11 @@ main() {
 
     verify(() => mockSharedPreferences.remove("123"));
   });
+}
+
+void givenSetStringFail() {
+  when(() => mockSharedPreferences.setString(any(), any()))
+      .thenThrow(Exception());
 }
 
 void givenRemoveOk() {
