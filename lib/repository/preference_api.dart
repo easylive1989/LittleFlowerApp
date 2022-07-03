@@ -14,7 +14,7 @@ class PreferenceApi implements KiBoardRepository {
     await prefs.setString(id, jsonEncode(kiBoard.toJson()));
   }
 
-  Future<KiBoard?> getKiBoard(String id) async {
+  Future<KiBoard?> getKiBoard(String id, {int? gg}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.get(id);
     if (data == null) {
