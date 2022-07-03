@@ -23,11 +23,15 @@ class KiBoardRepository {
   }
 
   Future<KiBoard?> getKiBoard(String id) async {
-    var data = _prefs.get(id);
-    if (data == null) {
-      return null;
+    try {
+      var data = _prefs.get(id);
+      if (data == null) {
+        return null;
+      }
+      return KiBoard.fromJson(jsonDecode(data.toString()));
+    } catch (e) {
+      throw SharedPreferenceAccessException();
     }
-    return KiBoard.fromJson(jsonDecode(data.toString()));
   }
 
   Future<List<String>> getBoardIds() async {
