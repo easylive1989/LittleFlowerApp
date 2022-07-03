@@ -75,6 +75,27 @@ main() {
     expect(() => kiBoardRepository.remove("123"),
         throwsA(isA<SharedPreferenceAccessException>()));
   });
+
+  test("get ki boards ok", () async {
+    givenGet("{\"blackKiList\":[],\"whiteKiList\":[],\"boardId\":\"123\"}");
+    givenGetKeys({"111", "222", "333"});
+
+    List<KiBoard> boards = await kiBoardRepository.getKiBoards();
+
+    expect(boards, [
+      KiBoard(boardId: "123"),
+      KiBoard(boardId: "123"),
+      KiBoard(boardId: "123"),
+    ]);
+  });
+
+  test("get ki boards fail", () async {
+    givenGetFail();
+    givenGetKeys({"111", "222", "333"});
+
+    expect(() => kiBoardRepository.getKiBoards(),
+        throwsA(isA<SharedPreferenceAccessException>()));
+  });
 }
 
 void givenRemoveFail() {
@@ -109,9 +130,7 @@ void givenSetStringOk() {
 }
 
 void givenGet(String data) {
-  when(() => mockSharedPreferences.get(any())).thenReturn((value) {
-    return data;
-  });
+  when(() => mockSharedPreferences.get(any())).thenReturn(data);
 }
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}

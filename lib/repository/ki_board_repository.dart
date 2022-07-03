@@ -22,7 +22,7 @@ class KiBoardRepository {
     }
   }
 
-  Future<KiBoard?> getKiBoard(String id) async {
+  KiBoard? getKiBoard(String id) {
     try {
       var data = _prefs.get(id);
       if (data == null) {
@@ -37,6 +37,22 @@ class KiBoardRepository {
   Future<List<String>> getBoardIds() async {
     try {
       return _prefs.getKeys().toList();
+    } catch (e) {
+      throw SharedPreferenceAccessException();
+    }
+  }
+
+  List<KiBoard> getKiBoards() {
+    try {
+      List<KiBoard?> list =
+          _prefs.getKeys().map((boardId) => getKiBoard(boardId)).toList();
+      List<KiBoard> result = [];
+      list.forEach((board) {
+        if (board != null) {
+          result.add(board);
+        }
+      });
+      return result;
     } catch (e) {
       throw SharedPreferenceAccessException();
     }
