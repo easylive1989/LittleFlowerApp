@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
-import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/entity/ki_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @Injectable()

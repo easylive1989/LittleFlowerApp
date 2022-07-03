@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:little_flower_app/model/ki.dart';
-import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/entity/ki.dart';
+import 'package:little_flower_app/entity/ki_board.dart';
 import 'package:test/test.dart';
 
 String boardId = "boardId";

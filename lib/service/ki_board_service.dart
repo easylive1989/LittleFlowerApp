@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:injectable/injectable.dart';
-import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/entity/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 import 'package:random_string/random_string.dart';
 
