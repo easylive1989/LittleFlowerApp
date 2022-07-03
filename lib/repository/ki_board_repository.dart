@@ -7,14 +7,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @Injectable()
 class KiBoardRepository {
+  final SharedPreferences _prefs;
+
+  KiBoardRepository({
+    required SharedPreferences sharedPreferences,
+  }) : _prefs = sharedPreferences;
+
   Future saveKiBoard(String id, KiBoard kiBoard) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(id, jsonEncode(kiBoard.toJson()));
+    await _prefs.setString(id, jsonEncode(kiBoard.toJson()));
   }
 
   Future<KiBoard?> getKiBoard(String id, {int? gg}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.get(id);
+    var data = _prefs.get(id);
     if (data == null) {
       return null;
     }
@@ -22,12 +26,10 @@ class KiBoardRepository {
   }
 
   Future<List<String>> getBoardIds() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getKeys().toList();
+    return _prefs.getKeys().toList();
   }
 
   Future remove(String boardId) async {
-    var prefs = await SharedPreferences.getInstance();
-    prefs.remove(boardId);
+    _prefs.remove(boardId);
   }
 }
