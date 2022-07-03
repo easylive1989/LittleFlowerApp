@@ -21,13 +21,11 @@ class KiBoardRepository {
     return KiBoard.fromJson(jsonDecode(data.toString()));
   }
 
-  @override
   Future<List<String>> getBoardIds() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getKeys().toList();
   }
 
-  @override
   Future remove(String boardId) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.remove(boardId);
