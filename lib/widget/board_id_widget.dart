@@ -3,7 +3,6 @@ import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/widget/add_button.dart';
 import 'package:little_flower_app/widget/board_selector.dart';
 import 'package:little_flower_app/widget/delete_button.dart';
-import 'package:little_flower_app/widget/refresh_button.dart';
 import 'package:provider/provider.dart';
 
 class BoardIdWidget extends StatelessWidget {
@@ -27,9 +26,6 @@ class BoardIdWidget extends StatelessWidget {
         SizedBox(width: 10),
         AddButton(onTap: () {
           context.read<KiBoardController>().createBoard();
-        }),
-        RefreshButton(onTap: () {
-          context.read<KiBoardController>().resetKiBoard();
         }),
         DeleteButton(onTap: () {
           context.read<KiBoardController>().removeCurrentBoard();

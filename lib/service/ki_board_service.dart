@@ -17,10 +17,6 @@ class KiBoardService {
   KiBoardService(KiBoardRepository kiBoardRepositoryFactory)
       : _kiBoardRepository = kiBoardRepositoryFactory;
 
-  Future resetKiBoard() async {
-    await _createBoard(_board.boardId);
-  }
-
   Future createNewBoard() async {
     await _createBoard(randomAlpha(5));
   }

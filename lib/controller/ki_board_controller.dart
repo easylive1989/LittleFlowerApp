@@ -42,11 +42,6 @@ class KiBoardController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future resetKiBoard() async {
-    await _kiBoardService.resetKiBoard();
-    notifyListeners();
-  }
-
   Future changeKiBoard(String boardId) async {
     await _kiBoardService.changeKiBoard(boardId);
     notifyListeners();
