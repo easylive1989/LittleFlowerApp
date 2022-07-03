@@ -40,6 +40,15 @@ void main() {
       expect(kiBoardModel.winner, Ki.black);
     });
 
+    test('clean kiboard', () {
+      kiBoardModel.addKi(Point(1, 1));
+      kiBoardModel.addKi(Point(2, 1));
+
+      kiBoardModel.cleanUp();
+
+      expect(kiBoardModel, KiBoard(boardId: boardId));
+    });
+
     test('convert json to ki board', () {
       kiBoardModel.addKi(Point(1, 1));
       kiBoardModel.addKi(Point(1, 2));
