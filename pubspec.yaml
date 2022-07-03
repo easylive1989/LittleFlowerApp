@@ -28,12 +28,12 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
 
-  provider: ^6.0.0
-  flutter_bloc: ^7.2.0
-  random_string: ^2.2.0-nullsafety
-  shared_preferences: ^2.0.5
-  injectable: ^1.4.1
-  get_it: ^7.1.3
+  provider: ^6.0.3
+  flutter_bloc: ^8.0.1
+  random_string: ^2.3.1
+  shared_preferences: ^2.0.15
+  injectable: ^1.5.3
+  get_it: ^7.2.0
   platform: ^3.1.0
 
 dev_dependencies:
@@ -42,7 +42,7 @@ dev_dependencies:
   test: any
   mocktail: ^0.3.0
   injectable_generator: ^1.4.1
-  build_runner: ^2.0.4
+  build_runner: ^2.1.11
 
 flutter:
   generate: true
