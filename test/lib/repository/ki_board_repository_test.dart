@@ -30,6 +30,18 @@ main() {
 
     expect(kiBoard, KiBoard(boardId: "123"));
   });
+
+  test("getBoardIds", () async {
+    givenGetKeys({"111", "222", "333"});
+
+    List<String> boardIds = await kiBoardRepository.getBoardIds();
+
+    expect(boardIds, ["111", "222", "333"]);
+  });
+}
+
+void givenGetKeys(Set<String> boardIds) {
+  when(() => mockSharedPreferences.getKeys()).thenReturn(boardIds);
 }
 
 void givenSetStringOk() {
@@ -38,7 +50,7 @@ void givenSetStringOk() {
 }
 
 void givenGet(String data) {
-  when(() => mockSharedPreferences.get(any())).thenAnswer((value) {
+  when(() => mockSharedPreferences.get(any())).thenReturn((value) {
     return data;
   });
 }
