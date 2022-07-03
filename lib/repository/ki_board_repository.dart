@@ -17,7 +17,7 @@ class KiBoardRepository {
     await _prefs.setString(id, jsonEncode(kiBoard.toJson()));
   }
 
-  Future<KiBoard?> getKiBoard(String id, {int? gg}) async {
+  Future<KiBoard?> getKiBoard(String id) async {
     var data = _prefs.get(id);
     if (data == null) {
       return null;
