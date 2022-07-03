@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
-import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:random_string/random_string.dart';
 
 @Injectable()
@@ -13,10 +12,10 @@ class KiBoardService {
 
   late KiBoard _board = KiBoard(boardId: "not exist");
 
-  KiBoardRepository _localRepository;
+  KiBoardRepository _kiBoardRepository;
 
-  KiBoardService(KiBoardRepositoryFactory kiBoardRepositoryFactory)
-      : _localRepository = kiBoardRepositoryFactory.local();
+  KiBoardService(KiBoardRepository kiBoardRepositoryFactory)
+      : _kiBoardRepository = kiBoardRepositoryFactory;
 
   Future resetKiBoard() async {
     await _createBoard(_board.boardId);
@@ -37,15 +36,15 @@ class KiBoardService {
   }
 
   Future _saveBoard(String boardId, KiBoard kiBoard) async {
-    await _localRepository.saveKiBoard(boardId, kiBoard);
+    await _kiBoardRepository.saveKiBoard(boardId, kiBoard);
   }
 
   Future removeCurrentBoard(String boardId) async {
-    await _localRepository.remove(_board.boardId);
+    await _kiBoardRepository.remove(_board.boardId);
   }
 
   Future changeKiBoard(String boardId) async {
-    var board = await _localRepository.getKiBoard(boardId);
+    var board = await _kiBoardRepository.getKiBoard(boardId);
     if (board == null) {
       _createBoard(boardId);
     } else {
