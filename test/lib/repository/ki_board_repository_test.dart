@@ -38,6 +38,19 @@ main() {
 
     expect(boardIds, ["111", "222", "333"]);
   });
+
+  test("remove", () async {
+    givenRemoveOk();
+
+    await kiBoardRepository.remove("123");
+
+    verify(() => mockSharedPreferences.remove("123"));
+  });
+}
+
+void givenRemoveOk() {
+  when(() => mockSharedPreferences.remove(any()))
+      .thenAnswer((invocation) async => true);
 }
 
 void givenGetKeys(Set<String> boardIds) {
