@@ -14,8 +14,8 @@ class KiBoardService {
 
   KiBoardRepository _kiBoardRepository;
 
-  KiBoardService(KiBoardRepository kiBoardRepositoryFactory)
-      : _kiBoardRepository = kiBoardRepositoryFactory;
+  KiBoardService(KiBoardRepository kiBoardRepository)
+      : _kiBoardRepository = kiBoardRepository;
 
   Future createNewBoard() async {
     await _createBoard(randomAlpha(5));
