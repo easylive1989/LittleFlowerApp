@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:little_flower_app/controller/ki_board_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:little_flower_app/entity/ki_board.dart';
 import 'package:little_flower_app/generated/l10n.dart';
-import 'package:little_flower_app/widget/board_info_area.dart';
+import 'package:little_flower_app/providers.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
-import 'package:little_flower_app/widget/result_area.dart';
-import 'package:provider/provider.dart';
 
 class MainApp extends StatelessWidget {
-  final KiBoardController _kiBoardController;
-
-  MainApp(this._kiBoardController);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,36 +19,34 @@ class MainApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: ChangeNotifierProvider(
-          create: (context) => _kiBoardController,
-          child: FutureBuilder(
-              future: _kiBoardController.createBoard(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return _buildKiBoardArea();
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }),
-        ),
+        body: KiBoardListView(),
       ),
     );
   }
+}
 
-  Widget _buildKiBoardArea() {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: KiBoardArea(),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ResultArea(),
-        ),
-        BoardInfoArea(),
-      ],
+class KiBoardListView extends ConsumerWidget {
+  const KiBoardListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue<List<KiBoard>> kiBoardsFuture = ref.watch(kiBoardsProvider);
+    return kiBoardsFuture.when(
+      data: (kiBoards) {
+        return ListView.separated(
+          itemCount: kiBoards.length,
+          itemBuilder: (context, index) {
+            return KiBoardArea(kiBoard: kiBoards[index]);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(height: 16);
+          },
+        );
+      },
+      error: (e, st) {
+        return SizedBox();
+      },
+      loading: () => CircularProgressIndicator(),
     );
   }
 }
