@@ -28,6 +28,7 @@ class KiBoardRepository {
       if (data == null) {
         return null;
       }
+      print(data);
       return KiBoard.fromJson(jsonDecode(data.toString()));
     } catch (e) {
       throw SharedPreferenceAccessException();

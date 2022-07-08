@@ -33,19 +33,16 @@ class KiBoardListView extends ConsumerWidget {
     AsyncValue<List<KiBoard>> kiBoardsFuture = ref.watch(kiBoardsProvider);
     return kiBoardsFuture.when(
       data: (kiBoards) {
-        return ListView.separated(
+        return PageView.builder(
+          controller: PageController(viewportFraction: 0.6),
+          scrollDirection: Axis.vertical,
           itemCount: kiBoards.length,
           itemBuilder: (context, index) {
             return KiBoardArea(kiBoard: kiBoards[index]);
           },
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(height: 16);
-          },
         );
       },
-      error: (e, st) {
-        return SizedBox();
-      },
+      error: (e, st) => SizedBox(),
       loading: () => CircularProgressIndicator(),
     );
   }
