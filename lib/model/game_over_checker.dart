@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:welltested/welltested.dart';
+
+@Welltested()
 class GameOverChecker {
   final List<Point<int>> kiList;
   final int row;
