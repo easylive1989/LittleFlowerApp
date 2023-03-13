@@ -1,6 +1,5 @@
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
-import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:mockito/mockito.dart';
 
 class MockKiBoardRepository extends Mock implements KiBoardRepository {
@@ -35,17 +34,4 @@ class MockKiBoardRepository extends Mock implements KiBoardRepository {
         returnValue: Future.value(List<String>.empty()),
         returnValueForMissingStub: Future.value(List<String>.empty()),
       );
-}
-
-class MockKiBoardRepositoryFactory extends Mock
-    implements KiBoardRepositoryFactory {
-  @override
-  KiBoardRepository local() => super.noSuchMethod(Invocation.method(#local, []),
-      returnValue: MockKiBoardRepository(),
-      returnValueForMissingStub: MockKiBoardRepository());
-  @override
-  KiBoardRepository remote() =>
-      super.noSuchMethod(Invocation.method(#remote, []),
-          returnValue: MockKiBoardRepository(),
-          returnValueForMissingStub: MockKiBoardRepository());
 }

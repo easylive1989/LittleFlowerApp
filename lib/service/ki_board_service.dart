@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
-import 'package:little_flower_app/repository/ki_board_repository_factory.dart';
 import 'package:random_string/random_string.dart';
 
 @Injectable()
@@ -15,8 +14,8 @@ class KiBoardService {
 
   KiBoardRepository _localRepository;
 
-  KiBoardService(KiBoardRepositoryFactory kiBoardRepositoryFactory)
-      : _localRepository = kiBoardRepositoryFactory.local();
+  KiBoardService(KiBoardRepository repository)
+      : _localRepository = repository;
 
   Future resetKiBoard() async {
     await _createBoard(_board.boardId);
