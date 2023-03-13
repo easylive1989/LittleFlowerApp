@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
+import 'package:little_flower_app/repository/ki_board_repository.dart';
 
 @Injectable()
 class BoardListService {

@@ -8,10 +8,9 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'controller/ki_board_controller.dart' as _i7;
-import 'repository/ki_board_repository.dart' as _i5;
-import 'repository/preference_api.dart' as _i6;
-import 'service/board_list_service.dart' as _i3;
+import 'controller/ki_board_controller.dart' as _i6;
+import 'repository/ki_board_repository.dart' as _i3;
+import 'service/board_list_service.dart' as _i5;
 import 'service/ki_board_service.dart'
     as _i4; // ignore_for_file: unnecessary_lambdas
 
@@ -27,12 +26,13 @@ _i1.GetIt $initGetIt(
     environment,
     environmentFilter,
   );
-  gh.factory<_i3.BoardListService>(() => _i3.BoardListService(get<dynamic>()));
+  gh.factory<_i3.KiBoardRepository>(() => _i3.KiBoardRepository());
   gh.factory<_i4.KiBoardService>(
-      () => _i4.KiBoardService(get<_i5.KiBoardRepository>()));
-  gh.factory<_i6.PreferenceApi>(() => _i6.PreferenceApi());
-  gh.factory<_i7.KiBoardController>(() => _i7.KiBoardController(
-        boardListService: get<_i3.BoardListService>(),
+      () => _i4.KiBoardService(get<_i3.KiBoardRepository>()));
+  gh.factory<_i5.BoardListService>(
+      () => _i5.BoardListService(get<_i3.KiBoardRepository>()));
+  gh.factory<_i6.KiBoardController>(() => _i6.KiBoardController(
+        boardListService: get<_i5.BoardListService>(),
         kiBoardService: get<_i4.KiBoardService>(),
       ));
   return get;
