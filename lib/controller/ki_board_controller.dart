@@ -2,58 +2,60 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:little_flower_app/service/board_list_service.dart';
+import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/service/ki_board_service.dart';
 
 @Injectable()
 class KiBoardController extends ChangeNotifier {
   final KiBoardService _kiBoardService;
-  final BoardListService _boardListService;
 
-  List<String> _boardIds = [];
+  List<KiBoard> _boards = [];
+  late KiBoard _board;
 
   KiBoardController({
-    required BoardListService boardListService,
     required KiBoardService kiBoardService,
-  })  : _kiBoardService = kiBoardService,
-        _boardListService = boardListService;
+  })  : _kiBoardService = kiBoardService;
 
-  String get boardId => _kiBoardService.board.boardId;
+  List<String> get boardIds => _boards.map((board) => board.boardId).toList();
 
-  List<String> get boardIds => _boardIds;
-
-  get board => _kiBoardService.board;
+  KiBoard get board => _board;
 
   Future removeCurrentBoard() async {
-    await _kiBoardService.removeCurrentBoard(boardId);
-    _boardIds = await _boardListService.allBoardIds;
-    if (_boardIds.isNotEmpty) {
-      await _kiBoardService.changeKiBoard(_boardIds.first);
-    } else {
-      await _kiBoardService.createNewBoard();
-      _boardIds = await _boardListService.allBoardIds;
+    await _kiBoardService.removeCurrentBoard(_board.boardId);
+    _boards.remove(_board);
+    if (_boards.isNotEmpty) {
+      var kiBoard = await _kiBoardService.getBoard(_boards.first.boardId);
+      if (kiBoard != null) {
+        _board = kiBoard;
+        notifyListeners();
+        return;
+      }
     }
+    var boardId = await _kiBoardService.createNewBoard();
+    _board = (await _kiBoardService.getBoard(boardId))!;
+    _boards = await _kiBoardService.getAllBoards();
     notifyListeners();
   }
 
   Future createBoard() async {
-    await _kiBoardService.createNewBoard();
-    _boardIds = await _boardListService.allBoardIds;
+    var boardId = await _kiBoardService.createNewBoard();
+    _board = (await _kiBoardService.getBoard(boardId))!;
+    _boards = await _kiBoardService.getAllBoards();
     notifyListeners();
   }
 
   Future resetKiBoard() async {
-    await _kiBoardService.resetKiBoard();
+    await _kiBoardService.resetKiBoard(_board.boardId);
     notifyListeners();
   }
 
   Future changeKiBoard(String boardId) async {
-    await _kiBoardService.changeKiBoard(boardId);
+    _board = _boards.firstWhere((board) => board.boardId == boardId);
     notifyListeners();
   }
 
   void addKi(Point<int> point) {
-    _kiBoardService.addKi(point);
+    _kiBoardService.addKi(_board.boardId, point);
     notifyListeners();
   }
 }

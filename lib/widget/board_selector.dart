@@ -12,15 +12,13 @@ class BoardSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var boardId2 = context.read<KiBoardController>().boardId;
-    print(boardId2);
     return DropdownButton<String>(
         underline: SizedBox(),
         isExpanded: true,
         onChanged: (value) {
           context.read<KiBoardController>().changeKiBoard(value!);
         },
-        value: boardId2,
+        value: context.watch<KiBoardController>().board.boardId,
         items: allBoardIds
             .map((boardId) => DropdownMenuItem(
                 value: boardId,
