@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/model/ki_board.dart';
-import 'package:little_flower_app/widget/ki_board_painter.dart';
+import 'package:little_flower_app/widget/board/ki_board_painter.dart';
 import 'package:provider/provider.dart';
 
 class KiBoardArea extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/widget/board_info/add_button.dart';
-import 'package:little_flower_app/widget/board_selector.dart';
+import 'package:little_flower_app/widget/board_info/board_selector.dart';
 import 'package:little_flower_app/widget/board_info/delete_button.dart';
-import 'package:little_flower_app/widget/refresh_button.dart';
+import 'package:little_flower_app/widget/board_info/refresh_button.dart';
 import 'package:provider/provider.dart';
 
 class BoardIdWidget extends StatelessWidget {
