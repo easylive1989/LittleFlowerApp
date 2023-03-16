@@ -21,7 +21,7 @@ class KiBoardController extends ChangeNotifier {
   KiBoard get board => _board;
 
   Future removeCurrentBoard() async {
-    await _kiBoardService.removeCurrentBoard(_board.boardId);
+    await _kiBoardService.removeBoard(_board.boardId);
     _boards.remove(_board);
     if (_boards.isNotEmpty) {
       var kiBoard = await _kiBoardService.getBoard(_boards.first.boardId);

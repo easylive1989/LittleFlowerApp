@@ -31,7 +31,7 @@ class KiBoardService {
     await _localRepository.saveKiBoard(boardId, kiBoard);
   }
 
-  Future removeCurrentBoard(String boardId) async {
+  Future removeBoard(String boardId) async {
     await _localRepository.remove(boardId);
   }
 
