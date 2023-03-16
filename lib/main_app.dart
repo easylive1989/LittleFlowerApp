@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:little_flower_app/controller/ki_board_controller.dart';
 import 'package:little_flower_app/generated/l10n.dart';
-import 'package:little_flower_app/widget/board_info_area.dart';
+import 'package:little_flower_app/widget/board_info/board_id_widget.dart';
 import 'package:little_flower_app/widget/ki_board_area.dart';
 import 'package:little_flower_app/widget/result_area.dart';
 import 'package:provider/provider.dart';
@@ -42,15 +42,17 @@ class MainApp extends StatelessWidget {
   }
 
   Widget _buildKiBoardArea() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        BoardInfoArea(),
-        SizedBox(height: 16),
-        KiBoardArea(),
-        ResultArea(),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BoardIdWidget(),
+          SizedBox(height: 16),
+          KiBoardArea(),
+          ResultArea(),
+        ],
+      ),
     );
   }
 }
