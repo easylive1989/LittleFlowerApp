@@ -14,7 +14,7 @@ class KiBoardController extends ChangeNotifier {
 
   KiBoardController({
     required KiBoardService kiBoardService,
-  })  : _kiBoardService = kiBoardService;
+  }) : _kiBoardService = kiBoardService;
 
   List<String> get boardIds => _boards.map((board) => board.boardId).toList();
 
@@ -22,18 +22,14 @@ class KiBoardController extends ChangeNotifier {
 
   Future removeCurrentBoard() async {
     await _kiBoardService.removeBoard(_board.boardId);
-    _boards.remove(_board);
-    if (_boards.isNotEmpty) {
-      var kiBoard = await _kiBoardService.getBoard(_boards.first.boardId);
-      if (kiBoard != null) {
-        _board = kiBoard;
-        notifyListeners();
-        return;
-      }
-    }
-    var boardId = await _kiBoardService.createNewBoard();
-    _board = (await _kiBoardService.getBoard(boardId))!;
     _boards = await _kiBoardService.getAllBoards();
+    if (_boards.isNotEmpty) {
+      _board = _boards.first;
+      notifyListeners();
+      return;
+    }
+
+    await createBoard();
     notifyListeners();
   }
 
