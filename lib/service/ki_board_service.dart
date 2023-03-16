@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/ki_board.dart';
@@ -25,18 +24,10 @@ class KiBoardService {
 
   Future _createBoard(String boardId) async {
     var board = KiBoard(boardId: boardId);
-    await _saveBoard(board.boardId, board);
+    await saveBoard(board.boardId, board);
   }
 
-  Future addKi(String boardId, Point<int> point) async {
-    var kiBoard = await _localRepository.getKiBoard(boardId);
-    if (kiBoard != null) {
-      kiBoard.addKi(point);
-      await _saveBoard(kiBoard.boardId, kiBoard);
-    }
-  }
-
-  Future _saveBoard(String boardId, KiBoard kiBoard) async {
+  Future saveBoard(String boardId, KiBoard kiBoard) async {
     await _localRepository.saveKiBoard(boardId, kiBoard);
   }
 

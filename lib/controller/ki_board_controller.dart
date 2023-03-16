@@ -58,7 +58,7 @@ class KiBoardController extends ChangeNotifier {
 
   void addKi(Point<int> point) {
     _board.addKi(point);
-    _kiBoardService.addKi(_board.boardId, point);
+    _kiBoardService.saveBoard(_board.boardId, _board);
     notifyListeners();
   }
 }
