@@ -42,17 +42,14 @@ class MainApp extends StatelessWidget {
   }
 
   Widget _buildKiBoardArea() {
-    return Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Align(
-          alignment: Alignment.center,
-          child: KiBoardArea(),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ResultArea(),
-        ),
         BoardInfoArea(),
+        SizedBox(height: 16),
+        KiBoardArea(),
+        ResultArea(),
       ],
     );
   }
