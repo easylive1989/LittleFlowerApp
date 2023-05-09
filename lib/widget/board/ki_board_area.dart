@@ -1,22 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/controller/ki_board_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:little_flower_app/model/ki_board.dart';
+import 'package:little_flower_app/providers/current_board_provider.dart';
 import 'package:little_flower_app/widget/board/ki_board_painter.dart';
-import 'package:provider/provider.dart';
 
-class KiBoardArea extends StatefulWidget {
+class KiBoardArea extends ConsumerStatefulWidget {
   @override
-  State<KiBoardArea> createState() => _KiBoardAreaState();
+  ConsumerState<KiBoardArea> createState() => _KiBoardAreaState();
 }
 
-class _KiBoardAreaState extends State<KiBoardArea> {
+class _KiBoardAreaState extends ConsumerState<KiBoardArea> {
   bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
-    var controller = context.watch<KiBoardController>();
+    var currentBoard = ref.watch(currentBoardProvider);
     return Center(
       child: GestureDetector(
         onTapDown: (_) => setState(() => _pressed = true),
@@ -26,11 +26,11 @@ class _KiBoardAreaState extends State<KiBoardArea> {
           painter: KiBoardPainter(
             row: KiBoard.row,
             column: KiBoard.column,
-            blackKiList: controller.board.blackKiList,
-            whiteKiList: controller.board.whiteKiList,
+            blackKiList: currentBoard.blackKiList,
+            whiteKiList: currentBoard.whiteKiList,
             onTap: _pressed
                 ? (x, y) {
-                    context.read<KiBoardController>().addKi(Point(x, y));
+                    ref.read(currentBoardProvider).addKi(Point(x, y));
                     setState(() => _pressed = false);
                   }
                 : null,

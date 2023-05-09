@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+final kiBoardRepositoryProvider = Provider<KiBoardRepository>((ref){
+  return KiBoardRepository();
+}) ;
 
 @Injectable()
 class KiBoardRepository {

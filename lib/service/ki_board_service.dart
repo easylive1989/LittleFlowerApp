@@ -1,9 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:injectable/injectable.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 import 'package:random_string/random_string.dart';
+
+final kiBoardServiceProvider = Provider<KiBoardService>((ref) {
+  return KiBoardService(ref.watch(kiBoardRepositoryProvider));
+});
 
 @Injectable()
 class KiBoardService {
@@ -16,7 +21,7 @@ class KiBoardService {
     await _createBoard(boardId);
   }
 
-  Future<String> createNewBoard() async {
+  Future<String> createBoard() async {
     var boardId = randomAlpha(5);
     await _createBoard(boardId);
     return boardId;

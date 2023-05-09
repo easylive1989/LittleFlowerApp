@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:little_flower_app/controller/ki_board_controller.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:little_flower_app/providers/boards_provider.dart';
+import 'package:little_flower_app/providers/current_board_provider.dart';
 
-class BoardSelector extends StatelessWidget {
+class BoardSelector extends ConsumerWidget {
   const BoardSelector({
     Key? key,
-    required this.allBoardIds,
   }) : super(key: key);
 
-  final List<String> allBoardIds;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var currentBoard = ref.watch(currentBoardProvider);
+    var boards = ref.watch(kiBoardsProvider);
+    if (boards.isEmpty) {
+      return SizedBox();
+    }
     return DropdownButton<String>(
         underline: SizedBox(),
         isExpanded: true,
-        onChanged: (value) {
-          context.read<KiBoardController>().changeKiBoard(value!);
+        onChanged: (id) {
+          ref.read(currentBoardProvider.notifier).changeBoard(id!);
         },
-        value: context.watch<KiBoardController>().board.boardId,
-        items: allBoardIds
-            .map((boardId) => DropdownMenuItem(
-                value: boardId,
+        value: currentBoard.boardId,
+        items: boards
+            .map((board) => DropdownMenuItem(
+                value: board.boardId,
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    boardId,
+                    board.boardId,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20),
                   ),
