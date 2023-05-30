@@ -29,22 +29,6 @@ class KiBoardService {
 
   Future _createBoard(String boardId) async {
     var board = KiBoard(boardId: boardId);
-    await saveBoard(board.boardId, board);
-  }
-
-  Future saveBoard(String boardId, KiBoard kiBoard) async {
-    await _localRepository.saveKiBoard(boardId, kiBoard);
-  }
-
-  Future removeBoard(String boardId) async {
-    await _localRepository.remove(boardId);
-  }
-
-  Future<KiBoard?> getBoard(String boardId) async {
-    return await _localRepository.getKiBoard(boardId);
-  }
-
-  Future<List<KiBoard>> getAllBoards() async {
-    return await _localRepository.getAllBoards();
+    await _localRepository.saveKiBoard(boardId, board);
   }
 }

@@ -31,6 +31,7 @@ class _KiBoardAreaState extends ConsumerState<KiBoardArea> {
             onTap: _pressed
                 ? (x, y) {
                     ref.read(currentBoardProvider).addKi(Point(x, y));
+                    ref.read(currentBoardProvider.notifier).saveBoard();
                     setState(() => _pressed = false);
                   }
                 : null,

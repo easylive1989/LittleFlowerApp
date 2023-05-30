@@ -25,11 +25,13 @@ class BoardIdWidget extends ConsumerWidget {
           child: BoardSelector(),
         ),
         SizedBox(width: 10),
-        AddButton(onTap: () {
-          ref.read(kiBoardsProvider.notifier).createBoard();
+        AddButton(onTap: () async {
+          var id = await ref.read(kiBoardsProvider.notifier).createBoard();
+          ref.read(currentBoardProvider.notifier).changeBoard(id);
         }),
         RefreshButton(onTap: () {
-          ref.read(kiBoardsProvider.notifier).createBoard();
+          ref.read(currentBoardProvider.notifier).resetBoard();
+          ref.read(kiBoardsProvider.notifier).loadBoards();
         }),
         DeleteButton(onTap: () {
           var currentBoard = ref.read(currentBoardProvider);

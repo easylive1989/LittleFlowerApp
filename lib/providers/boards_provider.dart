@@ -1,22 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
-import 'package:little_flower_app/service/ki_board_service.dart';
+import 'package:random_string/random_string.dart';
 
 final kiBoardsProvider =
     StateNotifierProvider<KiBoardState, List<KiBoard>>((ref) {
   var repository = ref.watch(kiBoardRepositoryProvider);
-  var service = ref.watch(kiBoardServiceProvider);
-  return KiBoardState(repository, service);
+  return KiBoardState(repository);
 });
 
 class KiBoardState extends StateNotifier<List<KiBoard>> {
   final KiBoardRepository _repository;
-  final KiBoardService _service;
 
-  KiBoardState(KiBoardRepository repository, KiBoardService service)
+  KiBoardState(KiBoardRepository repository)
       : _repository = repository,
-        _service = service,
         super([]) {
     loadBoards();
   }
@@ -28,13 +25,16 @@ class KiBoardState extends StateNotifier<List<KiBoard>> {
     }
   }
 
-  Future<void> createBoard() async {
-    await _service.createBoard();
-    loadBoards();
+  Future<String> createBoard() async {
+    var boardId = randomAlpha(5);
+    var board = KiBoard(boardId: boardId);
+    await _repository.saveKiBoard(boardId, board);
+    state = await _repository.getAllBoards();
+    return boardId;
   }
 
   Future<void> removeCurrentBoard(String boardId) async {
-    await _service.removeBoard(boardId);
+    await _repository.remove(boardId);
     await loadBoards();
   }
 }
