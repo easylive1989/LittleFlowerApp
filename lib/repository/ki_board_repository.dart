@@ -26,6 +26,11 @@ class KiBoardRepository {
     return KiBoard.fromJson(jsonDecode(data.toString()));
   }
 
+  Future<List<String>> getAllBoardIds() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getKeys().toList();
+  }
+
   Future<List<KiBoard>> getAllBoards() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return [for (final id in prefs.getKeys()) (await getKiBoard(id))!];

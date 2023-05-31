@@ -21,6 +21,8 @@ class KiBoard {
 
   KiBoard({required String boardId}) : _boardId = boardId;
 
+  KiBoard.empty() : _boardId = "";
+
   KiBoard._(
     List<Point<int>> blackKiList,
     List<Point<int>> whiteKiList,
@@ -83,6 +85,7 @@ class KiBoard {
   @override
   bool operator ==(Object other) {
     return other is KiBoard &&
+        other.boardId == boardId &&
         listEquals(blackKiList, other.blackKiList) &&
         listEquals(whiteKiList, other.whiteKiList);
   }

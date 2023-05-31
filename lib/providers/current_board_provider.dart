@@ -1,27 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:little_flower_app/model/ki_board.dart';
-import 'package:little_flower_app/providers/boards_provider.dart';
+import 'package:little_flower_app/providers/board_ids_provider.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 
 final currentBoardProvider =
     StateNotifierProvider<CurrentBoardState, KiBoard>((ref) {
-  var kiBoards = ref.watch(kiBoardsProvider);
-  var repository = ref.watch(kiBoardRepositoryProvider);
-  return CurrentBoardState(kiBoards, repository);
+  var boardIds = ref.watch(boardIdsProvider);
+  return CurrentBoardState(boardIds, ref);
 });
 
 class CurrentBoardState extends StateNotifier<KiBoard> {
-  final List<KiBoard> boards;
-  final KiBoardRepository _repository;
+  final Ref ref;
 
-  CurrentBoardState(
-    this.boards,
-    KiBoardRepository repository,
-  )   : _repository = repository,
-        super(boards.isNotEmpty ? boards.first : KiBoard(boardId: "123"));
+  CurrentBoardState(List<String> boardIds, this.ref) : super(KiBoard.empty()) {
+    _loadFirstBoard(boardIds);
+  }
 
-  void changeBoard(String id) {
-    state = boards.firstWhere((board) => board.boardId == id);
+  Future<void> changeBoard(String id) async {
+    state = (await _repository.getKiBoard(id))!;
   }
 
   Future<void> resetBoard() async {
@@ -32,4 +28,13 @@ class CurrentBoardState extends StateNotifier<KiBoard> {
   Future<void> saveBoard() async {
     await _repository.saveKiBoard(state.boardId, state);
   }
+
+  void _loadFirstBoard(List<String> boardIds) async {
+    if (boardIds.isNotEmpty) {
+      var id = ref.read(boardIdsProvider).first;
+      await changeBoard(id);
+    }
+  }
+
+  KiBoardRepository get _repository => ref.read(kiBoardRepositoryProvider);
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:little_flower_app/generated/l10n.dart';
 import 'package:little_flower_app/helper/translate_helper.dart';
-import 'package:little_flower_app/providers/boards_provider.dart';
+import 'package:little_flower_app/providers/board_ids_provider.dart';
 import 'package:little_flower_app/providers/current_board_provider.dart';
 
 class ResultArea extends ConsumerWidget {
@@ -27,7 +27,7 @@ class ResultArea extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () async {
-                ref.read(kiBoardsProvider.notifier).createBoard();
+                ref.read(boardIdsProvider.notifier).createBoard();
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
