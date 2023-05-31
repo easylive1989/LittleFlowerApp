@@ -31,11 +31,6 @@ class KiBoardRepository {
     return prefs.getKeys().toList();
   }
 
-  Future<List<KiBoard>> getAllBoards() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return [for (final id in prefs.getKeys()) (await getKiBoard(id))!];
-  }
-
   Future remove(String boardId) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.remove(boardId);
