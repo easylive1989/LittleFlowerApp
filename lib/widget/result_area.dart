@@ -8,7 +8,6 @@ import 'package:little_flower_app/providers/current_board_provider.dart';
 class ResultArea extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // var controller = context.watch<KiBoardController>();
     var currentBoard = ref.watch(currentBoardProvider);
     return Container(
       height: 180,
