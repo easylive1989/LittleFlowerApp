@@ -11,7 +11,7 @@ class BoardSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var currentBoard = ref.watch(currentBoardProvider);
+    var currentBoard = ref.watch(currentBoardProvider).kiBoard;
     var boardIds = ref.watch(boardIdsProvider);
     if (boardIds.isEmpty || currentBoard == KiBoard.empty()) {
       return SizedBox();

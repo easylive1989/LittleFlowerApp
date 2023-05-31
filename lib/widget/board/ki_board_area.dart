@@ -16,7 +16,7 @@ class _KiBoardAreaState extends ConsumerState<KiBoardArea> {
 
   @override
   Widget build(BuildContext context) {
-    var currentBoard = ref.watch(currentBoardProvider);
+    var currentBoard = ref.watch(currentBoardProvider).kiBoard;
     return Center(
       child: GestureDetector(
         onTapDown: (_) => setState(() => _pressed = true),
@@ -31,7 +31,6 @@ class _KiBoardAreaState extends ConsumerState<KiBoardArea> {
             onTap: _pressed
                 ? (x, y) {
                     ref.read(currentBoardProvider).addKi(Point(x, y));
-                    ref.read(currentBoardProvider.notifier).saveBoard();
                     setState(() => _pressed = false);
                   }
                 : null,

@@ -1,32 +1,40 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/providers/board_ids_provider.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 
 final currentBoardProvider =
-    StateNotifierProvider<CurrentBoardState, KiBoard>((ref) {
+    ChangeNotifierProvider<CurrentBoardState>((ref) {
   var boardIds = ref.watch(boardIdsProvider);
   return CurrentBoardState(boardIds, ref);
 });
 
-class CurrentBoardState extends StateNotifier<KiBoard> {
+class CurrentBoardState extends ChangeNotifier {
   final Ref ref;
+  KiBoard kiBoard = KiBoard.empty();
 
-  CurrentBoardState(List<String> boardIds, this.ref) : super(KiBoard.empty()) {
+  CurrentBoardState(List<String> boardIds, this.ref) : super() {
     _loadFirstBoard(boardIds);
   }
 
   Future<void> changeBoard(String id) async {
-    state = (await _repository.getKiBoard(id))!;
+    kiBoard = (await _repository.getKiBoard(id))!;
+    notifyListeners();
   }
 
   Future<void> resetBoard() async {
-    var board = KiBoard(boardId: state.boardId);
-    await _repository.saveKiBoard(state.boardId, board);
+    kiBoard = KiBoard(boardId: kiBoard.boardId);
+    await _repository.saveKiBoard(kiBoard.boardId, kiBoard);
+    notifyListeners();
   }
 
-  Future<void> saveBoard() async {
-    await _repository.saveKiBoard(state.boardId, state);
+  Future<void> addKi(Point<int> point) async {
+    kiBoard.addKi(point);
+    await _repository.saveKiBoard(kiBoard.boardId, kiBoard);
+    notifyListeners();
   }
 
   void _loadFirstBoard(List<String> boardIds) async {

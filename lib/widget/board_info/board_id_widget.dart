@@ -34,7 +34,7 @@ class BoardIdWidget extends ConsumerWidget {
           ref.read(boardIdsProvider.notifier).loadBoards();
         }),
         DeleteButton(onTap: () {
-          var currentBoard = ref.read(currentBoardProvider);
+          var currentBoard = ref.read(currentBoardProvider).kiBoard;
           ref.read(boardIdsProvider.notifier).removeCurrentBoard(
                 currentBoard.boardId,
               );
