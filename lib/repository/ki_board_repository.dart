@@ -12,9 +12,9 @@ final kiBoardRepositoryProvider = Provider<KiBoardRepository>((ref){
 
 @Injectable()
 class KiBoardRepository {
-  Future saveKiBoard(String id, KiBoard kiBoard) async {
+  Future saveKiBoard(KiBoard kiBoard) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(id, jsonEncode(kiBoard.toJson()));
+    await prefs.setString(kiBoard.boardId, jsonEncode(kiBoard.toJson()));
   }
 
   Future<KiBoard?> getKiBoard(String id) async {

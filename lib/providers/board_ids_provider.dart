@@ -25,7 +25,7 @@ class BoardIdsState extends StateNotifier<List<String>> {
   Future<String> createBoard() async {
     var boardId = randomAlpha(5);
     var board = KiBoard(boardId: boardId);
-    await _repository.saveKiBoard(boardId, board);
+    await _repository.saveKiBoard(board);
     await loadBoards();
     return boardId;
   }

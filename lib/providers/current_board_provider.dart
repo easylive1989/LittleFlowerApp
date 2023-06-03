@@ -6,8 +6,7 @@ import 'package:little_flower_app/model/ki_board.dart';
 import 'package:little_flower_app/providers/board_ids_provider.dart';
 import 'package:little_flower_app/repository/ki_board_repository.dart';
 
-final currentBoardProvider =
-    ChangeNotifierProvider<CurrentBoardState>((ref) {
+final currentBoardProvider = ChangeNotifierProvider<CurrentBoardState>((ref) {
   var boardIds = ref.watch(boardIdsProvider);
   return CurrentBoardState(boardIds, ref);
 });
@@ -27,13 +26,13 @@ class CurrentBoardState extends ChangeNotifier {
 
   Future<void> resetBoard() async {
     kiBoard = KiBoard(boardId: kiBoard.boardId);
-    await _repository.saveKiBoard(kiBoard.boardId, kiBoard);
+    await _repository.saveKiBoard(kiBoard);
     notifyListeners();
   }
 
   Future<void> addKi(Point<int> point) async {
     kiBoard.addKi(point);
-    await _repository.saveKiBoard(kiBoard.boardId, kiBoard);
+    await _repository.saveKiBoard(kiBoard);
     notifyListeners();
   }
 
