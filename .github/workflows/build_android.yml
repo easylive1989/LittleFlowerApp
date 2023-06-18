@@ -31,7 +31,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'master'
+    if: ${{ github.ref == 'refs/heads/master' }}
     steps:
       - uses: actions/checkout@v2
       - run: echo $ANDROID_PLAY_SECRET | base64 -di > script/key.json
@@ -49,5 +49,5 @@ jobs:
         run: |
           pip install google-api-python-client
           pip install oauth2client
-      - name: depoly for release
+      - name: deploy for release
         run: python script/deploy.py com.paulwu.little_flower_app script/key.json app-release.aab production
