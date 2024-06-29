@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:little_flower_app/model/ki_board.dart';
@@ -28,7 +29,7 @@ class _KiBoardAreaState extends ConsumerState<KiBoardArea> {
             column: KiBoard.column,
             blackKiList: currentBoard.blackKiList,
             whiteKiList: currentBoard.whiteKiList,
-            onTap: _pressed
+            onTap: !kIsWeb || _pressed
                 ? (x, y) {
                     ref.read(currentBoardProvider).addKi(Point(x, y));
                     setState(() => _pressed = false);
