@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.3.2+1302
+version: 1.3.3+1303
 
 environment:
   sdk: ">=2.19.0 <3.0.0"
@@ -14,23 +14,23 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0
+  intl: ^0.19.0
 
 
-  provider: ^6.0.0
+  provider: ^6.1.2
   random_string: ^2.2.0-nullsafety
-  shared_preferences: ^2.0.5
-  injectable: ^1.4.1
-  get_it: ^7.1.3
-  flutter_riverpod: ^2.3.2
+  shared_preferences: ^2.2.3
+  injectable: ^2.4.2
+  get_it: ^7.7.0
+  flutter_riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   test: any
-  mockito: ^5.0.7
-  injectable_generator: ^1.4.1
-  build_runner: ^2.0.4
+  mockito: ^5.4.4
+  injectable_generator: ^2.6.1
+  build_runner: ^2.4.11
 
 flutter:
   generate: true
