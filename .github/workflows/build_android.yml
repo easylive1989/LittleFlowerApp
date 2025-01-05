@@ -36,7 +36,7 @@ jobs:
     needs: build
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: echo $ANDROID_PLAY_SECRET | base64 -di > script/key.json
         env:
           ANDROID_PLAY_SECRET: ${{ secrets.ANDROID_PLAY_SECRET }}
@@ -45,7 +45,7 @@ jobs:
         with:
           python-version: 3.9
       - name: download bundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: app bundle
       - name: install python dependencies
