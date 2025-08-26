@@ -11,7 +11,7 @@ jobs:
         with:
           flutter-version: '3.32.4'
           channel: 'stable'
-      - run: flutter build web --web-renderer html --base-href "/LittleFlowerApp/"
+      - run: flutter build web --base-href "/LittleFlowerApp/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
