@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace 'com.paulwu.little_flower_app'
-    compileSdkVersion 35
+    compileSdkVersion 36
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
